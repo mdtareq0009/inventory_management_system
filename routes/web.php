@@ -20,6 +20,7 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth')->group(function () {
 
     Route::middleware('access')->group(function () {
+        Route::get('/category_entry', [CommonController::class, 'categoryEntry'])->name('category_entry');
        });
 
     Route::get('/', [CommonController::class, 'dashboard'])->name('dashboard');
@@ -45,6 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/store-branch', [AdministrationController::class, 'branchStore']);
     Route::post('/update-branch', [AdministrationController::class, 'branchUpdate']);
     Route::post('/delete-branch', [AdministrationController::class, 'branchDelete']);
+
+      ////Category 
+      Route::post('/store-category', [CommonController::class, 'categoryStore']);
+      Route::post('/update-category', [CommonController::class, 'categoryUpdate']);
+      Route::post('/delete-category', [CommonController::class, 'categoryDelete']);
+      Route::match(['get', 'post'],'/get_categories', [CommonController::class, 'getCategories']);
 
 
 });

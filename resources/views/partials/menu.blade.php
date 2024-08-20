@@ -68,6 +68,14 @@
         </a>
     </li>
    
+    @if (array_search("category_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('category_entry')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Category Entry </span>
+        </a>
+    </li>
+    @endif
     @if (in_array($role, $all_access_role) && $branch_id == 1)
     <li>
         <a href="{{route('company_profile')}}">

@@ -4936,6 +4936,150 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['role'],
+  data: function data() {
+    return {
+      category: {
+        id: '',
+        name: ''
+      },
+      categories: [],
+      columns: [{
+        label: 'SL NO',
+        field: 'sl',
+        align: 'center'
+      }, {
+        label: 'Name',
+        field: 'name',
+        align: 'center'
+      }, {
+        label: 'Action',
+        align: 'center',
+        filterable: false
+      }],
+      page: 1,
+      per_page: 10,
+      filter: ''
+    };
+  },
+  created: function created() {
+    this.getCategory();
+  },
+  methods: {
+    clearForm: function clearForm() {
+      this.category = {
+        id: '',
+        name: ''
+      };
+    },
+    getCategory: function getCategory() {
+      var _this = this;
+      axios.get('/get_categories').then(function (res) {
+        _this.categories = res.data;
+      });
+    },
+    saveCategory: function saveCategory() {
+      var _this2 = this;
+      var url = '/store-category';
+      if (this.category.id != '') {
+        url = '/update-category';
+      }
+      axios.post(url, this.category).then(function (res) {
+        var r = res.data;
+        _this2.$toaster.success(r.message);
+        _this2.getCategory();
+        _this2.clearForm();
+      })["catch"](function (error) {
+        var e = error.response.data;
+        if (e.hasOwnProperty('message')) {
+          if (e.hasOwnProperty('errors')) {
+            Object.entries(e.errors).forEach(function (_ref) {
+              var _ref2 = _slicedToArray(_ref, 2),
+                key = _ref2[0],
+                val = _ref2[1];
+              _this2.$toaster.error(val[0]);
+            });
+          } else {
+            _this2.$toaster.error(e.message);
+          }
+        } else {
+          _this2.$toaster.error(e);
+        }
+      });
+    },
+    editCategory: function editCategory(row) {
+      this.category = {
+        id: row.id,
+        name: row.name
+      };
+    },
+    deleteCategory: function deleteCategory(id) {
+      var _this3 = this;
+      Swal.fire({
+        title: '<strong>Are you sure!</strong>',
+        html: '<strong>Want to delete this?</strong>',
+        showDenyButton: true,
+        confirmButtonText: "Ok",
+        denyButtonText: "Cancel"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post('/delete-category', {
+            id: id
+          }).then(function (res) {
+            var r = res.data;
+            Swal.fire({
+              icon: 'success',
+              title: r.message,
+              showConfirmButton: false,
+              timer: 1500
+            });
+            _this3.getCategory();
+          })["catch"](function (error) {
+            var e = error.response.data;
+            if (e.hasOwnProperty('message')) {
+              if (e.hasOwnProperty('errors')) {
+                Object.entries(e.errors).forEach(function (_ref3) {
+                  var _ref4 = _slicedToArray(_ref3, 2),
+                    key = _ref4[0],
+                    val = _ref4[1];
+                  _this3.$toaster.error(val[0]);
+                });
+              } else {
+                _this3.$toaster.error(e.message);
+              }
+            } else {
+              _this3.$toaster.error(e);
+            }
+          });
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CompanyProfile.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CompanyProfile.vue?vue&type=script&lang=js& ***!
@@ -5725,6 +5869,170 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.saveCategory.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "margin-top": "10px",
+      "margin-bottom": "15px",
+      "border-bottom": "1px solid #ccc",
+      "padding-bottom": "15px"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-6 col-md-offset-3"
+  }, [_c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("label", {
+    staticClass: "control-label col-md-4"
+  }, [_vm._v("Name:")]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-7"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.category.name,
+      expression: "category.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.category.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.category, "name", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _vm._m(0)])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-sm-12 form-inline"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.filter,
+      expression: "filter"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      placeholder: "Filter"
+    },
+    domProps: {
+      value: _vm.filter
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.filter = $event.target.value;
+      }
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "table-responsive record-table"
+  }, [_c("datatable", {
+    staticClass: "table table-hover table-bordered",
+    attrs: {
+      columns: _vm.columns,
+      data: _vm.categories,
+      filter: _vm.filter,
+      "per-page": _vm.per_page
+    },
+    scopedSlots: _vm._u([{
+      key: "default",
+      fn: function fn(_ref) {
+        var row = _ref.row,
+          index = _ref.index;
+        return [_c("tr", [_c("td", [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(row.name))]), _vm._v(" "), _c("td", [_vm.role != "User" ? _c("span", [_c("a", {
+          staticClass: "blue",
+          attrs: {
+            href: "javascript:"
+          },
+          on: {
+            click: function click($event) {
+              return _vm.editCategory(row);
+            }
+          }
+        }, [_c("i", {
+          staticClass: "ace-icon fa fa-pencil bigger-130"
+        })]), _vm._v(" "), _c("a", {
+          staticClass: "red",
+          attrs: {
+            href: "javascript:"
+          },
+          on: {
+            click: function click($event) {
+              return _vm.deleteCategory(row.id);
+            }
+          }
+        }, [_c("i", {
+          staticClass: "ace-icon fa fa-trash bigger-130"
+        })])]) : _vm._e()])])];
+      }
+    }])
+  }), _vm._v(" "), _c("datatable-pager", {
+    staticClass: "datatable-pagination",
+    attrs: {
+      type: "abbreviated"
+    },
+    model: {
+      value: _vm.page,
+      callback: function callback($$v) {
+        _vm.page = $$v;
+      },
+      expression: "page"
+    }
+  })], 1)])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group clearfix"
+  }, [_c("div", {
+    staticClass: "col-md-7 col-md-offset-4"
+  }, [_c("input", {
+    staticClass: "btn btn-success btn-sm",
+    attrs: {
+      type: "submit",
+      value: "Save"
+    }
+  })])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CompanyProfile.vue?vue&type=template&id=bbcab8d2&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CompanyProfile.vue?vue&type=template&id=bbcab8d2&scoped=true& ***!
@@ -5753,7 +6061,7 @@ var render = function render() {
       "padding-bottom": "15px"
     }
   }, [_c("div", {
-    staticClass: "col-md-6"
+    staticClass: "col-md-6 col-md-offset-3"
   }, [_c("form", {
     on: {
       submit: function submit($event) {
@@ -5764,9 +6072,9 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
-    staticClass: "control-label col-md-9 col-md-offset-3"
+    staticClass: "control-label col-md-12"
   }, [_vm._v("Company Logo:")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9 col-md-offset-3"
+    staticClass: "col-md-12"
   }, [_c("div", {
     staticStyle: {
       width: "100px",
@@ -5807,9 +6115,9 @@ var render = function render() {
   })])])]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
-    staticClass: "control-label col-md-9 col-md-offset-3"
+    staticClass: "control-label col-md-12"
   }, [_vm._v("Name:")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9 col-md-offset-3"
+    staticClass: "col-md-12"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -5835,9 +6143,9 @@ var render = function render() {
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
-    staticClass: "control-label col-md-9 col-md-offset-3"
+    staticClass: "control-label col-md-12"
   }, [_vm._v("Phone:")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9 col-md-offset-3"
+    staticClass: "col-md-12"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -5863,9 +6171,9 @@ var render = function render() {
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
-    staticClass: "control-label col-md-9 col-md-offset-3"
+    staticClass: "control-label col-md-12"
   }, [_vm._v("Email:")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9 col-md-offset-3"
+    staticClass: "col-md-12"
   }, [_c("input", {
     directives: [{
       name: "model",
@@ -5891,9 +6199,9 @@ var render = function render() {
   })])]), _vm._v(" "), _c("div", {
     staticClass: "form-group clearfix"
   }, [_c("label", {
-    staticClass: "control-label col-md-9 col-md-offset-3"
+    staticClass: "control-label col-md-12"
   }, [_vm._v("Address:")]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-9 col-md-offset-3"
+    staticClass: "col-md-12"
   }, [_c("textarea", {
     directives: [{
       name: "model",
@@ -5915,210 +6223,7 @@ var render = function render() {
         _vm.$set(_vm.companys, "address", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _vm._m(0)])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6"
-  }, [_c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-top": "5px"
-    }
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("form", {
-    staticClass: "form-horizontal",
-    on: {
-      submit: function submit($event) {
-        $event.preventDefault();
-        return _vm.saveBranch.apply(null, arguments);
-      }
-    }
-  }, [_vm._m(1), _vm._v(" "), _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "col-sm-3 control-label no-padding-right",
-    staticStyle: {
-      "text-align": "left"
-    }
-  }, [_vm._v(" Code ")]), _vm._v(" "), _c("label", {
-    staticClass: "col-sm-1 control-label no-padding-right"
-  }, [_vm._v(":")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.branch.code,
-      expression: "branch.code"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Branch Name",
-      name: "code",
-      required: "",
-      readonly: ""
-    },
-    domProps: {
-      value: _vm.branch.code
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.branch, "code", $event.target.value);
-      }
-    }
-  }), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.branch.branchId,
-      expression: "branch.branchId"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "hidden",
-      placeholder: "Branch Name",
-      name: "id",
-      required: ""
-    },
-    domProps: {
-      value: _vm.branch.branchId
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.branch, "branchId", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "col-sm-3 control-label no-padding-right",
-    staticStyle: {
-      "text-align": "left"
-    }
-  }, [_vm._v(" Branch Name ")]), _vm._v(" "), _c("label", {
-    staticClass: "col-sm-1 control-label no-padding-right"
-  }, [_vm._v(":")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.branch.name,
-      expression: "branch.name"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      placeholder: "Branch Name",
-      name: "name",
-      required: ""
-    },
-    domProps: {
-      value: _vm.branch.name
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.branch, "name", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "col-sm-3 control-label no-padding-right",
-    staticStyle: {
-      "text-align": "left"
-    }
-  }, [_vm._v(" Branch Address ")]), _vm._v(" "), _c("label", {
-    staticClass: "col-sm-1 control-label no-padding-right"
-  }, [_vm._v(":")]), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-8"
-  }, [_c("textarea", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.branch.address,
-      expression: "branch.address"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "address",
-      placeholder: "Branch Address",
-      required: ""
-    },
-    domProps: {
-      value: _vm.branch.address
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.branch, "address", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _vm._m(2)])])]), _vm._v(" "), _c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-top": "20px"
-    }
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("div", {
-    staticClass: "table-responsive"
-  }, [_c("datatable", {
-    staticClass: "table table-hover table-bordered",
-    attrs: {
-      columns: _vm.columns,
-      data: _vm.branches,
-      filter: _vm.filter,
-      "per-page": _vm.per_page
-    },
-    scopedSlots: _vm._u([{
-      key: "default",
-      fn: function fn(_ref) {
-        var row = _ref.row,
-          index = _ref.index;
-        return [_c("tr", [_c("td", [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(row.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(row.address))]), _vm._v(" "), _vm.role != "User" ? _c("span", [_c("a", {
-          staticClass: "blue",
-          attrs: {
-            href: "javascript:"
-          },
-          on: {
-            click: function click($event) {
-              return _vm.editBranch(row);
-            }
-          }
-        }, [_c("i", {
-          staticClass: "ace-icon fa fa-pencil bigger-130"
-        })]), _vm._v(" "), _c("a", {
-          staticClass: "red",
-          attrs: {
-            href: "javascript:"
-          },
-          on: {
-            click: function click($event) {
-              return _vm.deleteBranch(row.id);
-            }
-          }
-        }, [_c("i", {
-          staticClass: "ace-icon fa fa-trash bigger-130"
-        })])]) : _vm._e()])];
-      }
-    }])
-  }), _vm._v(" "), _c("datatable-pager", {
-    staticClass: "datatable-pagination",
-    attrs: {
-      type: "abbreviated"
-    },
-    model: {
-      value: _vm.page,
-      callback: function callback($$v) {
-        _vm.page = $$v;
-      },
-      expression: "page"
-    }
-  })], 1)])])])])]);
+  })])]), _vm._v(" "), _vm._m(0)])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -6134,39 +6239,6 @@ var staticRenderFns = [function () {
       value: "Update"
     }
   })])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "col-sm-12 control-label no-padding-right",
-    staticStyle: {
-      "text-align": "left",
-      background: "skyblue",
-      padding: "5px",
-      width: "98%",
-      margin: "5px auto",
-      "border-radius": "5px"
-    }
-  }, [_vm._v(" Branch Entry ")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    staticClass: "col-sm-8 control-label no-padding-right"
-  }), _vm._v(" "), _c("div", {
-    staticClass: "col-sm-4"
-  }, [_c("button", {
-    staticClass: "btn btn-sm btn-success",
-    attrs: {
-      type: "submit"
-    }
-  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\tSubmit\n\t\t\t\t\t\t\t\t\t\t"), _c("i", {
-    staticClass: "ace-icon fa fa-arrow-right icon-on-right bigger-110"
-  })])])]);
 }];
 render._withStripped = true;
 
@@ -6537,819 +6609,6 @@ var render = function render() {
     staticClass: "group-head",
     attrs: {
       type: "checkbox",
-      id: "front_desk"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Front Desk")]), _vm._v(" "), _c("ul", {
-    ref: "front_desk"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "outdoor_patient"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "outdoor_patient") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "outdoor_patient",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Outdoor Patient")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_admission"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_admission") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_admission",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Patient Admission")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_admission_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_admission_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_admission_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Patient Admission Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Patient Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Patient List")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "bill_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "bill_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "bill_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Bill Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "seat_shift"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "seat_shift") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "seat_shift",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Seat Shift")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "seat_status"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "seat_status") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "seat_status",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Seat Status")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "billtype_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "billtype_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "billtype_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Bill Type Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "appointment_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "appointment_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "appointment_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Appointment Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "slip_bill_search"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "slip_bill_search") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "slip_bill_search",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Slip Bill")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "release_slip_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "release_slip_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "release_slip_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Release Slip Record")])])]), _vm._v(" "), _c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "doctor"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Doctor Module")]), _vm._v(" "), _c("ul", {
-    ref: "doctor"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "doctor_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "doctor_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "doctor_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Doctor Entry")])])]), _vm._v(" "), _c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "other"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Others Module")]), _vm._v(" "), _c("ul", {
-    ref: "other"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "driver_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "driver_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "driver_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Driver Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ambulance_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ambulance_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ambulance_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Amulance Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ambulance_bill"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ambulance_bill") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ambulance_bill",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Amulance Bill")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ambulance_bill_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ambulance_bill_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ambulance_bill_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Amulance Bill Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ot_schedule_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ot_schedule_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ot_schedule_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Schedule Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ot_schedule_pending_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ot_schedule_pending_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ot_schedule_pending_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Schedule Pending")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "ot_schedule_complete_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "ot_schedule_complete_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "ot_schedule_complete_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Schedule Complete")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "pathology"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Pathology Module")]), _vm._v(" "), _c("ul", {
-    ref: "pathology"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "test_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "test_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "test_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Test Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "test_receipt"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "test_receipt") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "test_receipt",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Test Receipt")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "test_receipt_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "test_receipt_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "test_receipt_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Test Receipt Record")])])]), _vm._v(" "), _c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
       id: "inventory"
     },
     on: {
@@ -7367,10 +6626,10 @@ var render = function render() {
     staticClass: "access",
     attrs: {
       type: "checkbox",
-      value: "category_entry_inventory"
+      value: "product_entry"
     },
     domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "category_entry_inventory") > -1 : _vm.access
+      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "product_entry") > -1 : _vm.access
     },
     on: {
       change: function change($event) {
@@ -7378,7 +6637,7 @@ var render = function render() {
           $$el = $event.target,
           $$c = $$el.checked ? true : false;
         if (Array.isArray($$a)) {
-          var $$v = "category_entry_inventory",
+          var $$v = "product_entry",
             $$i = _vm._i($$a, $$v);
           if ($$el.checked) {
             $$i < 0 && (_vm.access = $$a.concat([$$v]));
@@ -7390,1931 +6649,7 @@ var render = function render() {
         }
       }
     }
-  }), _vm._v(" Inventory Category")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "unit_entry_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "unit_entry_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "unit_entry_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Inventory Unit")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_inventory_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_inventory_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_inventory_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Inventory Supplier Entry ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Purchase Inventory Entry ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_inventory_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_inventory_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_inventory_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Purchase Inventory Record ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_inventory_returns"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_inventory_returns") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_inventory_returns",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Purchase Inventory Return ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_return_inventory_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_return_inventory_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_return_inventory_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Purchase Inventory Return Records ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "damage_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "damage_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "damage_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Damage Inventory Entry ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "damage_inventory_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "damage_inventory_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "damage_inventory_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Damage Inventory List ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "issue_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "issue_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "issue_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Issue Inventory Entry ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "issue_inventory_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "issue_inventory_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "issue_inventory_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Issue Inventory Record ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_payment_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_payment_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_payment_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Supplier Payment Inventory ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_payment_inventory_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_payment_inventory_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_payment_inventory_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Supplier Payment Inventory Report ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_due_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_due_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_due_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Due List ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "current_stock_inventory"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "current_stock_inventory") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "current_stock_inventory",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Current Stock ")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "accounts"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Accounts Module")]), _vm._v(" "), _c("ul", {
-    ref: "accounts"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "account_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "account_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "account_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Transaction Accounts")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "bank_account_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "bank_account_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "bank_account_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Bank Accounts")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "cash_transaction_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "cash_transaction_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "cash_transaction_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Cash Transaction")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "commission_payment"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "commission_payment") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "commission_payment",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Commissiom Payment")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_payment_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_payment_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_payment_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Outdoor Patient Payment")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "patient_due_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "patient_due_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "patient_due_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Patient Due List")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "commission_payment_ledger"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "commission_payment_ledger") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "commission_payment_ledger",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v("Commissiom Ledger")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "bank_transaction_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "bank_transaction_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "bank_transaction_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Bank Transaction")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "cash_transaction_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "cash_transaction_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "cash_transaction_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Cash Transaction Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "bank_transaction_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "bank_transaction_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "bank_transaction_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Bank Transaction Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "cash_view_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "cash_view_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "cash_view_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Cash View")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "cash_ledger_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "cash_ledger_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "cash_ledger_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Cash Ledger Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "bank_ledger_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "bank_ledger_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "bank_ledger_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Bank Ledger Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "cash_in_out_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "cash_in_out_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "cash_in_out_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Cash In Out")])])]), _vm._v(" "), _c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "hrPayroll"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("HR & Payroll")]), _vm._v(" "), _c("ul", {
-    ref: "hrPayroll"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "designation_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "designation_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "designation_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Designation")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "department_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "department_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "department_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Department")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "employee_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "employee_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "employee_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Employee")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "employee_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "employee_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "employee_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Employee List")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "employee_active_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "employee_active_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "employee_active_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Active Employee List")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "employee_deactive_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "employee_deactive_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "employee_deactive_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Deactive Employee List")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "month_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "month_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "month_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Add Month")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "salary_payment"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "salary_payment") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "salary_payment",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Salary Payment")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "salary_payment_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "salary_payment_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "salary_payment_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Salary Payment Report")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-3"
-  }, [_c("div", {
-    staticClass: "group"
-  }, [_c("input", {
-    staticClass: "group-head",
-    attrs: {
-      type: "checkbox",
-      id: "pharmacy"
-    },
-    on: {
-      click: _vm.onClickGroupHeads
-    }
-  }), _vm._v(" "), _c("strong", [_vm._v("Pharmacy Module")]), _vm._v(" "), _c("ul", {
-    ref: "pharmacy"
-  }, [_c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "medicine_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "medicine_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "medicine_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_pharmacy_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_pharmacy_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_pharmacy_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Supplier Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "category_entry_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "category_entry_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "category_entry_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Category")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "unit_entry_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "unit_entry_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "unit_entry_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Unit")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "brand_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "brand_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "brand_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Brand Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "generic_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "generic_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "generic_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Generic Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Purchase Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_medicine_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_medicine_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_medicine_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_medicine_invoice"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_medicine_invoice") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_medicine_invoice",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Purchase Invioce")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_return_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_return_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_return_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Purchase Return Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "purchase_return_medicine_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "purchase_return_medicine_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "purchase_return_medicine_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Purchase Return Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "damage_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "damage_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "damage_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Damage Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "damage_medicine_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "damage_medicine_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "damage_medicine_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Damage Medicine List ")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "sale_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "sale_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "sale_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Sale Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "sale_medicine_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "sale_medicine_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "sale_medicine_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Sale Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "sale_return_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "sale_return_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "sale_return_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Sale Return Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "sale_return_medicine_record"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "sale_return_medicine_record") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "sale_return_medicine_record",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Sale Return Record")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_payment_medicine"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_payment_medicine") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_payment_medicine",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Supplier Payment")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "supplier_payment_medicine_report"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "supplier_payment_medicine_report") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "supplier_payment_medicine_report",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Supplier Payment Report")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "medicine_supplier_due_list"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "medicine_supplier_due_list") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "medicine_supplier_due_list",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Medicine Supplier Due List")])])]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Product Entry")])])]), _vm._v(" "), _c("div", {
     staticClass: "group"
   }, [_c("input", {
     staticClass: "group-head",
@@ -9337,10 +6672,10 @@ var render = function render() {
     staticClass: "access",
     attrs: {
       type: "checkbox",
-      value: "agent_entry"
+      value: "category_entry"
     },
     domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "agent_entry") > -1 : _vm.access
+      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "category_entry") > -1 : _vm.access
     },
     on: {
       change: function change($event) {
@@ -9348,7 +6683,7 @@ var render = function render() {
           $$el = $event.target,
           $$c = $$el.checked ? true : false;
         if (Array.isArray($$a)) {
-          var $$v = "agent_entry",
+          var $$v = "category_entry",
             $$i = _vm._i($$a, $$v);
           if ($$el.checked) {
             $$i < 0 && (_vm.access = $$a.concat([$$v]));
@@ -9360,106 +6695,7 @@ var render = function render() {
         }
       }
     }
-  }), _vm._v(" Agent Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "floor_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "floor_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "floor_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Floor Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "room_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "room_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "room_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Room Entry")]), _vm._v(" "), _c("li", [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.access,
-      expression: "access"
-    }],
-    staticClass: "access",
-    attrs: {
-      type: "checkbox",
-      value: "seat_entry"
-    },
-    domProps: {
-      checked: Array.isArray(_vm.access) ? _vm._i(_vm.access, "seat_entry") > -1 : _vm.access
-    },
-    on: {
-      change: function change($event) {
-        var $$a = _vm.access,
-          $$el = $event.target,
-          $$c = $$el.checked ? true : false;
-        if (Array.isArray($$a)) {
-          var $$v = "seat_entry",
-            $$i = _vm._i($$a, $$v);
-          if ($$el.checked) {
-            $$i < 0 && (_vm.access = $$a.concat([$$v]));
-          } else {
-            $$i > -1 && (_vm.access = $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
-          }
-        } else {
-          _vm.access = $$c;
-        }
-      }
-    }
-  }), _vm._v(" Seat Entry")])])])])]), _vm._v(" "), _c("div", {
+  }), _vm._v(" Category Entry")])])])])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12 text-right"
@@ -9872,6 +7108,7 @@ Vue.component('register', (__webpack_require__(/*! ./components/Register.vue */ 
 Vue.component('user-access', (__webpack_require__(/*! ./components/UserAccess.vue */ "./resources/js/components/UserAccess.vue")["default"]));
 Vue.component('user-activity', (__webpack_require__(/*! ./components/UserActivity.vue */ "./resources/js/components/UserActivity.vue")["default"]));
 Vue.component('company-profile', (__webpack_require__(/*! ./components/CompanyProfile.vue */ "./resources/js/components/CompanyProfile.vue")["default"]));
+Vue.component('category-entry', (__webpack_require__(/*! ./components/CategoryEntry.vue */ "./resources/js/components/CategoryEntry.vue")["default"]));
 
 /***/ }),
 
@@ -50187,6 +47424,45 @@ Component.registerHooks = function registerHooks(keys) {
 
 /***/ }),
 
+/***/ "./resources/js/components/CategoryEntry.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/CategoryEntry.vue ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoryEntry.vue?vue&type=template&id=4a8e888e& */ "./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e&");
+/* harmony import */ var _CategoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CategoryEntry.vue?vue&type=script&lang=js& */ "./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CategoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__.render,
+  _CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/CategoryEntry.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/CompanyProfile.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/CompanyProfile.vue ***!
@@ -50349,6 +47625,22 @@ component.options.__file = "resources/js/components/UserActivity.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CategoryEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/CompanyProfile.vue?vue&type=script&lang=js&":
 /*!*****************************************************************************!*\
   !*** ./resources/js/components/CompanyProfile.vue?vue&type=script&lang=js& ***!
@@ -50410,6 +47702,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserActivity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UserActivity.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/UserActivity.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UserActivity_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e& ***!
+  \**********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_CategoryEntry_vue_vue_type_template_id_4a8e888e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./CategoryEntry.vue?vue&type=template&id=4a8e888e& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/CategoryEntry.vue?vue&type=template&id=4a8e888e&");
+
 
 /***/ }),
 

@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\UserActivity;
 use Illuminate\Http\Request;
 use App\Models\CompanyProfile;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Artisan;
@@ -159,24 +160,93 @@ class CommonController extends Controller
         return response()->json(DB::table('users')->where('id', $id)->first()->permissions);
     }
 
-    public function databaseBackup(Request $request)
+
+
+    public function categoryEntry()
     {
-        $method = $request->method();
-        if($method == 'GET'){
-            return view('admin.database_backup');
-        }else{
-            $filename = "backup-" . now()->format('Y-m-d-H-i-s') . ".zip";
-            // Create backup folder and set permission if not exist.
-            $storageAt = storage_path() . "/app/backup/";
-            if(!File::exists($storageAt)) {
-                File::makeDirectory($storageAt, 0755, true, true);
-            }
-            $command = "".env('DB_DUMP_PATH', 'mysqldump')." --user=" . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  | gzip > " . $storageAt . $filename;
-            $returnVar = NULL;
-            $output = NULL;
-            exec($command, $output, $returnVar);
-            
-            return response()->download($storageAt . $filename)->deleteFileAfterSend(true);
+        return view('admin.category_entry');
+    }
+
+    public function categoryStore(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255']
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            $data = (array) $request->all();
+
+            $data['created_by'] = auth()->user()->id;
+            $data['ip_address'] = $request->ip();
+            $data['branch_id']  = session('branch_id');
+
+            Category::create($data);
+
+            DB::commit();
+            return response()->json(['message' => 'Category Added']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
         }
     }
+
+    public function categoryUpdate(Request $request)
+    {
+        $request->validate([
+            'id'   => ['required', 'integer'],
+            'name' => ['required', 'string', 'max:255']
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            $data = (array) $request->all();
+
+            $data['updated_by'] = auth()->user()->id;
+            $data['ip_address'] = $request->ip();
+
+            Category::where('id', $request->id)->update($data);
+
+            DB::commit();
+            return response()->json(['message' => 'Category Updated']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+    public function categoryDelete(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            Category::where('id', $request->id)->delete();
+
+            DB::commit();
+            return response()->json(['message' => 'Category Deleted']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+    public function getCategories(Request $request)
+    {
+        $categories = DB::table('categories as a')
+        ->whereNull('a.deleted_at');
+
+        $categories->select("a.*");
+
+        $categories =  $categories->orderBy('a.id', 'desc')->lazy();
+
+        return response()->json($categories);
+    }
+
+  
 }
