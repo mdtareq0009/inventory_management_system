@@ -1,3 +1,11 @@
+<style>
+    #sidebar{
+        background-color: #333;
+    }
+    .skin-2 .nav-list>li.active>a{
+        
+    }
+</style>
 <div id="sidebar" class="sidebar responsive ace-save-state sidebar-fixed sidebar-scroll">
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
         <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">

@@ -1,4 +1,4 @@
-<div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top" style="background:#ab1014 !important;">
+<div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top" style="background:#FF742C !important;">
     <div class="navbar-container ace-save-state" id="navbar-container">
         <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
             <span class="sr-only">Toggle sidebar</span>
@@ -46,7 +46,7 @@
                 @endif --}}
 
                 <li class="clock_li">
-                    <a class="clock" style="background:#ab1014 !important;">
+                    <a class="clock" style="background:#FF742C !important;">
                         <span style="font-size:20px;"><i class="ace-icon fa fa-clock-o"></i></span> <span style="font-size:15px;">@php date_default_timezone_set('Asia/Dhaka') @endphp {{date("l, d F Y")}},&nbsp;<span id="timer" style="font-size:15px;"></span></span>
                     </a>
                 </li>
@@ -54,7 +54,7 @@
 
 
                 <li class="light-blue dropdown-modal">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#ab1014 !important;">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle" style="background:#FF742C !important;">
                         <img class="nav-user-photo" src="{{asset('assets/img/no_image.png')}}" alt="" />
 
                         <span class="user-info">
