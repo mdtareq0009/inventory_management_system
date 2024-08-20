@@ -20,11 +20,11 @@
 <template>
     <div id="companys">
         <div class="row" style="margin-top: 10px;margin-bottom:15px;border-bottom: 1px solid #ccc;padding-bottom: 15px;">
-            <div class="col-md-6">
+            <div class="col-md-6 col-md-offset-3">
                 <form @submit.prevent="saveCompanyProfile">
                     <div class="form-group clearfix">
-                        <label class="control-label col-md-9 col-md-offset-3">Company Logo:</label>
-                        <div class="col-md-9 col-md-offset-3">
+                        <label class="control-label col-md-12">Company Logo:</label>
+                        <div class="col-md-12">
                             <div style="width: 100px;height:100px;border: 1px solid #ccc;overflow:hidden;">
 						        <img id="brandImage" v-if="companyimageUrl == '' || companyimageUrl == null" src="/images/no_image.jpg" style="height:100px;width:100px;">
 						        <img id="brandImage" v-if="companyimageUrl != '' && companyimageUrl != null" v-bind:src="companyimageUrl" style="height:100px;width:100px;">
@@ -35,26 +35,26 @@
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <label class="control-label col-md-9 col-md-offset-3">Name:</label>
-                        <div class="col-md-9 col-md-offset-3">
+                        <label class="control-label col-md-12">Name:</label>
+                        <div class="col-md-12">
                             <input type="text" name="name" class="form-control" v-model="companys.name" required>
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <label class="control-label col-md-9 col-md-offset-3">Phone:</label>
-                        <div class="col-md-9 col-md-offset-3">
+                        <label class="control-label col-md-12">Phone:</label>
+                        <div class="col-md-12">
                             <input type="text" name="phone" class="form-control" v-model="companys.phone" required>
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <label class="control-label col-md-9 col-md-offset-3">Email:</label>
-                        <div class="col-md-9 col-md-offset-3">
+                        <label class="control-label col-md-12">Email:</label>
+                        <div class="col-md-12">
                             <input type="email" name="email" class="form-control" v-model="companys.email" required>
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <label class="control-label col-md-9 col-md-offset-3">Address:</label>
-                        <div class="col-md-9 col-md-offset-3">
+                        <label class="control-label col-md-12">Address:</label>
+                        <div class="col-md-12">
                             <textarea  class="form-control" name="address"  rows="5" v-model="companys.address"></textarea>
                             
                         </div>
@@ -66,76 +66,7 @@
                     </div>
                 </form>
             </div>	
-            <div class="col-md-6">
-                <div class="row" style="margin-top: 5px;">
-					<div class="col-md-12">
-						<form class="form-horizontal" @submit.prevent="saveBranch">
-							<div class="form-group">
-								<label class="col-sm-12 control-label no-padding-right" style="text-align:left;background:skyblue;padding:5px;width:98%;margin:5px auto;border-radius:5px"> Branch Entry </label>
-								
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" style="text-align:left"> Code </label>
-								<label class="col-sm-1 control-label no-padding-right">:</label>
-								<div class="col-sm-8">
-									<input type="text" placeholder="Branch Name" name="code" class="form-control" v-model="branch.code" required readonly/>
-									<input type="hidden" placeholder="Branch Name" name="id" class="form-control" v-model="branch.branchId" required/>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" style="text-align:left"> Branch Name </label>
-								<label class="col-sm-1 control-label no-padding-right">:</label>
-								<div class="col-sm-8">
-									<input type="text" placeholder="Branch Name" name="name" class="form-control" v-model="branch.name" required/>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" style="text-align:left"> Branch Address </label>
-								<label class="col-sm-1 control-label no-padding-right">:</label>
-								<div class="col-sm-8">
-									<textarea class="form-control" name="address" placeholder="Branch Address" v-model="branch.address" required></textarea>
-								</div>
-							</div>
-                           
-							<div class="form-group">
-								<label class="col-sm-8 control-label no-padding-right"></label>
-								<div class="col-sm-4">
-									<button type="submit" class="btn btn-sm btn-success">
-										Submit
-										<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-									</button>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-                <div class="row" style="margin-top: 20px;">
-					<div class="col-md-12">
-                        <div class="table-responsive">
-                            <datatable class="table table-hover table-bordered" :columns="columns" :data="branches" :filter="filter" :per-page="per_page">
-                                <template slot-scope="{ row,index }">
-                                    <tr>
-                                        <td>{{ index+1 }}</td>
-                                        <td>{{ row.display_name }}</td>
-                                        <td>{{ row.address }}</td>
-                                        
-                                            <span v-if="role != 'User'">
-                                                <a class="blue" href="javascript:" @click="editBranch(row)">
-                                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                                </a>
-                                                <a class="red" href="javascript:" @click="deleteBranch(row.id)">
-                                                    <i class="ace-icon fa fa-trash bigger-130"></i>
-                                                </a>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </datatable>
-                            <datatable-pager class="datatable-pagination" v-model="page" type="abbreviated"></datatable-pager>
-                        </div>
-                    </div>
-				</div>
-            </div>    
+             
         </div>
     </div>
 </template>

@@ -36,7 +36,7 @@
 
                     <div class="nav-search" id="nav-search">
                         <span style="font-weight: bold; color: #972366; font-size: 16px;">
-                            {{branchInfo()->name}}
+                            
                         </span>
                     </div>
                 </div>
