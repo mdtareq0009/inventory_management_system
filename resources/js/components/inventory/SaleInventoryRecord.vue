@@ -51,6 +51,9 @@
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+.hidden {
+    display: none;
+}
 </style>
 <template>
     <div id="purchaseRecord">
@@ -61,18 +64,18 @@
 					<label>Search Type</label><br>
 					<select class="form-control" v-model="searchType" @change="onChangeSearchType">
 						<option value="">All</option>
-						<option value="supplier">By Supplier</option>
+						<option value="customer">By Customer</option>
 					</select>
 				</div>
 
-				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'supplier' && suppliers.length > 0 ? '' : 'none'}">
-					<label>Supplier</label>
-					<v-select v-bind:options="suppliers" v-model="selectedSupplier" label="name"></v-select>
+				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'customer' && customers.length > 0 ? '' : 'none'}">
+					<label>Customer</label>
+					<v-select v-bind:options="customers" v-model="selectedCustomer" label="name"></v-select>
 				</div>
 
 				<div class="form-group" v-bind:style="{display: searchTypesForRecord.includes(searchType) ? '' : 'none'}">
 					<label>Record Type</label><br>
-					<select class="form-control" v-model="recordType" @change="purchases = []">
+					<select class="form-control" v-model="recordType" @change="sales = []">
 						<option value="without_details">Without Details</option>
 						<option value="with_details">With Details</option>
 					</select>
@@ -95,13 +98,15 @@
 		</div>
 	</div>
 
-	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: purchases.length > 0 ? '' : 'none'}">
+	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: sales.length > 0 ? '' : 'none'}">
 		<div class="col-md-12" style="margin-bottom: 10px;">
 			<a href="" @click.prevent="print"><i class="fa fa-print"></i> Print</a>
+			<button @click="navigateToPage">Download PDF</button>
 		</div>
 		<div class="col-md-12">
 			<div class="table-responsive" id="reportContent">
-				<table 
+				<h3 class="text-center" :class="{ hidden: isShow }"> Sales Record</h3>
+				<table  
 					class="record-table" 
 					v-if="(searchTypesForRecord.includes(searchType)) && recordType == 'with_details'" 
 					style="display:none" 
@@ -111,39 +116,41 @@
 						<tr>
 							<th>Invoice No.</th>
 							<th>Date</th>
-							<th>Supplier Name</th>
+							<th>Customer Name</th>
 							<th>Product Name</th>
-							<th>Price</th>
+							<th>Purchase Price</th>
+							<th>Sale Price</th>
 							<th>Quantity</th>
 							<th>Total</th>
-							<th>Action</th>
+							<th :class="{ hidden: isHidden }">Action</th>
 						</tr>
 					</thead>
-					<tbody v-for="(purchase, sl) in purchases" :key="sl">
+					<tbody v-for="(sale, sl) in sales" :key="sl">
     <!-- Main Purchase Row -->
 							<tr>
-								<td>{{ purchase.purchase.invoice_number }}</td>
-								<td>{{ purchase.purchase.order_date }}</td>
-								<td>{{ purchase.display_name }}</td>
-								<td>{{ purchase.purchase.purchase_details[0].product.name }}</td>
+								<td>{{ sale.sale.invoice_number }}</td>
+								<td>{{ sale.sale.order_date }}</td>
+								<td>{{ sale.display_name }}</td>
+								<td>{{ sale.sale.sale_details[0].product.name }}</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].purchase_rate }}
-								</td>
-								<td style="text-align:center;">
-									{{ purchase.purchase.purchase_details[0].quantity }}
+									{{ sale.sale.sale_details[0].purchase_rate }}
 								</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].total_amount }}
+									{{ sale.sale.sale_details[0].sale_rate }}
 								</td>
 								<td style="text-align:center;">
-									<a :href="'/purchase_invoice_print/' + purchase.purchase.id" target="_blank" title="Purchase Invoice">
-										<i class="fa fa-file-text"></i>
-									</a>
+									{{ sale.sale.sale_details[0].quantity }}
+								</td>
+								<td style="text-align:right;">
+									{{ sale.sale.sale_details[0].total_amount }}
+								</td>
+								<td :class="{ hidden: isHidden }">
+								
 									<span v-if="role !== 'User'">
-										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)">
+										<a href="javascript:;" title="Edit Sale" @click="checkReturnAndEdit(sale.sale)">
 											<i class="fa fa-edit"></i>
 										</a>
-										<a href="javascript:;" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)">
+										<a href="javascript:;" title="Delete Sale" @click.prevent="deleteSale(sale.sale.id)">
 											<i class="fa fa-trash"></i>
 										</a>
 									</span>
@@ -151,11 +158,15 @@
 							</tr>
 							
 							<!-- Additional Products Rows -->
-							<tr v-for="(product, index) in purchase.purchase.purchase_details.slice(1)" :key="index">
-								<td v-if="index === 0" colspan="3" :rowspan="purchase.purchase.purchase_details.length - 1"></td>
+							<tr v-for="(product, index) in sale.sale.sale_details.slice(1)" :key="index">
+								
+								<td v-if="index === 0" colspan="3" :rowspan="sale.sale.sale_details.length - 1"></td>
 								<td>{{ product.product.name }}</td>
 								<td style="text-align:right;">
 									{{ product.purchase_rate }}
+								</td>
+								<td style="text-align:right;">
+									{{ product.sale_rate }}
 								</td>
 								<td style="text-align:center;">
 									{{ product.quantity }}
@@ -163,22 +174,22 @@
 								<td style="text-align:right;">
 									{{ product.total_amount }}
 								</td>
-								<td></td>
+								<td :class="{ hidden: isHidden }"></td>
 							</tr>
 							
 							<!-- Summary Row -->
 							<tr style="font-weight:bold;">
-								<td colspan="5" style="font-weight:normal;">
-									<strong>Note:</strong> {{ purchase.remark }}
+								<td colspan="6" style="font-weight:normal;">
+									<strong>Note:</strong> {{ sale.sale.remark }}
 								</td>
 								<td style="text-align:center;">
 									Total Quantity: <br>
-									{{ purchase.purchase.purchase_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
+									{{ sale.sale.sale_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
 								</td>
 								<td style="text-align:right;">
-									Total: {{ purchase.purchase.total }}
+									Total: {{ sale.sale.total }}
 								</td>
-								<td></td>
+								<td :class="{ hidden: isHidden }"></td>
 							</tr>
 						</tbody>
 				</table>
@@ -193,24 +204,24 @@
 						<tr>
 							<th>Invoice No.</th>
 							<th>Date</th>
-							<th>Supplier Name</th>
+							<th>Customer Name</th>
 							<th>Total</th>
 							<th>Note</th>
-							<th>Action</th>
+							<th :class="{ hidden: isHidden }">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(purchase,sl) in purchases" :key='sl'>
-							<td>{{ purchase.purchase.invoice_number }}</td>
-							<td>{{ purchase.purchase.order_date }}</td>
-							<td>{{ purchase.display_name }}</td>
-							<td style="text-align:right;">{{ purchase.purchase.total }}</td>
-							<td style="text-align:left;">{{ purchase.purchase.remark }}</td>
-							<td style="text-align:center;">
-								<!-- <a  title="Purchase Invoice" v-bind:href="'/purchase_invoice_print/'+ purchase.purchase.id" target="_blank"><i class="fa fa-file-text"></i></a> -->
+						<tr v-for="(sale,sl) in sales" :key='sl'>
+							<td>{{ sale.sale.invoice_number }}</td>
+							<td>{{ sale.sale.order_date }}</td>
+							<td>{{ sale.display_name }}</td>
+							<td style="text-align:right;">{{ sale.sale.total }}</td>
+							<td style="text-align:left;">{{ sale.sale.remark }}</td>
+							<td style="text-align:center;" :class="{ hidden: isHidden }">
+								
 								<span v-if="role != 'User'">
-								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)"><i class="fa fa-edit"></i></a>
-								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)"><i class="fa fa-trash"></i></a>
+								<a href="javascript:" title="Edit Sale" @click="checkReturnAndEdit(sale.sale)"><i class="fa fa-edit"></i></a>
+								<a href="" title="Delete Sale" @click.prevent="deleteSale(sale.sale.id)"><i class="fa fa-trash"></i></a>
 								</span>
 							</td>
 						</tr>
@@ -218,9 +229,9 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="3" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ purchases.reduce((prev, curr)=>{return prev + parseFloat(curr.purchase.total)}, 0) }}</td>
+							<td style="text-align:right;">{{ sales.reduce((prev, curr)=>{return prev + parseFloat(curr.sale.total)}, 0) }}</td>
 							<td></td>
-							<td></td>
+							<td :class="{ hidden: isHidden }"></td>
 						</tr>
 					</tfoot>
 				</table>
@@ -234,6 +245,7 @@
 
 <script>
 import moment from 'moment';
+import jsPDF from "jspdf";
 export default {
     props: ['role'],
     data(){
@@ -242,24 +254,28 @@ export default {
 				recordType: 'without_details',
 				dateFrom: moment().format('YYYY-MM-DD'),
 				dateTo: moment().format('YYYY-MM-DD'),
-				suppliers: [],
-				selectedSupplier: null,
-				purchases: [],
-				searchTypesForRecord: ['', 'user', 'supplier']
+				customers: [],
+				selectedCustomer: null,
+				sales: [],
+				isHidden: false,
+				isShow: true,
+				searchTypesForRecord: ['', 'user', 'customer']
 			}
 		},
         created(){
             this.getBranchInfo();
         },
 		methods: {
-			checkReturnAndEdit(purchase){
-						location.replace('/purchase_entry/'+purchase.id);
+			
+			
+			checkReturnAndEdit(sale){
+						location.replace('/sale_entry/'+sale.id);
 			},
 			onChangeSearchType(){
-				this.purchases = [];
+				this.sales = [];
 
-				 if(this.searchType == 'supplier'){
-					this.getSuppliers();
+				 if(this.searchType == 'customer'){
+					this.getCustomers();
 				}
 			},
             getBranchInfo(){
@@ -268,31 +284,29 @@ export default {
                 })
             },
 		
-			getSuppliers(){
-				axios.get('/get_suppliers').then(res => {
-					this.suppliers = res.data;
+			getCustomers(){
+				axios.get('/get_customers').then(res => {
+					this.customers = res.data;
+					console.log(this.customers);
 				})
 			},
 			
 		
 			getSearchResult(){
-				if(this.searchType != 'user'){
-					this.selectedUser = null;
-				}
+				
 
 
-				if(this.searchType != 'supplier'){
-					this.selectedSupplier = null;
+				if(this.searchType != 'customer'){
+					this.selectedCustomer = null;
 				}
 
 				
-					this.getPurchaseRecord();
+					this.getSaleRecord();
 				
 			},
-			getPurchaseRecord(){
+			getSaleRecord(){
 				let filter = {
-					userId: this.selectedUser == null || this.selectedUser.name == '' ? '' : this.selectedUser.id,
-					supplier_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+					customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
 					dateFrom: this.dateFrom,
 					dateTo: this.dateTo
 				}
@@ -301,13 +315,13 @@ export default {
                     filter.with_details = true;
                 }
 
-				let url = '/get_purchase';
+				let url = '/get_sales';
 				
 
 				axios.post(url, filter)
 				.then(res => {
-						this.purchases = res.data;
-						console.log(this.purchases);
+						this.sales = res.data;
+						console.log(this.sales);
 				})
 				.catch(error => {
 					if(error.response){
@@ -315,9 +329,26 @@ export default {
 					}
 				})
 			},
+
+			navigateToPage() {
+				const baseUrl = '/pdf_generate';
+				let params = {
+					customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
+					dateFrom: this.dateFrom,
+					dateTo: this.dateTo,
+					recordType : this.recordType
+				}
+				
+
+			const queryString = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+
+			window.location.href = `${baseUrl}?${queryString}`;
+			},
 			
 
-        deletePurchase(purchaseId){
+        deleteSale(salesId){
             Swal.fire({
                 title: '<strong>Are you sure!</strong>',
                 html: '<strong>Want to delete this?</strong>',
@@ -326,7 +357,7 @@ export default {
                 denyButtonText: `Cancel`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/delete-purchase',{id: purchaseId}).then(res=>{
+                    axios.post('/delete-sale',{id: salesId}).then(res=>{
                         let r = res.data;
                         Swal.fire({
                             icon: 'success',
@@ -334,7 +365,7 @@ export default {
                             showConfirmButton: false,
                             timer: 3000
                         })
-                        this.getPurchaseRecord();
+                        this.getSaleRecord();
                     }).catch(error => {
                         let e = error.response.data;
 
@@ -361,9 +392,9 @@ export default {
 
 				
 
-				let supplierText = '';
-				if(this.selectedSupplier != null && this.selectedSupplier.id != ''){
-					supplierText = `<strong>Supplier: </strong> ${this.selectedSupplier.name}<br>`;
+				let customerText = '';
+				if(this.selectedCustomer != null && this.selectedCustomer.id != ''){
+					customerText = `<strong>Customer: </strong> ${this.selectedCustomer.name}<br>`;
 				}
 
 
@@ -377,7 +408,7 @@ export default {
 						</div>
 						<div class="row">
 							<div class="col-xs-6">
-								 ${supplierText} 
+								 ${customerText} 
 							</div>
 							<div class="col-xs-6 text-right">
 								${dateText}

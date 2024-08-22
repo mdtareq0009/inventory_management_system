@@ -59,12 +59,51 @@
         </a>
     </li>
     @endif
-    @if (array_search("purchase_record", $permissions) > -1 || in_array($role, $all_access_role))
+    @if (array_search("sale_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
-        <a href="{{route('purchase_record')}}">
-            <i class="menu-icon fa fa-list"></i>
-            <span class="menu-text"> Purchase Record </span>
+        <a href="{{route('sale_entry')}}">
+            <i class="menu-icon fa fa-shopping-cart"></i>
+            <span class="menu-text"> Sale Entry </span>
         </a>
+    </li>
+    @endif
+  
+
+    @if (
+        array_search("purchase_record", $permissions) > -1
+        || array_search("purchase_record", $permissions) > -1
+        || in_array($role, $all_access_role)
+    )
+    <li>
+        <a href="#" class="dropdown-toggle">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Records </span>
+            <b class="arrow fa fa-angle-down"></b>
+        </a>
+
+        
+        <ul class="submenu">
+            @if (array_search("purchase_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <li>
+                    <a href="{{route('purchase_record')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Purchase Record
+                    </a>
+                </li>
+            @endif
+        </ul>
+        <ul class="submenu">
+            @if (array_search("sale_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <li>
+                    <a href="{{route('sale_record')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Sale Record
+                    </a>
+                </li>
+            @endif
+        </ul>
+       
+       
     </li>
     @endif
     

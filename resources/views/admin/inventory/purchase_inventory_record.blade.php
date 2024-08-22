@@ -3,6 +3,6 @@
 @section('breadcrumb', 'Purchase Record')
 @section('body')
 
-<purchase-inventory-record role="{{ auth()->user()->role }}"></purchase-inventory-record>
+<purchase-record role="{{ auth()->user()->role }}"></purchase-record>
 
 @endsection

@@ -27,7 +27,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/customer_entry', [CommonController::class, 'customerEntry'])->name('customer_entry');
         Route::get('/supplier_entry', [CommonController::class, 'supplierEntry'])->name('supplier_entry');
         Route::get('/purchase_entry', [InventoryController::class, 'purchaseOrderInventoryEntry'])->name('purchase_entry');
-        Route::get('/purchase_record', [InventoryController::class, 'purchaseOrderInventoryRecord'])->name('purchase_record');
+        Route::get('/sale_entry', [InventoryController::class, 'saleOrderInventoryEntry'])->name('sale_entry');
+        Route::get('/purchase_record', [InventoryController::class, 'purchaseInventoryRecord'])->name('purchase_record');
+        Route::get('/sale_record', [InventoryController::class, 'saleInventoryRecord'])->name('sale_record');
+        Route::get('/stock', [InventoryController::class, 'stock'])->name('stock');
        });
 
     Route::get('/', [CommonController::class, 'dashboard'])->name('dashboard');
@@ -88,9 +91,23 @@ Route::middleware('auth')->group(function () {
       ////Purchase  
       Route::post('/store-purchase', [InventoryController::class, 'purchaseStore']);
       Route::post('/update-purchase', [InventoryController::class, 'purchaseUpdate']);;
-      Route::get('/purchase_record', [InventoryController::class, 'getPurchase']);
+      Route::post('/get_purchase', [InventoryController::class, 'getPurchase']);
+      Route::post('/delete-purchase', [InventoryController::class, 'purchaseDelete']);
+      Route::get('/purchase_entry/{id}', [InventoryController::class, 'purchaseOrderEdit']);
 
+      ////Sales  
+      Route::post('/store-sale', [InventoryController::class, 'saleStore']);
+      Route::post('/update-sale', [InventoryController::class, 'saleUpdate']);;
+      Route::post('/get_sales', [InventoryController::class, 'getSales']);
+      Route::post('/delete-sale', [InventoryController::class, 'saleDelete']);
+      Route::get('/sale_entry/{id}', [InventoryController::class, 'saleOrderEdit']);
+      Route::post('/get_instrument_stock', [InventoryController::class, 'getInstrumentStock']);
+      
+      Route::get('/pdf_generate', [InventoryController::class, 'pdfGenerate'])->name('pdf-generate');
 
+      /////srock
+      Route::match(['get', 'post'],'/get_current_stock_inventory', [InventroyController::class, 'getCurrentStockInventory']);
+      Route::match(['get', 'post'],'/get_total_stock_inventory', [InventroyController::class, 'getTotalStockInventory']);
 
 
 

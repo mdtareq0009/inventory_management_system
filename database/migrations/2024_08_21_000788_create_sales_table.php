@@ -16,15 +16,9 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number', 20)->unique();
-            $table->enum('payment_type', ['Cash', 'Bank'])->default('Cash')->index();
             $table->foreignId('customer_id')->constrained('customers');
             $table->date('order_date')->index();
-            $table->float('subtotal');
-            $table->float('transport_cost');
             $table->float('total');
-            $table->float('paid');
-            $table->float('due');
-            $table->float('previous_due');
             $table->text('remark')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();

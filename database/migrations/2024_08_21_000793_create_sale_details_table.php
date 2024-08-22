@@ -20,9 +20,7 @@ class CreateSaleDetailsTable extends Migration
             $table->float('quantity');
             $table->float('purchase_rate');
             $table->float('sale_rate');
-            $table->float('total_sale_rate');
             $table->float('total_amount')->default(0);
-            $table->text('remark')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
