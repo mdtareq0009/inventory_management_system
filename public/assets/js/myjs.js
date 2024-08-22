@@ -25,13 +25,7 @@ $(document).ready(()=>{
 
     }, 1000);
 
-    $.ajax({
-        method: 'get',
-        url: '/get_mother_api_content',
-        success: function(res){
-            $('#linkup_api').text(res);
-        }
-    })
+  
 })
 
 

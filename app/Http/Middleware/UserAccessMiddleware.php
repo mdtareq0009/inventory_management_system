@@ -16,7 +16,7 @@ class UserAccessMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(array_search(request()->path(), auth()->user()->permissions) > -1 || in_array(auth()->user()->role, ['Admin', 'Super Admin'])){
+        if(array_search(request()->path(), auth()->user()->permissions ?? []) > -1 || in_array(auth()->user()->role, ['Admin', 'Super Admin'])){
             return $next($request);
         } else {
             return redirect()->route('dashboard');

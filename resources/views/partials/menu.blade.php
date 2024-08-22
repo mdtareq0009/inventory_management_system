@@ -1,6 +1,6 @@
 @php 
  $role = auth()->user()->role;
- $permissions = auth()->user()->permissions;
+ $permissions = auth()->user()->permissions ?? [];
  $module = session()->has('module') ? session('module') : '';
  $branch_id = session()->has('branch_id') ? session('branch_id') : auth()->user()->branch_id;
  $all_access_role = ['Super Admin', 'Admin'];
@@ -50,6 +50,23 @@
             <span> Inventory Module </span>
         </a>
     </li>
+
+    @if (array_search("purchase_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('purchase_entry')}}">
+            <i class="menu-icon fa fa-shopping-cart"></i>
+            <span class="menu-text"> Purchase Entry </span>
+        </a>
+    </li>
+    @endif
+    @if (array_search("purchase_record", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('purchase_record')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Purchase Record </span>
+        </a>
+    </li>
+    @endif
     
     
 </ul>
@@ -73,6 +90,38 @@
         <a href="{{route('category_entry')}}">
             <i class="menu-icon fa fa-list"></i>
             <span class="menu-text"> Category Entry </span>
+        </a>
+    </li>
+    @endif
+    @if (array_search("unit_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('unit_entry')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Unit Entry </span>
+        </a>
+    </li>
+    @endif
+    @if (array_search("product_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('product_entry')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Product Entry </span>
+        </a>
+    </li>
+    @endif
+    @if (array_search("supplier_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('supplier_entry')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Supplier Entry </span>
+        </a>
+    </li>
+    @endif
+    @if (array_search("customer_entry", $permissions) > -1 || in_array($role, $all_access_role))
+    <li>
+        <a href="{{route('customer_entry')}}">
+            <i class="menu-icon fa fa-list"></i>
+            <span class="menu-text"> Customer Entry </span>
         </a>
     </li>
     @endif

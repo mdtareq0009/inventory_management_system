@@ -41,7 +41,7 @@ input[type=email], input[type=url], input[type=search], input[type=tel], input[t
 
 .add-button{
     padding: 2.5px;
-    width: 28px;
+    width: 100%;
     background-color: #298db4;
     display:block;
     text-align: center;
@@ -223,7 +223,6 @@ textarea {
 
 .v-select{
     margin-bottom: 5px;
-    max-width: 250px;
 }
 
 .vs__search {

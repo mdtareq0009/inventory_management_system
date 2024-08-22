@@ -21,7 +21,6 @@ class CreateCustomersTable extends Migration
             $table->string('mobile', 30)->index();
             $table->text('address')->nullable();
             $table->text('remark')->nullable();
-            $table->string('image')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();

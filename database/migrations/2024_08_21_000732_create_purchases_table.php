@@ -16,14 +16,9 @@ class CreatePurchasesTable extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number', 20)->unique();
-            $table->enum('payment_type', ['Cash', 'Bank'])->default('Cash')->index();
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->date('order_date')->index();
-            $table->float('subtotal')->default(0);
             $table->float('total')->default(0);
-            $table->float('paid')->default(0);
-            $table->float('due')->default(0);
-            $table->float('previous_due')->default(0);
             $table->text('remark')->nullable();
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
