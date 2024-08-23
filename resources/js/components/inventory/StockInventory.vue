@@ -100,7 +100,7 @@ th{
 			<button class="excel-design" @click="exportTableToExcel('stockContent', 'StockReport','Stock Report')">
 				<i class="fa fa-file-excel-o"></i> Export To Excel
    		 	</button>
-			<button class="pdf-design">
+			<button class="pdf-design" @click="navigateToPage">
 				<i class="fa fa-file-pdf-o"></i> Export To PDF
    		 	</button>
 		</div>
@@ -184,6 +184,7 @@ export default {
 				categories: [],
 				selectedCategory: null,
 				products: [],
+				campany: [],
 				selectedProduct: null,
 				selectionText: '',
 
@@ -200,6 +201,23 @@ export default {
 			this.getBranchInfo();
 		},
 		methods:{
+
+			navigateToPage() {
+				const baseUrl = '/pdf_stock';
+				let params = {
+					searchTypes: this.selectedSearchType.value,
+					date: this.date,
+					productId: this.selectedProduct?this.selectedProduct.id:null,
+					catId: this.selectedCategory?this.selectedCategory.id:null,
+				}
+				
+
+			const queryString = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+
+			window.location.href = `${baseUrl}?${queryString}`;
+			},
 			getStock(){
 				this.searchType = this.selectedSearchType.value;
 				let url = '';
@@ -295,9 +313,9 @@ export default {
 				// Clean up
 				document.body.removeChild(downloadLink);
 			},
-			getBranchInfo(){
-                axios.get('/get_branch_info').then(res=>{
-                    this.branch = res.data;
+			getCompanyInfo(){
+                axios.get('/get_companies').then(res=>{
+                    this.campany = res.data;
                 })
             },
 			onChangeSearchType(){
@@ -338,10 +356,10 @@ export default {
                 <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-2"><img src="${this.branch.logo}" alt="Logo" style="height:80px;" /></div>
+                        <div class="col-xs-2"><img src="${this.campany.logo}" alt="Logo" style="height:80px;" /></div>
                         <div class="col-xs-10" style="padding-top:20px;">
-                            <strong style="font-size:18px;">${this.branch.name}</strong><br>
-                            <p style="white-space: pre-line;">${this.branch.address}</p>
+                            <strong style="font-size:18px;">${this.campany.name}</strong><br>
+                            <p style="white-space: pre-line;">${this.campany.address}</p>
                         </div>
                     </div>
                     <div class="row">

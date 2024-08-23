@@ -187,6 +187,91 @@ function currentStock($clauses = '') {
 
         return $stock;
 }
+function totalStock($clauses = '',$date='') {
+    
+   
+    $stock =  DB::select("
+   
+    SELECT
+        p.*,
+        pc.name as category_name,
+        u.name as unit_name,
+        (SELECT ifnull(sum(pd.quantity), 0) 
+            from purchase_details pd 
+            left join purchases pr on pr.id = pd.purchase_id
+            where pd.product_id = p.id
+            and pd.branch_id = ".session('branch_id')."
+            and pd.deleted_at is null
+            " . (isset($date) && $date != null ? " and pr.order_date <= '$date'" : "") . "
+        ) as purchased_quantity,
+
+        (SELECT ifnull(sum(prd.quantity), 0) 
+            from purchase_return_details prd 
+            left join purchase_returns pr on pr.id = prd.purchase_return_id 
+            where prd.product_id = p.id
+            and prd.branch_id = ".session('branch_id')."
+            and prd.deleted_at is null
+            " . (isset($date) && $date != null ? " and pr.return_date <= '$date'" : "") . "
+        ) as purchased_return_quantity,
+                
+        (SELECT ifnull(sum(sd.quantity), 0) 
+            from sale_details sd
+            left join sales s on s.id = sd.sale_id
+            where sd.product_id = p.id
+            and sd.branch_id  = ".session('branch_id')."
+            and sd.deleted_at is null
+            " . (isset($date) && $date != null ? " and s.order_date <= '$date'" : "") . "
+        ) as sold_quantity,
+
+        (SELECT ifnull(sum(isrud.quantity), 0) 
+            from sale_return_details isrud
+            left join sale_returns sr on sr.id = isrud.sale_return_id
+            where isrud.product_id = p.id
+            and isrud.branch_id  = ".session('branch_id')."
+            and isrud.deleted_at is null
+            " . (isset($date) && $date != null ? " and sr.return_date <= '$date'" : "") . "
+        ) as sale_return_quantity,
+
+        (SELECT (purchased_quantity + sale_return_quantity) - (sold_quantity  + purchased_return_quantity)) as current_quantity,
+        (SELECT p.purchase_price * current_quantity) as stock_value
+    from products p
+    left join categories pc on pc.id = p.category_id
+    left join units u on u.id = p.unit_id
+    where p.deleted_at is null
+    $clauses
+");
+
+
+
+
+return $stock;
+}
+
+function imageUpload($request, $name, $directory)
+{
+    $doUpload = function ($image) use ($directory) {
+        $name = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extention = $image->getClientOriginalExtension();
+        $imageName = $name . '_' . uniqId() . '.' . $extention;
+        $image->move($directory, $imageName);
+        return $directory . '/' . $imageName;
+    };
+
+    if (!empty($name) && $request->hasFile($name)) {
+        $file = $request->file($name);
+        if (is_array($file) && count($file)) {
+            $imagesPath = [];
+            foreach ($file as $key => $image) {
+                $imagesPath[] = $doUpload($image);
+            }
+            return $imagesPath;
+        } else {
+            return $doUpload($file);
+        }
+    }
+
+    return false;
+}
 
 function checkPermissions($permission)
 {

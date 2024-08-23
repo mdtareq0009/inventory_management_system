@@ -1,7 +1,8 @@
 body{
-    /* background:url('../img/login_bg.jpg'); */
+    background:url('../img/bg.webp');
     background-position: center;
-    background-repeat: repeat-y;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     background-size: cover;
 }
 .contant{
@@ -18,19 +19,15 @@ body{
     top: 18px;
 }
 .login{
-    width: 50%;
-    border: 2px solid #B31312;
+    width: 40%;
+    border: 1px solid #3e3e3e;
     min-height: 400px;
-    margin:60px 190px;
-    border-radius: 0px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
+    margin:120px 250px;
+    border-radius: 10px;
 }
 .left-cont{
     float: left;
-    width: 40%;
+    width: 50%;
     background: #B31312;
     min-height: 400px;
     color: #fff;
@@ -95,6 +92,7 @@ body{
     left: 23%;
 }
 .right-cont{
+    border-radius: 10px;
     float: left;
     width: 100%;
     min-height: 400px;

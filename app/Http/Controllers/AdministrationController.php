@@ -11,6 +11,7 @@ use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+
 use File;
 
 class AdministrationController extends Controller
@@ -179,6 +180,10 @@ class AdministrationController extends Controller
             return response()->json(['message' => $e->getMessage()], 406);
         }
     }
+
+
+    
+
   
 
    

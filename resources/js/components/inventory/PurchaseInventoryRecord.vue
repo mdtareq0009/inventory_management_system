@@ -134,7 +134,7 @@
 			<button class="excel-design" @click="exportTableToExcel('reportContent', 'Purchase Record','Purchase Return Record')">
 				<i class="fa fa-file-excel-o"></i> Export To Excel
    		 	</button>
-			<button class="pdf-design">
+			<button class="pdf-design" @click="navigateToPage">
 				<i class="fa fa-file-pdf-o"></i> Export To PDF
    		 	</button>
 		</div>
@@ -179,7 +179,7 @@
 									<a :href="'/purchase_invoice_print/' + purchase.purchase.id" target="_blank" title="Purchase Invoice">
 										<i class="fa fa-file-text"></i>
 									</a>
-									<span v-if="role !== 'User'">
+									<span v-if="role !== 'General'">
 										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)">
 											<i class="fa fa-edit"></i>
 										</a>
@@ -248,7 +248,7 @@
 							<td style="text-align:left;">{{ purchase.purchase.remark }}</td>
 							<td style="text-align:center;">
 								<!-- <a  title="Purchase Invoice" v-bind:href="'/purchase_invoice_print/'+ purchase.purchase.id" target="_blank"><i class="fa fa-file-text"></i></a> -->
-								<span v-if="role != 'User'">
+								<span v-if="role != 'General'">
 								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)"><i class="fa fa-edit"></i></a>
 								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)"><i class="fa fa-trash"></i></a>
 								</span>
@@ -285,11 +285,12 @@ export default {
 				suppliers: [],
 				selectedSupplier: null,
 				purchases: [],
+				campany: [],
 				searchTypesForRecord: ['', 'user', 'supplier']
 			}
 		},
         created(){
-            this.getBranchInfo();
+            this.getCompanyInfo();
         },
 		methods: {
 			checkReturnAndEdit(purchase){
@@ -302,9 +303,9 @@ export default {
 					this.getSuppliers();
 				}
 			},
-            getBranchInfo(){
-                axios.get('/get_branches').then(res=>{
-                    this.branch = res.data;
+			getCompanyInfo(){
+                axios.get('/get_companies').then(res=>{
+                    this.campany = res.data;
                 })
             },
 		
@@ -328,6 +329,23 @@ export default {
 				
 					this.getPurchaseRecord();
 				
+			},
+
+			navigateToPage() {
+				const baseUrl = '/pdf_purchase';
+				let params = {
+					customer_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+					dateFrom: this.dateFrom,
+					dateTo: this.dateTo,
+					recordType : this.recordType
+				}
+				
+
+			const queryString = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+
+			window.location.href = `${baseUrl}?${queryString}`;
 			},
 			getPurchaseRecord(){
 				let filter = {
@@ -357,7 +375,7 @@ export default {
 			},
 
 			exportTableToExcel(transactionsTable, filename = '',headerText = ''){
-						const dataType = 'application/vnd.ms-excel';
+				const dataType = 'application/vnd.ms-excel';
 				const tableSelect = document.getElementById(transactionsTable);
 
 				// Ensure tableSelect exists
@@ -490,10 +508,10 @@ export default {
                 <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-2"><img src="${this.branch.logo}" alt="Logo" style="height:80px;" /></div>
+                        <div class="col-xs-2"><img src="${this.campany.logo}" alt="Logo" style="height:80px;" /></div>
                         <div class="col-xs-10" style="padding-top:20px;">
-                            <strong style="font-size:18px;">${this.branch.name}</strong><br>
-                            <p style="white-space: pre-line;">${this.branch.address}</p>
+                            <strong style="font-size:18px;">${this.campany.name}</strong><br>
+                            <p style="white-space: pre-line;">${this.campany.address}</p>
                         </div>
                     </div>
                     <div class="row">

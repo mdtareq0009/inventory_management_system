@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\AdministrationController;
 
 /*
@@ -18,6 +20,9 @@ use App\Http\Controllers\AdministrationController;
 
 require __DIR__ . '/auth.php';
 
+Route::get('/general_register', [CommonController::class, 'generalRegister'])->name('general-register');
+Route::post('/general_user_store', [CommonController::class, 'generalUserstore']);
+
 Route::middleware('auth')->group(function () {
 
     Route::middleware('access')->group(function () {
@@ -26,18 +31,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/product_entry', [CommonController::class, 'productEntry'])->name('product_entry');
         Route::get('/customer_entry', [CommonController::class, 'customerEntry'])->name('customer_entry');
         Route::get('/supplier_entry', [CommonController::class, 'supplierEntry'])->name('supplier_entry');
-        Route::get('/purchase_entry', [InventoryController::class, 'purchaseOrderInventoryEntry'])->name('purchase_entry');
-        Route::get('/purcahse_return_entry', [InventoryController::class, 'purchaseReturnInventoryEntry'])->name('purcahse_return_entry');
-        Route::get('/sale_entry', [InventoryController::class, 'saleOrderInventoryEntry'])->name('sale_entry');
-        Route::get('/sale_return_entry', [InventoryController::class, 'saleReturnInventoryEntry'])->name('sale_return_entry');
-        Route::get('/purchase_record', [InventoryController::class, 'purchaseInventoryRecord'])->name('purchase_record');
-        Route::get('/purchase_return_record', [InventoryController::class, 'purchaseReturnInventoryRecord'])->name('purchase_return_record');
-        Route::get('/sale_record', [InventoryController::class, 'saleInventoryRecord'])->name('sale_record');
-        Route::get('/sale_return_record', [InventoryController::class, 'saleReturnInventoryRecord'])->name('sale_return_record');
+
+        Route::get('/purchase_entry', [PurchaseController::class, 'purchaseOrderInventoryEntry'])->name('purchase_entry');
+        Route::get('/purcahse_return_entry', [PurchaseController::class, 'purchaseReturnInventoryEntry'])->name('purcahse_return_entry');
+        Route::get('/purchase_record', [PurchaseController::class, 'purchaseInventoryRecord'])->name('purchase_record');
+        Route::get('/purchase_return_record', [PurchaseController::class, 'purchaseReturnInventoryRecord'])->name('purchase_return_record');
+        
+        Route::get('/sale_entry', [SaleController::class, 'saleOrderInventoryEntry'])->name('sale_entry');
+        Route::get('/sale_return_entry', [SaleController::class, 'saleReturnInventoryEntry'])->name('sale_return_entry');
+        Route::get('/sale_record', [SaleController::class, 'saleInventoryRecord'])->name('sale_record');
+        Route::get('/sale_return_record', [SaleController::class, 'saleReturnInventoryRecord'])->name('sale_return_record');
+       
         Route::get('/stock', [InventoryController::class, 'stockInventory'])->name('stock');
+        Route::get('/product_list', [PurchaseController::class, 'productList'])->name('product_list');
+        Route::get('/pdf_product_list', [InventoryController::class, 'pdfGenerateProduct'])->name('pdf_product_list');
+        ///Generate PDF
+        Route::get('/pdf_sale', [InventoryController::class, 'pdfGenerateSale'])->name('pdf-sale');
+        Route::get('/pdf_sale_return', [InventoryController::class, 'pdfGenerateSaleReturn'])->name('pdf-sale-return');
+        Route::get('/pdf_stock', [InventoryController::class, 'pdfStock'])->name('pdf-stock');
+        Route::get('/pdf_purchase', [InventoryController::class, 'pdfGeneratePurchaseRecord'])->name('pdf-purchase');
+        Route::get('/pdf_purchase_return', [InventoryController::class, 'pdfGeneratePurchaseReturnRecord'])->name('pdf-purchase-return');
        });
 
     Route::get('/', [CommonController::class, 'dashboard'])->name('dashboard');
+    
     Route::get('/dashboard', [CommonController::class, 'dashboard']);
     Route::get('/module/{module}', [CommonController::class, 'module'])->name('module');
 
@@ -93,39 +110,38 @@ Route::middleware('auth')->group(function () {
       Route::get('/get_supplier_code', [CommonController::class, 'getSupplierCode']);
       
       ////Purchase  
-      Route::post('/store-purchase', [InventoryController::class, 'purchaseStore']);
-      Route::post('/update-purchase', [InventoryController::class, 'purchaseUpdate']);;
-      Route::post('/get_purchase', [InventoryController::class, 'getPurchase']);
-      Route::post('/delete-purchase', [InventoryController::class, 'purchaseDelete']);
-      Route::get('/purchase_entry/{id}', [InventoryController::class, 'purchaseOrderEdit']);
+      Route::post('/store-purchase', [PurchaseController::class, 'purchaseStore']);
+      Route::post('/update-purchase', [PurchaseController::class, 'purchaseUpdate']);;
+      Route::post('/get_purchase', [PurchaseController::class, 'getPurchase']);
+      Route::post('/delete-purchase', [PurchaseController::class, 'purchaseDelete']);
+      Route::get('/purchase_entry/{id}', [PurchaseController::class, 'purchaseOrderEdit']);
 
       ////Purchase Return
-      Route::post('/store-purchase-return', [InventoryController::class, 'purchaseReturnStore']);
-      Route::post('/update-purchase-return', [InventoryController::class, 'purchaseReturnUpdate']);;
-      Route::post('/get_purchase_return', [InventoryController::class, 'getPurchaseReturn']);
-      Route::post('/delete-purchase-return', [InventoryController::class, 'purchaseReturnDelete']);
-      Route::get('/purchase_return_entry/{id}', [InventoryController::class, 'purchaseReturnOrderEdit']);
+      Route::post('/store-purchase-return', [PurchaseController::class, 'purchaseReturnStore']);
+      Route::post('/update-purchase-return', [PurchaseController::class, 'purchaseReturnUpdate']);;
+      Route::post('/get_purchase_return', [PurchaseController::class, 'getPurchaseReturn']);
+      Route::post('/delete-purchase-return', [PurchaseController::class, 'purchaseReturnDelete']);
+      Route::get('/purchase_return_entry/{id}', [PurchaseController::class, 'purchaseReturnOrderEdit']);
 
       ////Sales  
-      Route::post('/store-sale', [InventoryController::class, 'saleStore']);
-      Route::post('/update-sale', [InventoryController::class, 'saleUpdate']);;
-      Route::post('/get_sales', [InventoryController::class, 'getSales']);
-      Route::post('/delete-sale', [InventoryController::class, 'saleDelete']);
-      Route::get('/sale_entry/{id}', [InventoryController::class, 'saleOrderEdit']);
-      Route::post('/get_stock', [InventoryController::class, 'getProductStock']);
-
+      Route::post('/store-sale', [SaleController::class, 'saleStore']);
+      Route::post('/update-sale', [SaleController::class, 'saleUpdate']);;
+      Route::post('/get_sales', [SaleController::class, 'getSales']);
+      Route::post('/delete-sale', [SaleController::class, 'saleDelete']);
+      Route::get('/sale_entry/{id}', [SaleController::class, 'saleOrderEdit']);
+      
       ////Sales return
-      Route::post('/store-sale-return', [InventoryController::class, 'saleReturnStore']);
-      Route::post('/update-sale-return', [InventoryController::class, 'saleReturnUpdate']);;
-      Route::post('/get_sales_return', [InventoryController::class, 'getReturnSales']);
-      Route::post('/delete-sale-return', [InventoryController::class, 'saleReturnDelete']);
-      Route::get('/sale_return_entry/{id}', [InventoryController::class, 'saleReturnOrderEdit']);
-
-
-      ///Generate PDF
-      Route::get('/pdf_generate', [InventoryController::class, 'pdfGenerate'])->name('pdf-generate');
-
+      Route::post('/store-sale-return', [SaleController::class, 'saleReturnStore']);
+      Route::post('/update-sale-return', [SaleController::class, 'saleReturnUpdate']);;
+      Route::post('/get_sales_return', [SaleController::class, 'getReturnSales']);
+      Route::post('/delete-sale-return', [SaleController::class, 'saleReturnDelete']);
+      Route::get('/sale_return_entry/{id}', [SaleController::class, 'saleReturnOrderEdit']);
+      
+      
+      
+      
       /////Stock
+      Route::post('/get_stock', [InventoryController::class, 'getProductStock']);
       Route::match(['get', 'post'],'/get_current_stock_inventory', [InventoryController::class, 'getCurrentStockInventory']);
       Route::match(['get', 'post'],'/get_total_stock_inventory', [InventoryController::class, 'getTotalStockInventory']);
 

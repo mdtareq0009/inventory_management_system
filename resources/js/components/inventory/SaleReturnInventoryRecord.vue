@@ -245,7 +245,7 @@
 							<td style="text-align:left;">{{ salereturn.salereturn.remark }}</td>
 							<td style="text-align:center;">
 								
-								<span v-if="role != 'User'">
+								<span v-if="role != 'General'">
 								<a href="javascript:" title="Edit Sale" @click="checkReturnAndEdit(salereturn.salereturn)"><i class="fa fa-edit"></i></a>
 								<a href="" title="Delete Sale" @click.prevent="deleteSaleReturn(salereturn.salereturn.id)"><i class="fa fa-trash"></i></a>
 								</span>
@@ -282,11 +282,12 @@ export default {
 				customers: [],
 				selectedCustomer: null,
 				salereturns: [],
+				campany: [],
 				searchTypesForRecord: ['', 'user', 'customer']
 			}
 		},
         created(){
-            this.getBranchInfo();
+            this.getCompanyInfo();
         },
 		methods: {
 			
@@ -301,6 +302,11 @@ export default {
 					this.getCustomers();
 				}
 			},
+			getCompanyInfo(){
+                axios.get('/get_companies').then(res=>{
+                    this.campany = res.data;
+                })
+            },
             getBranchInfo(){
                 axios.get('/get_branches').then(res=>{
                     this.branch = res.data;
@@ -354,7 +360,7 @@ export default {
 			},
 
 			navigateToPage() {
-				const baseUrl = '/pdf_generate';
+				const baseUrl = '/pdf_sale_return';
 				let params = {
 					customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
 					dateFrom: this.dateFrom,
@@ -450,10 +456,10 @@ export default {
                 <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-2"><img src="${this.branch.logo}" alt="Logo" style="height:80px;" /></div>
+                        <div class="col-xs-2"><img src="${this.campany.logo}" alt="Logo" style="height:80px;" /></div>
                         <div class="col-xs-10" style="padding-top:20px;">
-                            <strong style="font-size:18px;">${this.branch.name}</strong><br>
-                            <p style="white-space: pre-line;">${this.branch.address}</p>
+                            <strong style="font-size:18px;">${this.campany.name}</strong><br>
+                            <p style="white-space: pre-line;">${this.campany.address}</p>
                         </div>
                     </div>
                     <div class="row">

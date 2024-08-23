@@ -66,14 +66,8 @@
                     </a>
 
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-user"></i>
-                                Profile
-                            </a>
-                        </li>
+                        
 
-                        <li class="divider"></li>
 
                         <li>
                             <form id="logout_form" method="POST" action="{{ route('logout') }}">

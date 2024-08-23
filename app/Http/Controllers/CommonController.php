@@ -13,6 +13,7 @@ use App\Models\Unit;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
@@ -30,6 +31,42 @@ class CommonController extends Controller
     {
         session(['module' => $module]);
         return view('admin.dashboard');
+    }
+    public function generalRegister()
+    {
+        return view('guest_register');
+    }
+
+    public function generalUserstore(Request $request)
+    {
+        $request->validate([
+            'name'      => ['required', 'string', 'max:255'],
+            'username'  => ['required', 'string', 'max:100', 'unique:users'],
+            'branch_id' => ['required', 'integer'],
+            'role'      => ['required', Rule::in(['Admin', 'General'])],
+            'password' => ['required', 'confirmed'],
+        ]);
+   
+        User::create([
+            'name'       => $request->name,
+            'username'   => $request->username,
+            'branch_id'  => $request->branch_id,
+            'role'       => $request->role,
+            'permissions'=> '["purchase_record","sale_record","sale_return_record","product_list","stock","purchase_return_record"]',
+            'password'   => Hash::make($request->password),
+            'created_by' => 1,
+            'ip_address' => $request->ip(),
+        ]);
+
+
+  
+        return response()->json(['success' => true, 'message' => 'User Created!']);
+        
+        // event(new Registered($user));
+
+        // Auth::login($user);
+
+        // return redirect(RouteServiceProvider::HOME);
     }
 
     

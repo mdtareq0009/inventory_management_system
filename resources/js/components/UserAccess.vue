@@ -37,13 +37,34 @@ ul {
                 <div class="group">
                     <input type="checkbox" id="inventory" class="group-head" @click="onClickGroupHeads"> <strong>Inventory Module</strong>
                     <ul ref="inventory">
-                        <li><input type="checkbox" class="access" value="product_entry" v-model="access"> Product Entry</li>
+                        <li><input type="checkbox" class="access" value="purchase_entry" v-model="access"> Purchase Entry</li>
+                        <li><input type="checkbox" class="access" value="sale_entry" v-model="access"> Sales Entry</li>
+                        <li><input type="checkbox" class="access" value="purcahse_return_entry" v-model="access"> Purchase Return Entry</li>
+                        <li><input type="checkbox" class="access" value="sale_return_entry" v-model="access"> Sale Reuturn Entry</li>
                     </ul>
                 </div>
+
                 <div class="group">
                     <input type="checkbox" id="admin" class="group-head" @click="onClickGroupHeads"> <strong>Administrator</strong>
                     <ul ref="admin">
                         <li><input type="checkbox" class="access" value="category_entry" v-model="access"> Category Entry</li>
+                        <li><input type="checkbox" class="access" value="unit_entry" v-model="access"> Unit Entry</li>
+                        <li><input type="checkbox" class="access" value="customer_entry" v-model="access"> Customer Entry</li>
+                        <li><input type="checkbox" class="access" value="supplier_entry" v-model="access"> Supplier Entry</li>
+                        <li><input type="checkbox" class="access" value="product_entry" v-model="access"> Product Entry</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3">
+              
+                <div class="group">
+                    <input type="checkbox" id="reports" class="group-head" @click="onClickGroupHeads"> <strong>Records And Reports</strong>
+                    <ul ref="reports">
+                        <li><input type="checkbox" class="access" value="purchase_record" v-model="access"> Purchase Record</li>
+                        <li><input type="checkbox" class="access" value="purchase_return_record" v-model="access"> Purchase Return Record </li>
+                        <li><input type="checkbox" class="access" value="sale_record" v-model="access"> Sale Record</li>
+                        <li><input type="checkbox" class="access" value="sale_return_record" v-model="access"> Sale Return Record</li>
+                        <li><input type="checkbox" class="access" value="stock" v-model="access"> Stock</li>
                     </ul>
                 </div>
             </div>

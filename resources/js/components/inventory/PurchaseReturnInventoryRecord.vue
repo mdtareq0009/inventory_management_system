@@ -132,7 +132,7 @@
 			<button class="excel-design" @click="exportTableToExcel('reportContent', 'Purchase Return Record','Purchase Return Record')">
 				<i class="fa fa-file-excel-o"></i> Export To Excel
    		 	</button>
-			<button class="pdf-design">
+			<button class="pdf-design" @click="navigateToPage">
 				<i class="fa fa-file-pdf-o"></i> Export To PDF
    		 	</button>
 		</div>
@@ -173,10 +173,8 @@
 									{{ purchasereturn.purchasereturn.purchase_return_details[0].total_amount }}
 								</td>
 								<td style="text-align:center;">
-									<a :href="'/purchase_invoice_print/' + purchasereturn.purchasereturn.id" target="_blank" title="Purchase Invoice">
-										<i class="fa fa-file-text"></i>
-									</a>
-									<span v-if="role !== 'User'">
+									
+									<span v-if="role !== 'General'">
 										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchasereturn.purchasereturn)">
 											<i class="fa fa-edit"></i>
 										</a>
@@ -245,7 +243,7 @@
 							<td style="text-align:left;">{{ purchasereturn.purchasereturn.remark }}</td>
 							<td style="text-align:center;">
 								<!-- <a  title="Purchase Invoice" v-bind:href="'/purchase_invoice_print/'+ purchase.purchase.id" target="_blank"><i class="fa fa-file-text"></i></a> -->
-								<span v-if="role != 'User'">
+								<span v-if="role != 'General'">
 								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchasereturn.purchasereturn)"><i class="fa fa-edit"></i></a>
 								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchasereturn.purchasereturn.id)"><i class="fa fa-trash"></i></a>
 								</span>
@@ -281,6 +279,7 @@ export default {
 				dateFrom: moment().format('YYYY-MM-DD'),
 				dateTo: moment().format('YYYY-MM-DD'),
 				suppliers: [],
+				campany: [],
 				selectedSupplier: null,
 				purchasesreturn: [],
 				searchTypesForRecord: ['', 'user', 'supplier']
@@ -299,6 +298,23 @@ export default {
 				 if(this.searchType == 'supplier'){
 					this.getSuppliers();
 				}
+			},
+
+			navigateToPage() {
+				const baseUrl = '/pdf_purchase_return';
+				let params = {
+					customer_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+					dateFrom: this.dateFrom,
+					dateTo: this.dateTo,
+					recordType : this.recordType
+				}
+				
+
+			const queryString = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
+
+			window.location.href = `${baseUrl}?${queryString}`;
 			},
 
 		exportTableToExcel(transactionsTable, filename = '',headerText = ''){
@@ -354,9 +370,9 @@ export default {
 				// Clean up
 				document.body.removeChild(downloadLink);
 			},
-            getBranchInfo(){
-                axios.get('/get_branches').then(res=>{
-                    this.branch = res.data;
+			getCompanyInfo(){
+                axios.get('/get_companies').then(res=>{
+                    this.campany = res.data;
                 })
             },
 		
@@ -487,10 +503,10 @@ export default {
                 <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
                 <div class="container">
                     <div class="row">
-                        <div class="col-xs-2"><img src="${this.branch.logo}" alt="Logo" style="height:80px;" /></div>
+                        <div class="col-xs-2"><img src="${this.campany.logo}" alt="Logo" style="height:80px;" /></div>
                         <div class="col-xs-10" style="padding-top:20px;">
-                            <strong style="font-size:18px;">${this.branch.name}</strong><br>
-                            <p style="white-space: pre-line;">${this.branch.address}</p>
+                            <strong style="font-size:18px;">${this.campany.name}</strong><br>
+                            <p style="white-space: pre-line;">${this.campany.address}</p>
                         </div>
                     </div>
                     <div class="row">

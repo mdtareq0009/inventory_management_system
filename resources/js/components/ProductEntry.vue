@@ -157,7 +157,7 @@ transition: 0s all;
                                 <td>{{ row.purchase_price }}</td>
                                 <td>{{ row.sale_price }}</td>
                                 <td>
-                                    <span v-if="role != 'User'">
+                                    <span v-if="role != 'General'">
                                         <a class="blue" href="javascript:" @click="editProduct(row)">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>

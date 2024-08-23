@@ -145,7 +145,7 @@ transition: 0s all;
                                 <td>{{ row.address }}</td>
                                 <td>{{ row.remark }}</td>
                                 <td>
-                                    <span v-if="role != 'User'">
+                                    <span v-if="role != 'General'">
                                         <a class="blue" href="javascript:" @click="editCustomer(row)">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>

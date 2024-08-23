@@ -90,6 +90,8 @@
         array_search("purchase_record", $permissions) > -1
         || array_search("sale_record", $permissions) > -1
         || array_search("sale_return_record", $permissions) > -1
+        || array_search("product_list", $permissions) > -1
+        || array_search("stock", $permissions) > -1
         || array_search("purchase_return_record", $permissions) > -1
         || in_array($role, $all_access_role)
     )
@@ -142,6 +144,16 @@
             @endif
         </ul>
         <ul class="submenu">
+            @if (array_search("product_list", $permissions) > -1 || in_array($role, $all_access_role))
+                <li>
+                    <a href="{{route('product_list')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Product List
+                    </a>
+                </li>
+            @endif
+        </ul>
+        <ul class="submenu">
             @if (array_search("stock", $permissions) > -1 || in_array($role, $all_access_role))
                 <li>
                     <a href="{{route('stock')}}">
@@ -176,7 +188,7 @@
     @if (array_search("category_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
         <a href="{{route('category_entry')}}">
-            <i class="menu-icon fa fa-list"></i>
+            <i class="menu-icon fa fa-calendar-plus-o"></i>
             <span class="menu-text"> Category Entry </span>
         </a>
     </li>
@@ -184,7 +196,7 @@
     @if (array_search("unit_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
         <a href="{{route('unit_entry')}}">
-            <i class="menu-icon fa fa-list"></i>
+            <i class="menu-icon fa fa-underline"></i>
             <span class="menu-text"> Unit Entry </span>
         </a>
     </li>
@@ -192,7 +204,7 @@
     @if (array_search("product_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
         <a href="{{route('product_entry')}}">
-            <i class="menu-icon fa fa-list"></i>
+            <i class="menu-icon fa fa-product-hunt"></i>
             <span class="menu-text"> Product Entry </span>
         </a>
     </li>
@@ -200,7 +212,7 @@
     @if (array_search("supplier_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
         <a href="{{route('supplier_entry')}}">
-            <i class="menu-icon fa fa-list"></i>
+            <i class="menu-icon fa fa-user-plus"></i>
             <span class="menu-text"> Supplier Entry </span>
         </a>
     </li>
@@ -208,7 +220,7 @@
     @if (array_search("customer_entry", $permissions) > -1 || in_array($role, $all_access_role))
     <li>
         <a href="{{route('customer_entry')}}">
-            <i class="menu-icon fa fa-list"></i>
+            <i class="menu-icon fa fa-user-plus"></i>
             <span class="menu-text"> Customer Entry </span>
         </a>
     </li>

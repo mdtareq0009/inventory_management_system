@@ -32,7 +32,7 @@
                                 <td>{{ index + 1 }}</td>
                                 <td>{{ row.name }}</td>
                                 <td>
-                                    <span v-if="role != 'User'">
+                                    <span v-if="role != 'General'">
                                         <a class="blue" href="javascript:" @click="editCategory(row)">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>

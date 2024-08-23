@@ -23,6 +23,8 @@ Vue.component('sale-record', require('./components/inventory/SaleInventoryRecord
 Vue.component('sale-return-inventory-entry', require('./components/inventory/SaleReturnInventoryEntry.vue').default);
 Vue.component('sale-return-record', require('./components/inventory/SaleReturnInventoryRecord.vue').default);
 Vue.component('stock-inventory', require('./components/inventory/StockInventory.vue').default);
+Vue.component('product-list', require('./components/inventory/ProductList.vue').default);
+Vue.component('register-general', require('./components/RegisterGeneral.vue').default);
 
 
 

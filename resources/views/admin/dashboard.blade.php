@@ -5,7 +5,9 @@
 
 @php 
  $role = auth()->user()->role;
- $permissions = auth()->user()->permissions;
+ $getPer = auth()->user()->permissions;
+ $getPer = preg_replace('/[^A-Za-z0-9\-\,\_]/', '', $getPer);
+ $permissions =explode(',', $getPer);
  $module = session()->has('module') ? session('module') : '';
  $branch_id = session()->has('branch_id') ? session('branch_id') : auth()->user()->branch_id;
  $all_access_role = ['Super Admin', 'Admin'];
@@ -20,7 +22,7 @@
 <div class="row">
     <div class="col-md-12 col-xs-12">
         <div class="col-md-12 header" style="height: 80px;">
-            <h3>Welcome To Inventroy Managment System</h3>
+            <h3>Welcome To Inventory Managment System</h3>
         </div>
        
         
@@ -81,8 +83,151 @@
         <div class="col-md-10">
             <!-- Header Logo -->
             <div class="col-md-12 header">
-                <h3> Inventory Module </h3>
+                <h3> Inventory</h3>
             </div>
+
+            @if (array_search("purchase_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('purchase_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-shopping-cart"></i>
+                            </div>
+                            <div class="textModule">
+                                Purchase Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("sale_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('sale_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-shopping-basket"></i>
+                            </div>
+                            <div class="textModule">
+                                Sale Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("purcahse_return_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('purcahse_return_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-repeat"></i>
+                            </div>
+                            <div class="textModule">
+                                Purchase Return Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("sale_return_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('sale_return_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-undo"></i>
+                            </div>
+                            <div class="textModule">
+                                Sale Return Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("purchase_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('purchase_record')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-list-ul"></i>
+                            </div>
+                            <div class="textModule">
+                                Purchase Record
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+           @if (array_search("purchase_return_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('purchase_return_record')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-list-ul"></i>
+                            </div>
+                            <div class="textModule">
+                                Purchase Return Record
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("sale_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('sale_record')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-list-ol"></i>
+                            </div>
+                            <div class="textModule">
+                                Sale Record
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("sale_return_record", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('sale_return_record')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-list-ol"></i>
+                            </div>
+                            <div class="textModule">
+                                Sale Return Record
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+         
+            @if (array_search("product_list", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('product_list')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-list"></i>
+                            </div>
+                            <div class="textModule">
+                                Product List
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+            @if (array_search("stock", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('stock')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-stack-exchange"></i>
+                            </div>
+                            <div class="textModule">
+                                Stock
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+         
             
     </div><!-- /.col -->
 </div><!-- /.row -->
@@ -95,7 +240,7 @@
         <div class="col-md-10">
             <!-- Header Logo -->
             <div class="col-md-12 header">
-                <h3> Administration Module </h3>
+                <h3> Administration </h3>
             </div>
               
           
@@ -127,6 +272,77 @@
                     </div>
                 </div>
            @endif   
+           @if (array_search("product_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('product_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-product-hunt"></i>
+                            </div>
+                            <div class="textModule">
+                                Product Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+           @if (array_search("category_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('category_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-calendar-plus-o"></i>
+                            </div>
+                            <div class="textModule">
+                                category Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+           @if (array_search("unit_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('unit_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-underline"></i>
+                            </div>
+                            <div class="textModule">
+                                Unit Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+          
+           @if (array_search("supplier_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('supplier_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-user-plus"></i>
+                            </div>
+                            <div class="textModule">
+                                Supplier Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
+           @if (array_search("customer_entry", $permissions) > -1 || in_array($role, $all_access_role))
+                <div class="col-md-2 col-xs-6 ">
+                    <div class="col-md-12 section20">
+                        <a href="{{route('customer_entry')}}">
+                            <div class="logo">
+                                <i class="menu-icon fa fa-user-plus"></i>
+                            </div>
+                            <div class="textModule">
+                                Customer Entry
+                            </div>
+                        </a>
+                    </div>
+                </div>
+           @endif
            
 
         <!-- PAGE CONTENT ENDS -->

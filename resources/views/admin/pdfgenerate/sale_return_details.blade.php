@@ -75,20 +75,20 @@
                         @foreach($result as $r)
 						<tr>
 							<td>{{ $r['invoice_text'] }}</td>
-							<td>{{ $r['sale']['order_date'] }}</td>
+							<td>{{ $r['salereturn']['return_date'] }}</td>
 							<td>{{ $r['display_name'] }}</td>
-							<td>{{ $r['sale']['saleDetails'][0]['product']['name'] }}</td>
-							<td style="text-align:center;">{{ $r['sale']['saleDetails'][0]['quantity'] }}</td>
-							<td style="text-align:right;">{{ $r['sale']['saleDetails'][0]['sale_rate'] }}</td>
-							<td style="text-align:right;">{{ number_format($r['sale']['saleDetails'][0]['total_amount'],2) }}</td>
-							<td>{{ $r['sale']['remark'] }}</td>
+							<td>{{ $r['salereturn']['saleReturnDetails'][0]['product']['name'] }}</td>
+							<td style="text-align:center;">{{ $r['salereturn']['saleReturnDetails'][0]['quantity'] }}</td>
+							<td style="text-align:right;">{{ $r['salereturn']['saleReturnDetails'][0]['return_rate'] }}</td>
+							<td style="text-align:right;">{{ number_format($r['salereturn']['saleReturnDetails'][0]['total_amount'],2) }}</td>
+							<td>Note: {{ $r['salereturn']['remark'] }}</td>
 						</tr>
-						@foreach($r['sale']['saleDetails']->slice(1) as $rd)
+						@foreach($r['salereturn']['saleReturnDetails']->slice(1) as $rd)
 							<tr>
 								<td colspan="3" ></td>
 								<td>{{ $rd['product']['name'] }}</td>
 								<td style="text-align:center;">{{ $rd['quantity'] }}</td>
-								<td style="text-align:right;">{{ $rd['sale_rate'] }}</td>
+								<td style="text-align:right;">{{ $rd['return_rate'] }}</td>
 								<td style="text-align:right;">{{ number_format($rd['total_amount'],2) }}</td>
 								<td></td>
 							</tr>
