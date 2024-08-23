@@ -55,9 +55,7 @@ class CommonController extends Controller
             CASE
                 WHEN u.status = 'a' THEN 'Active'
                 ELSE 'Deactive'
-            END as status_text,
-            d.mobile as doctor_mobile,
-            b.name as branch_name
+            END as status_text
 
             from users u
             left join branches b on b.id = u.branch_id

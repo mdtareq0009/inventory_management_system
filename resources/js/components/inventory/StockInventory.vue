@@ -26,6 +26,15 @@ th{
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+.excel-design{
+	margin-left: 5px;
+    background: #008a00;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
 .print-design{
 	margin-left: 5px;
     background: #f51010;
@@ -136,7 +145,7 @@ th{
 					</thead>
 					<tbody>
 						<tr v-for="(product,sl) in stock" :key="sl">
-							<td>{{ product.instrument_code  }}</td>
+							<td>{{ product.product_code  }}</td>
 							<td>{{ product.name }}</td>
 							<td>{{ product.category_name }}</td>
 							<td>{{ product.purchased_quantity }}</td>

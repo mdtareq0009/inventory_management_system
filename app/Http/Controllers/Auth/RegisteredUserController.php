@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
             'name'      => ['required', 'string', 'max:255'],
             'username'  => ['required', 'string', 'max:100', 'unique:users'],
             'branch_id' => ['required', 'integer'],
-            'role'      => ['required', Rule::in(['Super Admin', 'Admin', 'Doctor', 'Entry User', 'User'])],
+            'role'      => ['required', Rule::in(['Admin', 'General'])],
             'doctor_id' => ['nullable', 'integer'],
             // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'password' => ['required', 'confirmed'],
@@ -74,7 +74,7 @@ class RegisteredUserController extends Controller
             'name'      => ['required', 'string', 'max:255'],
             'username'  => ['required', 'string', 'max:100', Rule::unique('users')->ignore($request->id,'id')],
             'branch_id' => ['required', 'integer'],
-            'role'      => ['required', Rule::in(['Super Admin', 'Admin', 'Doctor', 'Entry User', 'User'])],
+            'role'      => ['required', Rule::in(['Admin', 'General'])],
             'doctor_id' => ['nullable', 'integer'],
             'password'  => ['nullable', 'confirmed'],
         ]);

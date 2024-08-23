@@ -51,6 +51,34 @@
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+
+.excel-design{
+	margin-left: 5px;
+    background: #008a00;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
+.print-design{
+	margin-left: 5px;
+    background: #f51010;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
+.pdf-design{
+	margin-left: 5px;
+    background: #106ff5;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
 </style>
 <template>
     <div id="purchaseRecord">
@@ -98,11 +126,12 @@
 	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: purchases.length > 0 ? '' : 'none'}">
 		<div class="col-md-12" style="margin-bottom: 10px;">
 			<div class="col-md-12" style="margin-bottom: 10px;">
-			<a href="" @click.prevent="print"><button class="print-design">
+			<a href="" @click.prevent="print">
+				<button class="print-design">
 					<i class="fa fa-print"></i> Print
 				</button>
-				</a>
-			<button class="excel-design" @click="exportTableToExcel('reportContent', 'donwloadexcel','Purchase Return Record')">
+			</a>
+			<button class="excel-design" @click="exportTableToExcel('reportContent', 'Purchase Record','Purchase Return Record')">
 				<i class="fa fa-file-excel-o"></i> Export To Excel
    		 	</button>
 			<button class="pdf-design">

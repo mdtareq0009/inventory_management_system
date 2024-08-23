@@ -5768,10 +5768,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         field: 'role',
         align: 'center'
       }, {
-        label: 'Branch Name',
-        field: 'branch_name',
-        align: 'center'
-      }, {
         label: 'Status',
         field: 'status_text',
         align: 'center'
@@ -5786,8 +5782,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     };
   },
   created: function created() {
-    this.getBranches();
-    this.getDoctors();
     this.getUsers();
   },
   methods: {
@@ -5822,10 +5816,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     },
     saveUser: function saveUser() {
       var _this4 = this;
-      if (this.selectedBranch == null) {
-        alert('select branch');
-        return;
-      }
       if (this.user.id == '' && this.user.password == '') {
         alert('password required!');
         return;
@@ -5833,15 +5823,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       if (this.user.password != '' && this.user.password !== this.user.password_confirmation) {
         alert('password not match!');
         return;
-      }
-      if (this.user.role == 'Doctor') {
-        if (this.selectedDoctor == null) {
-          alert('select doctor');
-          return;
-        }
-        this.user.doctor_id = this.selectedDoctor.id;
-      } else {
-        this.user.doctor_id = null;
       }
       this.user.branch_id = 1;
       var url = '/register';
@@ -10246,7 +10227,7 @@ var render = function render() {
           staticClass: "label label-sm label-success arrowed arrowed-righ"
         }, [_vm._v(_vm._s(row.status_text))])]) : _c("td", [_c("span", {
           staticClass: "label label-sm label-warning arrowed arrowed-righ"
-        }, [_vm._v(_vm._s(row.status_text))])]), _vm._v(" "), _c("td", [_vm.role == "Super Admin" || row.role != "Super Admin" ? _c("span", [_c("a", {
+        }, [_vm._v(_vm._s(row.status_text))])]), _vm._v(" "), _c("td", [_vm.role == "Admin" || row.role != "Admin" ? _c("span", [_c("a", {
           staticClass: "blue",
           attrs: {
             href: "javascript:"
@@ -10258,7 +10239,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "ace-icon fa fa-pencil bigger-130"
-        })]), _vm._v(" "), row.status == "a" ? _c("a", {
+        })]), _vm._v(" "), row.id != 1 ? _c("span", [row.status == "a" ? _c("a", {
           staticClass: "red",
           attrs: {
             href: "javascript:",
@@ -10284,7 +10265,7 @@ var render = function render() {
           }
         }, [_c("i", {
           staticClass: "fa fa-arrow-circle-up"
-        })]), _vm._v(" "), ["General"].includes(row.role) ? _c("a", {
+        })])]) : _vm._e(), _vm._v(" "), ["General"].includes(row.role) ? _c("a", {
           staticClass: "blue",
           attrs: {
             target: "_blank",
@@ -11456,7 +11437,7 @@ var render = function render() {
     staticClass: "excel-design",
     on: {
       click: function click($event) {
-        return _vm.exportTableToExcel("reportContent", "donwloadexcel", "Purchase Return Record");
+        return _vm.exportTableToExcel("reportContent", "Purchase Record", "Purchase Return Record");
       }
     }
   }, [_c("i", {
@@ -13493,13 +13474,23 @@ var render = function render() {
         return _vm.print.apply(null, arguments);
       }
     }
+  }, [_vm._m(1)]), _vm._v(" "), _c("button", {
+    staticClass: "excel-design",
+    on: {
+      click: function click($event) {
+        return _vm.exportTableToExcel("reportContent", "Purchase Return Record", "Purchase Return Record");
+      }
+    }
   }, [_c("i", {
-    staticClass: "fa fa-print"
-  }), _vm._v(" Print")]), _vm._v(" "), _c("button", {
+    staticClass: "fa fa-file-excel-o"
+  }), _vm._v(" Export To Excel\n   \t\t \t")]), _vm._v(" "), _c("button", {
+    staticClass: "pdf-design",
     on: {
       click: _vm.navigateToPage
     }
-  }, [_vm._v("Download PDF")])]), _vm._v(" "), _c("div", {
+  }, [_c("i", {
+    staticClass: "fa fa-file-pdf-o"
+  }), _vm._v(" Download To PDF\n   \t\t \t")])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-12"
   }, [_c("div", {
     staticClass: "table-responsive",
@@ -13719,6 +13710,14 @@ var staticRenderFns = [function () {
       value: "Search"
     }
   })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "print-design"
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print\n\t\t\t\t")]);
 }];
 render._withStripped = true;
 
@@ -15136,13 +15135,23 @@ var render = function render() {
         return _vm.print.apply(null, arguments);
       }
     }
+  }, [_vm._m(1)]), _vm._v(" "), _c("button", {
+    staticClass: "excel-design",
+    on: {
+      click: function click($event) {
+        return _vm.exportTableToExcel("reportContent", "Purchase Return Record", "Purchase Return Record");
+      }
+    }
   }, [_c("i", {
-    staticClass: "fa fa-print"
-  }), _vm._v(" Print")]), _vm._v(" "), _c("button", {
+    staticClass: "fa fa-file-excel-o"
+  }), _vm._v(" Export To Excel\n   \t\t \t")]), _vm._v(" "), _c("button", {
+    staticClass: "pdf-design",
     on: {
       click: _vm.navigateToPage
     }
-  }, [_vm._v("Download PDF")])]), _vm._v(" "), _c("div", {
+  }, [_c("i", {
+    staticClass: "fa fa-file-pdf-o"
+  }), _vm._v(" Export To PDF\n   \t\t \t")])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-12"
   }, [_c("div", {
     staticClass: "table-responsive",
@@ -15157,7 +15166,7 @@ var render = function render() {
     style: {
       display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? "" : "none"
     }
-  }, [_vm._m(1), _vm._v(" "), _vm._l(_vm.salereturns, function (salereturn, sl) {
+  }, [_vm._m(2), _vm._v(" "), _vm._l(_vm.salereturns, function (salereturn, sl) {
     return _c("tbody", {
       key: sl
     }, [_c("tr", [_c("td", [_vm._v(_vm._s(salereturn.salereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.sale_return_details[0].product.name))]), _vm._v(" "), _c("td", {
@@ -15248,7 +15257,7 @@ var render = function render() {
     style: {
       display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? "" : "none"
     }
-  }, [_vm._m(2), _vm._v(" "), _c("tbody", _vm._l(_vm.salereturns, function (salereturn, sl) {
+  }, [_vm._m(3), _vm._v(" "), _c("tbody", _vm._l(_vm.salereturns, function (salereturn, sl) {
     return _c("tr", {
       key: sl
     }, [_c("td", [_vm._v(_vm._s(salereturn.salereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.display_name))]), _vm._v(" "), _c("td", {
@@ -15322,6 +15331,14 @@ var staticRenderFns = [function () {
       value: "Search"
     }
   })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "print-design"
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print\n\t\t\t\t")]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -15543,7 +15560,7 @@ var render = function render() {
   }, [_vm._m(3), _vm._v(" "), _c("tbody", _vm._l(_vm.stock, function (product, sl) {
     return _c("tr", {
       key: sl
-    }, [_c("td", [_vm._v(_vm._s(product.instrument_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sold_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sale_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity))])]);
+    }, [_c("td", [_vm._v(_vm._s(product.product_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sold_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sale_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity))])]);
   }), 0)]) : _vm._e()])])])]);
 };
 var staticRenderFns = [function () {
@@ -18137,7 +18154,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-497e7704]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-497e7704]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-497e7704]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-497e7704]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-497e7704]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-497e7704], .record-table td[data-v-497e7704]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-497e7704]{\n        text-align: center;\n}\nth[data-v-497e7704]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-497e7704]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-497e7704]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-497e7704]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-497e7704]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-497e7704]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-497e7704]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-497e7704]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-497e7704], .record-table td[data-v-497e7704]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-497e7704]{\n        text-align: center;\n}\nth[data-v-497e7704]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-497e7704]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-497e7704]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.excel-design[data-v-497e7704]{\n\tmargin-left: 5px;\n    background: #008a00;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.print-design[data-v-497e7704]{\n\tmargin-left: 5px;\n    background: #f51010;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.pdf-design[data-v-497e7704]{\n\tmargin-left: 5px;\n    background: #106ff5;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -18233,7 +18250,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-7c97f710]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-7c97f710]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-7c97f710]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-7c97f710]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-7c97f710]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-7c97f710], .record-table td[data-v-7c97f710]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-7c97f710]{\n        text-align: center;\n}\nth[data-v-7c97f710]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-7c97f710]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-7c97f710]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.hidden[data-v-7c97f710] {\n    display: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-7c97f710]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-7c97f710]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-7c97f710]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-7c97f710]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-7c97f710]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-7c97f710], .record-table td[data-v-7c97f710]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-7c97f710]{\n        text-align: center;\n}\nth[data-v-7c97f710]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-7c97f710]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-7c97f710]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.excel-design[data-v-7c97f710]{\n\tmargin-left: 5px;\n    background: #008a00;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.print-design[data-v-7c97f710]{\n\tmargin-left: 5px;\n    background: #f51010;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.pdf-design[data-v-7c97f710]{\n\tmargin-left: 5px;\n    background: #106ff5;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -18305,7 +18322,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-104c66e8]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-104c66e8]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-104c66e8]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-104c66e8]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-104c66e8]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-104c66e8], .record-table td[data-v-104c66e8]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-104c66e8]{\n        text-align: center;\n}\nth[data-v-104c66e8]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-104c66e8]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-104c66e8]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.hidden[data-v-104c66e8] {\n    display: none;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-104c66e8]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-104c66e8]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-104c66e8]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-104c66e8]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-104c66e8]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-104c66e8], .record-table td[data-v-104c66e8]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-104c66e8]{\n        text-align: center;\n}\nth[data-v-104c66e8]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-104c66e8]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-104c66e8]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.excel-design[data-v-104c66e8]{\n\tmargin-left: 5px;\n    background: #008a00;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.print-design[data-v-104c66e8]{\n\tmargin-left: 5px;\n    background: #f51010;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.pdf-design[data-v-104c66e8]{\n\tmargin-left: 5px;\n    background: #106ff5;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -18329,7 +18346,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nth[data-v-723a1a38]{\r\n\t\tbackground-color: #146C94;\r\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-723a1a38]{\r\n\t\tbackground-color: #E3F4F4 !important;\r\n\t-webkit-transition: .5s all;   \r\n\t\t-webkit-transition-delay: .05s; \r\n\t\t-moz-transition: .5s all;   \r\n\t\t-moz-transition-delay: .05s; \r\n\t\t-ms-transition: .5s all;   \r\n\t\t-ms-transition-delay: .05s; \r\n\t\t-o-transition: .5s all;   \r\n\t\t-o-transition-delay: .05s; \r\n\t\ttransition: .5s all;   \r\n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-723a1a38]:hover{\r\n\tbackground-color: #62CDFF !important;\r\n\ttransition: 0s all;\r\n\ttransition-delay: 0s;\n}\n.print-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #f51010;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\n.pdf-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #106ff5;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nth[data-v-723a1a38]{\r\n\t\tbackground-color: #146C94;\r\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-723a1a38]{\r\n\t\tbackground-color: #E3F4F4 !important;\r\n\t-webkit-transition: .5s all;   \r\n\t\t-webkit-transition-delay: .05s; \r\n\t\t-moz-transition: .5s all;   \r\n\t\t-moz-transition-delay: .05s; \r\n\t\t-ms-transition: .5s all;   \r\n\t\t-ms-transition-delay: .05s; \r\n\t\t-o-transition: .5s all;   \r\n\t\t-o-transition-delay: .05s; \r\n\t\ttransition: .5s all;   \r\n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-723a1a38]:hover{\r\n\tbackground-color: #62CDFF !important;\r\n\ttransition: 0s all;\r\n\ttransition-delay: 0s;\n}\n.excel-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #008a00;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\n.print-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #f51010;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\n.pdf-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #106ff5;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

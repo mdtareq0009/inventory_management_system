@@ -16,7 +16,10 @@ class UserAccessMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(array_search(request()->path(), auth()->user()->permissions ?? []) > -1 || in_array(auth()->user()->role, ['Admin', 'Super Admin'])){
+        $getPer = auth()->user()->permissions;
+        $getPer = preg_replace('/[^A-Za-z0-9\-\,\_]/', '', $getPer);
+        $permissions =explode(',', $getPer);
+        if(array_search(request()->path(), $permissions ?? []) > -1 || in_array(auth()->user()->role, ['Admin', 'General'])){
             return $next($request);
         } else {
             return redirect()->route('dashboard');

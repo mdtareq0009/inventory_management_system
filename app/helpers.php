@@ -190,7 +190,7 @@ function currentStock($clauses = '') {
 
 function checkPermissions($permission)
 {
-    if(array_search($permission, auth()->user()->permissions) > -1 || in_array(auth()->user()->role, ['Admin', 'Super Admin'])){
+    if(array_search($permission, auth()->user()->permissions) > -1 || in_array(auth()->user()->role, ['Admin', 'General'])){
         return true;
     } else {
         return false;

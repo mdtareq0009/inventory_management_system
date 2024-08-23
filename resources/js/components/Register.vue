@@ -77,18 +77,19 @@
                                 <td v-if="row.status == 'a'"><span class="label label-sm label-success arrowed arrowed-righ">{{ row.status_text }}</span></td>
                                 <td v-else><span class="label label-sm label-warning arrowed arrowed-righ">{{ row.status_text }}</span></td>
                                 <td>
-                                    <span v-if="role == 'Super Admin' || row.role != 'Super Admin'">
+                                    <span v-if="role == 'Admin' || row.role != 'Admin'">
                                         <a class="blue" href="javascript:" @click="editUser(row)">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </a>
-
-                                        <a v-if="row.status == 'a'" class="red" href="javascript:" @click="statusChange(row.id, 'd')" title="Deactive">
-                                            <i class="fa fa-arrow-circle-down"></i>
-                                        </a>
-
-                                        <a v-else class="green" href="javascript:" @click="statusChange(row.id, 'a')" title="Active">
-                                            <i class="fa fa-arrow-circle-up"></i>
-                                        </a>
+                                        <span v-if="row.id !=1">
+                                            <a v-if="row.status == 'a'" class="red" href="javascript:" @click="statusChange(row.id, 'd')" title="Deactive">
+                                                <i class="fa fa-arrow-circle-down"></i>
+                                            </a>
+                                            
+                                            <a v-else class="green" href="javascript:" @click="statusChange(row.id, 'a')" title="Active">
+                                                <i class="fa fa-arrow-circle-up"></i>
+                                            </a>
+                                        </span>
 
                                         <a v-if="['General'].includes(row.role)" target="_blank" title="User Access" class="blue" :href="'/user_access/'+row.id">
                                             <i class="fa fa-users"></i>
@@ -127,7 +128,7 @@ export default {
                 { label: 'Name', field: 'name', align: 'center'},
                 { label: 'Username', field: 'username', align: 'center' },
                 { label: 'Role', field: 'role', align: 'center' },
-                { label: 'Branch Name', field: 'branch_name', align: 'center' },
+              
                 { label: 'Status', field: 'status_text', align: 'center' },
                 { label: 'Action', align: 'center', filterable: false }
             ],
@@ -137,8 +138,7 @@ export default {
         }
     },
     created(){
-        this.getBranches();
-        this.getDoctors();
+    
         this.getUsers();
     },
     methods: {
@@ -170,10 +170,7 @@ export default {
             })
         },
         saveUser(){
-            if(this.selectedBranch == null){
-                alert('select branch');
-                return;
-            }
+          
 
             if(this.user.id == '' && this.user.password == ''){
                 alert('password required!');
@@ -185,16 +182,7 @@ export default {
                 return;
             }
 
-            if(this.user.role == 'Doctor'){
-                if(this.selectedDoctor == null){
-                    alert('select doctor');
-                    return;
-                }
-
-                this.user.doctor_id = this.selectedDoctor.id;
-            }else{
-                this.user.doctor_id = null;
-            }
+      
 
             this.user.branch_id = 1;
 

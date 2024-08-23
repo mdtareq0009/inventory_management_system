@@ -1,11 +1,12 @@
 @php 
  $role = auth()->user()->role;
- $permissions = auth()->user()->permissions ?? [];
+ $getPer = auth()->user()->permissions;
+ $getPer = preg_replace('/[^A-Za-z0-9\-\,\_]/', '', $getPer);
+ $permissions =explode(',', $getPer);
  $module = session()->has('module') ? session('module') : '';
  $branch_id = session()->has('branch_id') ? session('branch_id') : auth()->user()->branch_id;
  $all_access_role = ['Super Admin', 'Admin'];
 @endphp
-
 @if($module == 'Dashboard' || $module == '')
 <ul class="nav nav-list">
     <li class="active">
