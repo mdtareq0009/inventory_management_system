@@ -25,11 +25,7 @@ class User extends Authenticatable
         return $this->belongsTo(Branch::class);
     }
 
-    // public function getPermissionsAttribute()
-    // {
-    //     return $this->attributes['permissions'] == null || $this->attributes['permissions'] == '' ? [] : json_decode($this->attributes['permissions']);
-    // }
-
+  
     public function purchases()
     {
         return $this->hasMany(Purchase::class, 'created_by');

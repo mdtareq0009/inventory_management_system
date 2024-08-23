@@ -198,7 +198,7 @@ export default {
 			}
 		},
 		created(){
-			this.getBranchInfo();
+			this.getCompanyInfo();
 		},
 		methods:{
 

@@ -9055,7 +9055,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    this.getBranchInfo();
+    this.getCompanyInfo();
   },
   methods: {
     navigateToPage: function navigateToPage() {

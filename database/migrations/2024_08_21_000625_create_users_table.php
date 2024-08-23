@@ -35,8 +35,8 @@ class CreateUsersTable extends Migration
 
         User::create(
             array(
-                'name'      => 'Super Admin',
-                'username'  => 'superadmin',
+                'name'      => 'Admin',
+                'username'  => 'admin@gmail.com',
                 'role'      => 'Admin',
                 'password'  => bcrypt(1),
                 'branch_id' => 1,
