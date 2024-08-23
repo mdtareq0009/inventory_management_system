@@ -15,7 +15,7 @@ class CreateSaleReturnsTable extends Migration
     {
         Schema::create('sale_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_id')->constrained('sales');
+            $table->string('invoice_number', 20)->unique();
             $table->foreignId('customer_id')->constrained('customers');
             $table->date('return_date')->index();
             $table->float('total_amount');

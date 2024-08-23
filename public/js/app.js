@@ -6707,6 +6707,49 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       });
     },
+    exportTableToExcel: function exportTableToExcel(transactionsTable) {
+      var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var headerText = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+      var dataType = 'application/vnd.ms-excel';
+      var tableSelect = document.getElementById(transactionsTable);
+
+      // Ensure tableSelect exists
+      if (!tableSelect) {
+        console.error('Table element not found');
+        return;
+      }
+
+      // Add inline styles to ensure borders and padding
+      var style = "\n\t\t\t\t\t<style>\n\t\t\t\t\t\ttable, th, td {\n\t\t\t\t\t\t\tborder: 1px solid gray;\n\t\t\t\t\t\t\tborder-collapse: collapse;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tth, td {\n\t\t\t\t\t\t\tpadding: 5px;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t</style>\n\t\t\t\t";
+      var headerHTML = headerText ? "<div class=\"header\" >".concat(headerText, "</div>") : '';
+
+      // Combine header and table HTML
+      var tableHTML = style + headerHTML + tableSelect.outerHTML;
+
+      // Specify file name
+      filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+      // Create download link element
+      var downloadLink = document.createElement('a');
+      document.body.appendChild(downloadLink);
+      if (navigator.msSaveOrOpenBlob) {
+        // For IE and Edge
+        var blob = new Blob(["\uFEFF", tableHTML], {
+          type: dataType
+        });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        // For other browsers
+        downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
+        downloadLink.download = filename;
+
+        // Trigger the download
+        downloadLink.click();
+      }
+
+      // Clean up
+      document.body.removeChild(downloadLink);
+    },
     deletePurchase: function deletePurchase(purchaseId) {
       var _this4 = this;
       Swal.fire({
@@ -7080,6 +7123,570 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['role', 'id', 'invoice'],
+  data: function data() {
+    return {
+      purchasereturn: {
+        id: '',
+        invoice_number: '',
+        return_date: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+        supplier_id: '',
+        total: 0.00,
+        note: ''
+      },
+      branches: [],
+      suppliers: [],
+      selectedSupplier: null,
+      products: [],
+      selectedProduct: {
+        id: '',
+        display_text: 'Select Product',
+        name: '',
+        quantity: '',
+        purchase_price: '',
+        total: ''
+      },
+      productStockText: '',
+      productStock: '',
+      cart: [],
+      purchaseReturnOnProgress: false
+    };
+  },
+  created: function created() {
+    var _this = this;
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _this.purchasereturn.id = _this.id;
+            _this.purchasereturn.invoice_number = _this.invoice;
+            _context.next = 4;
+            return _this.getSuppliers();
+          case 4:
+            _this.getProducts();
+            if (_this.id != 0) {
+              _this.getPurchaseReturn();
+            }
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    getSuppliers: function getSuppliers() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios.get('/get_suppliers').then(function (res) {
+                _this2.suppliers = res.data;
+              });
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    },
+    getProducts: function getProducts() {
+      var _this3 = this;
+      axios.post('/get_products').then(function (res) {
+        _this3.products = res.data;
+      });
+    },
+    onChangeProduct: function onChangeProduct() {
+      var _this4 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              if (!(_this4.selectedProduct == null)) {
+                _context3.next = 5;
+                break;
+              }
+              _this4.selectedProduct = {
+                id: '',
+                display_text: 'Select Product',
+                name: '',
+                quantity: '',
+                purchase_price: '',
+                total: ''
+              };
+              _this4.productStockText = '';
+              _this4.productStock = '';
+              return _context3.abrupt("return", true);
+            case 5:
+              if (!(_this4.selectedProduct != null)) {
+                _context3.next = 10;
+                break;
+              }
+              _context3.next = 8;
+              return axios.post('/get_stock', {
+                productId: _this4.selectedProduct.id
+              }).then(function (res) {
+                return res.data;
+              });
+            case 8:
+              _this4.productStock = _context3.sent;
+              _this4.productStockText = _this4.productStock > 0 ? "Available Stock" : "Stock Unavailable";
+            case 10:
+              setTimeout(function () {
+                _this4.$refs.quantity.focus();
+              }, 500);
+            case 11:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    },
+    productTotal: function productTotal() {
+      this.selectedProduct.total = this.selectedProduct.quantity * this.selectedProduct.purchase_price;
+    },
+    addToCart: function addToCart() {
+      var product = {
+        productId: this.selectedProduct.id,
+        name: this.selectedProduct.name,
+        return_rate: this.selectedProduct.purchase_price,
+        quantity: this.selectedProduct.quantity,
+        total: this.selectedProduct.total
+      };
+      if (product.productId == '') {
+        alert('Select Product');
+        return;
+      }
+      if (product.quantity == 0 || product.quantity == '') {
+        alert('Enter quantity');
+        return;
+      }
+      if (product.sale_rate == 0 || product.sale_rate == '') {
+        alert('Enter sales rate');
+        return;
+      }
+      if (product.quantity > this.productStock) {
+        alert('Stock unavailable');
+        return;
+      }
+      var cartInd = this.cart.findIndex(function (p) {
+        return p.productId == product.productId;
+      });
+      if (cartInd > -1) {
+        this.cart.splice(cartInd, 1);
+      }
+      this.cart.push(product);
+      this.clearSelectedProduct();
+      this.calculateTotal();
+    },
+    removeFromCart: function removeFromCart(ind) {
+      var _this5 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              _this5.cart.splice(ind, 1);
+              _this5.calculateTotal();
+            case 2:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }))();
+    },
+    clearSelectedProduct: function clearSelectedProduct() {
+      this.selectedProduct = {
+        id: '',
+        display_text: 'Select Product',
+        name: '',
+        quantity: '',
+        purchase_price: '',
+        total: ''
+      };
+      this.productStockText = '';
+      this.productStock = '';
+    },
+    calculateTotal: function calculateTotal() {
+      this.purchasereturn.total = this.cart.reduce(function (prev, curr) {
+        return prev + parseFloat(curr.total);
+      }, 0).toFixed(2);
+    },
+    save: function save() {
+      var _this6 = this;
+      if (this.selectedSupplier == null) {
+        alert('Select Supplier');
+        return;
+      }
+      if (this.purchasereturn.return_date == '') {
+        alert('Enter Purchase Return date');
+        return;
+      }
+      if (this.cart.length == 0) {
+        alert('Cart is empty');
+        return;
+      }
+      this.purchasereturn.supplier_id = this.selectedSupplier.id;
+      this.purchaseReturnOnProgress = true;
+      var data = {
+        purchasereturn: this.purchasereturn,
+        cartProducts: this.cart
+      };
+      var url = '/store-purchase-return';
+      if (this.purchasereturn.id != 0) {
+        console.log(this.purchasereturn.id);
+        url = '/update-purchase-return';
+      }
+      Swal.fire({
+        title: '<strong>Are you sure!</strong>',
+        html: '<strong>Want to Proccess this?</strong>',
+        showDenyButton: true,
+        confirmButtonText: "Ok",
+        denyButtonText: "Cancel"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post(url, data).then( /*#__PURE__*/function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(res) {
+              var r;
+              return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+                while (1) switch (_context5.prev = _context5.next) {
+                  case 0:
+                    r = res.data;
+                    Swal.fire({
+                      icon: 'success',
+                      title: r.message,
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                    _context5.next = 4;
+                    return new Promise(function (r) {
+                      return setTimeout(r, 1000);
+                    });
+                  case 4:
+                    window.location = '/purcahse_return_entry';
+                  case 5:
+                  case "end":
+                    return _context5.stop();
+                }
+              }, _callee5);
+            }));
+            return function (_x) {
+              return _ref.apply(this, arguments);
+            };
+          }())["catch"](function (error) {
+            var e = error.response.data;
+            if (e.hasOwnProperty('message')) {
+              if (e.hasOwnProperty('errors')) {
+                Object.entries(e.errors).forEach(function (_ref2) {
+                  var _ref3 = _slicedToArray(_ref2, 2),
+                    key = _ref3[0],
+                    val = _ref3[1];
+                  _this6.$toaster.error(val[0]);
+                });
+              } else {
+                _this6.$toaster.error(e.message);
+              }
+            } else {
+              _this6.$toaster.error(e);
+            }
+          });
+        }
+      });
+    },
+    getPurchaseReturn: function getPurchaseReturn() {
+      var _this7 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return axios.post('/get_purchase_return', {
+                purchaseId: _this7.id
+              }).then(function (res) {
+                var purchasedreturns = res.data[0];
+                console.log(purchasedreturns);
+                _this7.selectedSupplier = {
+                  id: purchasedreturns.supplierId,
+                  display_text: purchasedreturns.display_name,
+                  mobile: purchasedreturns.supplier_mobile,
+                  address: purchasedreturns.supplier_address
+                };
+                _this7.purchasereturn.invoice_number = purchasedreturns.purchasereturn.invoice_number, _this7.purchasereturn.return_date = purchasedreturns.purchasereturn.return_date;
+                _this7.purchasereturn.supplier_id = purchasedreturns.supplierId;
+                _this7.purchasereturn.total = purchasedreturns.purchasereturn.total_amount;
+                _this7.purchasereturn.note = purchasedreturns.purchasereturn.remark;
+                purchasedreturns.purchasereturn.purchase_return_details.forEach(function (item) {
+                  var cart = {
+                    id: item.id,
+                    productId: item.product_id,
+                    name: item.product.name,
+                    quantity: item.quantity,
+                    return_rate: item.return_rate,
+                    total: item.total_amount
+                  };
+                  _this7.cart.push(cart);
+                });
+              });
+            case 2:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['role'],
+  data: function data() {
+    return {
+      searchType: '',
+      recordType: 'without_details',
+      dateFrom: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+      dateTo: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+      suppliers: [],
+      selectedSupplier: null,
+      purchasesreturn: [],
+      searchTypesForRecord: ['', 'user', 'supplier']
+    };
+  },
+  created: function created() {
+    this.getBranchInfo();
+  },
+  methods: {
+    checkReturnAndEdit: function checkReturnAndEdit(purchase) {
+      location.replace('/purchase_return_entry/' + purchase.id);
+    },
+    onChangeSearchType: function onChangeSearchType() {
+      this.purchasesreturn = [];
+      if (this.searchType == 'supplier') {
+        this.getSuppliers();
+      }
+    },
+    exportTableToExcel: function exportTableToExcel(transactionsTable) {
+      var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var headerText = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+      var dataType = 'application/vnd.ms-excel';
+      var tableSelect = document.getElementById(transactionsTable);
+
+      // Ensure tableSelect exists
+      if (!tableSelect) {
+        console.error('Table element not found');
+        return;
+      }
+
+      // Add inline styles to ensure borders and padding
+      var style = "\n\t\t\t\t\t<style>\n\t\t\t\t\t\ttable, th, td {\n\t\t\t\t\t\t\tborder: 1px solid gray;\n\t\t\t\t\t\t\tborder-collapse: collapse;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tth, td {\n\t\t\t\t\t\t\tpadding: 5px;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t</style>\n\t\t\t\t";
+      var headerHTML = headerText ? "<div class=\"header\" >".concat(headerText, "</div>") : '';
+
+      // Combine header and table HTML
+      var tableHTML = style + headerHTML + tableSelect.outerHTML;
+
+      // Specify file name
+      filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+      // Create download link element
+      var downloadLink = document.createElement('a');
+      document.body.appendChild(downloadLink);
+      if (navigator.msSaveOrOpenBlob) {
+        // For IE and Edge
+        var blob = new Blob(["\uFEFF", tableHTML], {
+          type: dataType
+        });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        // For other browsers
+        downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
+        downloadLink.download = filename;
+
+        // Trigger the download
+        downloadLink.click();
+      }
+
+      // Clean up
+      document.body.removeChild(downloadLink);
+    },
+    getBranchInfo: function getBranchInfo() {
+      var _this = this;
+      axios.get('/get_branches').then(function (res) {
+        _this.branch = res.data;
+      });
+    },
+    getSuppliers: function getSuppliers() {
+      var _this2 = this;
+      axios.get('/get_suppliers').then(function (res) {
+        _this2.suppliers = res.data;
+      });
+    },
+    getSearchResult: function getSearchResult() {
+      if (this.searchType != 'user') {
+        this.selectedUser = null;
+      }
+      if (this.searchType != 'supplier') {
+        this.selectedSupplier = null;
+      }
+      this.getPurchaseReturnRecord();
+    },
+    getPurchaseReturnRecord: function getPurchaseReturnRecord() {
+      var _this3 = this;
+      var filter = {
+        supplier_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo
+      };
+      if (this.recordType == 'with_details') {
+        filter.with_details = true;
+      }
+      var url = '/get_purchase_return';
+      axios.post(url, filter).then(function (res) {
+        _this3.purchasesreturn = res.data;
+        console.log(_this3.purchasesreturn);
+      })["catch"](function (error) {
+        if (error.response) {
+          alert("".concat(error.response.status, ", ").concat(error.response.statusText));
+        }
+      });
+    },
+    deletePurchase: function deletePurchase(purchasereturnId) {
+      var _this4 = this;
+      Swal.fire({
+        title: '<strong>Are you sure!</strong>',
+        html: '<strong>Want to delete this?</strong>',
+        showDenyButton: true,
+        confirmButtonText: "Ok",
+        denyButtonText: "Cancel"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post('/delete-purchase-return', {
+            id: purchasereturnId
+          }).then(function (res) {
+            var r = res.data;
+            Swal.fire({
+              icon: 'success',
+              title: r.message,
+              showConfirmButton: false,
+              timer: 3000
+            });
+            _this4.getPurchaseReturnRecord();
+          })["catch"](function (error) {
+            var e = error.response.data;
+            if (e.hasOwnProperty('message')) {
+              if (e.hasOwnProperty('errors')) {
+                Object.entries(e.errors).forEach(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    val = _ref2[1];
+                  _this4.$toaster.error(val[0]);
+                });
+              } else {
+                _this4.$toaster.error(e.message);
+              }
+            } else {
+              _this4.$toaster.error(e);
+            }
+          });
+        }
+      });
+    },
+    print: function print() {
+      var _this5 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var dateText, supplierText, reportContent, reportWindow, rows;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              dateText = '';
+              if (_this5.dateFrom != '' && _this5.dateTo != '') {
+                dateText = "Statement from <strong>".concat(_this5.dateFrom, "</strong> to <strong>").concat(_this5.dateTo, "</strong>");
+              }
+              supplierText = '';
+              if (_this5.selectedSupplier != null && _this5.selectedSupplier.id != '') {
+                supplierText = "<strong>Supplier: </strong> ".concat(_this5.selectedSupplier.name, "<br>");
+              }
+              reportContent = "\n\t\t\t\t\t<div class=\"container\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-12 text-center\">\n\t\t\t\t\t\t\t\t<h3>Purchase Record</h3>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t\t\t ".concat(supplierText, " \n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-xs-6 text-right\">\n\t\t\t\t\t\t\t\t").concat(dateText, "\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t\t").concat(document.querySelector('#reportContent').innerHTML, "\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t");
+              reportWindow = window.open('', 'PRINT', "height=".concat(screen.height, ", width=").concat(screen.width));
+              reportWindow.document.write("\n                <link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-xs-2\"><img src=\"".concat(_this5.branch.logo, "\" alt=\"Logo\" style=\"height:80px;\" /></div>\n                        <div class=\"col-xs-10\" style=\"padding-top:20px;\">\n                            <strong style=\"font-size:18px;\">").concat(_this5.branch.name, "</strong><br>\n                            <p style=\"white-space: pre-line;\">").concat(_this5.branch.address, "</p>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <div style=\"border-bottom: 4px double #454545;margin-top:7px;margin-bottom:7px;\"></div>\n                        </div>\n                    </div>\n                </div>\n            "));
+              reportWindow.document.head.innerHTML += "\n\t\t\t\t\t<style>\n\t\t\t\t\t\t.record-table{\n\t\t\t\t\t\t\twidth: 100%;\n\t\t\t\t\t\t\tborder-collapse: collapse;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table thead{\n\t\t\t\t\t\t\tbackground-color: #0097df;\n\t\t\t\t\t\t\tcolor:white;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table th, .record-table td{\n\t\t\t\t\t\t\tpadding: 3px;\n\t\t\t\t\t\t\tborder: 1px solid #454545;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table th{\n\t\t\t\t\t\t\ttext-align: center;\n\t\t\t\t\t\t}\n\t\t\t\t\t</style>\n\t\t\t\t";
+              reportWindow.document.body.innerHTML += reportContent;
+              if (_this5.searchType == '' || _this5.searchType == 'user') {
+                rows = reportWindow.document.querySelectorAll('.record-table tr');
+                rows.forEach(function (row) {
+                  row.lastChild.remove();
+                });
+              }
+              reportWindow.focus();
+              _context.next = 13;
+              return new Promise(function (resolve) {
+                return setTimeout(resolve, 1000);
+              });
+            case 13:
+              reportWindow.print();
+              reportWindow.close();
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=script&lang=js& ***!
@@ -7274,53 +7881,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['role', 'fromDate', 'toDate', 'customer_id', 'details'],
-  data: function data() {
-    return {
-      dateFrom: this.fromDate,
-      dateTo: this.toDate,
-      detail: this.details,
-      sales: []
-    };
-  },
-  created: function created() {
-    this.getSaleRecord();
-  },
-  methods: {
-    getSaleRecord: function getSaleRecord() {
-      var _this = this;
-      var filter = {
-        customer_id: this.customer_id,
-        dateFrom: this.dateFrom,
-        dateTo: this.dateTo,
-        with_details: this.details == 'with_details' ? true : false
-      };
-      var url = '/get_sales';
-      axios.post(url, filter).then(function (res) {
-        _this.sales = res.data;
-      })["catch"](function (error) {
-        if (error.response) {
-          alert("".concat(error.response.status, ", ").concat(error.response.statusText));
-        }
-      });
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=script&lang=js& ***!
@@ -7455,7 +8015,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 break;
               }
               _context3.next = 9;
-              return axios.post('/get_instrument_stock', {
+              return axios.post('/get_stock', {
                 productId: _this4.selectedProduct.id
               }).then(function (res) {
                 return res.data;
@@ -7487,6 +8047,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         quantity: this.selectedProduct.quantity,
         total: this.selectedProduct.total
       };
+      if (product.productId == '') {
+        alert('Select Product');
+        return;
+      }
+      if (product.quantity == 0 || product.quantity == '') {
+        alert('Enter quantity');
+        return;
+      }
+      if (product.sale_rate == 0 || product.sale_rate == '') {
+        alert('Enter sales rate');
+        return;
+      }
+      if (product.quantity > this.productStock) {
+        alert('Stock unavailable');
+        return;
+      }
       var cartInd = this.cart.findIndex(function (p) {
         return p.productId == product.productId;
       });
@@ -7659,6 +8235,502 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['role', 'id', 'invoice'],
+  data: function data() {
+    return {
+      salereturn: {
+        id: '',
+        invoice_number: '',
+        return_date: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+        customer_id: '',
+        total: 0.00,
+        note: ''
+      },
+      branches: [],
+      customers: [],
+      selectedCustomer: null,
+      products: [],
+      selectedProduct: {
+        id: '',
+        display_text: 'Select Product',
+        name: '',
+        quantity: '',
+        purchase_price: '',
+        sale_price: '',
+        total: ''
+      },
+      cart: [],
+      saleOnProgress: false
+    };
+  },
+  created: function created() {
+    var _this = this;
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _this.salereturn.id = _this.id;
+            _this.salereturn.invoice_number = _this.invoice;
+            _context.next = 4;
+            return _this.getCustomers();
+          case 4:
+            _this.getProducts();
+            if (_this.id != 0) {
+              _this.getSaleReturn();
+            }
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }))();
+  },
+  methods: {
+    getCustomers: function getCustomers() {
+      var _this2 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              _context2.next = 2;
+              return axios.get('/get_customers').then(function (res) {
+                _this2.customers = res.data;
+              });
+            case 2:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    },
+    getProducts: function getProducts() {
+      var _this3 = this;
+      axios.post('/get_products').then(function (res) {
+        _this3.products = res.data;
+      });
+    },
+    productTotal: function productTotal() {
+      this.selectedProduct.total = this.selectedProduct.quantity * this.selectedProduct.sale_price;
+    },
+    addToCart: function addToCart() {
+      var product = {
+        productId: this.selectedProduct.id,
+        name: this.selectedProduct.name,
+        return_rate: this.selectedProduct.sale_price,
+        quantity: this.selectedProduct.quantity,
+        total: this.selectedProduct.total
+      };
+      if (product.productId == '') {
+        alert('Select Product');
+        return;
+      }
+      if (product.quantity == 0 || product.quantity == '') {
+        alert('Enter quantity');
+        return;
+      }
+      if (product.sale_rate == 0 || product.sale_rate == '') {
+        alert('Enter sales rate');
+        return;
+      }
+      var cartInd = this.cart.findIndex(function (p) {
+        return p.productId == product.productId;
+      });
+      if (cartInd > -1) {
+        this.cart.splice(cartInd, 1);
+      }
+      this.cart.push(product);
+      this.clearSelectedProduct();
+      this.calculateTotal();
+    },
+    removeFromCart: function removeFromCart(ind) {
+      var _this4 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) switch (_context3.prev = _context3.next) {
+            case 0:
+              _this4.cart.splice(ind, 1);
+              _this4.calculateTotal();
+            case 2:
+            case "end":
+              return _context3.stop();
+          }
+        }, _callee3);
+      }))();
+    },
+    clearSelectedProduct: function clearSelectedProduct() {
+      this.selectedProduct = {
+        id: '',
+        display_text: 'Select Product',
+        name: '',
+        quantity: '',
+        purchase_price: '',
+        sale_price: '',
+        total: ''
+      };
+    },
+    calculateTotal: function calculateTotal() {
+      this.salereturn.total = this.cart.reduce(function (prev, curr) {
+        return prev + parseFloat(curr.total);
+      }, 0).toFixed(2);
+    },
+    onChangeProduct: function onChangeProduct() {
+      var _this5 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) switch (_context4.prev = _context4.next) {
+            case 0:
+              setTimeout(function () {
+                _this5.$refs.quantity.focus();
+              }, 500);
+            case 1:
+            case "end":
+              return _context4.stop();
+          }
+        }, _callee4);
+      }))();
+    },
+    save: function save() {
+      var _this6 = this;
+      if (this.selectedCustomer == null) {
+        alert('Select Customer');
+        return;
+      }
+      if (this.salereturn.return_date == '') {
+        alert('Enter Sale Return date');
+        return;
+      }
+      if (this.cart.length == 0) {
+        alert('Cart is empty');
+        return;
+      }
+      this.salereturn.customer_id = this.selectedCustomer.id;
+      this.saleOnProgress = true;
+      var data = {
+        salereturn: this.salereturn,
+        cartProducts: this.cart
+      };
+      var url = '/store-sale-return';
+      if (this.salereturn.id != 0) {
+        console.log(this.salereturn.id);
+        url = '/update-sale-return';
+      }
+      Swal.fire({
+        title: '<strong>Are you sure!</strong>',
+        html: '<strong>Want to Proccess this?</strong>',
+        showDenyButton: true,
+        confirmButtonText: "Ok",
+        denyButtonText: "Cancel"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post(url, data).then( /*#__PURE__*/function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(res) {
+              var r;
+              return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+                while (1) switch (_context5.prev = _context5.next) {
+                  case 0:
+                    r = res.data;
+                    Swal.fire({
+                      icon: 'success',
+                      title: r.message,
+                      showConfirmButton: false,
+                      timer: 1500
+                    });
+                    _context5.next = 4;
+                    return new Promise(function (r) {
+                      return setTimeout(r, 1000);
+                    });
+                  case 4:
+                    window.location = '/sale_return_entry';
+                  case 5:
+                  case "end":
+                    return _context5.stop();
+                }
+              }, _callee5);
+            }));
+            return function (_x) {
+              return _ref.apply(this, arguments);
+            };
+          }())["catch"](function (error) {
+            var e = error.response.data;
+            if (e.hasOwnProperty('message')) {
+              if (e.hasOwnProperty('errors')) {
+                Object.entries(e.errors).forEach(function (_ref2) {
+                  var _ref3 = _slicedToArray(_ref2, 2),
+                    key = _ref3[0],
+                    val = _ref3[1];
+                  _this6.$toaster.error(val[0]);
+                });
+              } else {
+                _this6.$toaster.error(e.message);
+              }
+            } else {
+              _this6.$toaster.error(e);
+            }
+          });
+        }
+      });
+    },
+    getSaleReturn: function getSaleReturn() {
+      var _this7 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+        return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+          while (1) switch (_context6.prev = _context6.next) {
+            case 0:
+              _context6.next = 2;
+              return axios.post('/get_sales_return', {
+                saleReturnId: _this7.id
+              }).then(function (res) {
+                var salesreturns = res.data[0];
+                console.log(salesreturns.salereturn);
+                _this7.selectedCustomer = {
+                  id: salesreturns.customerId,
+                  display_text: salesreturns.display_name,
+                  mobile: salesreturns.supplier_mobile,
+                  address: salesreturns.supplier_address
+                };
+                _this7.salereturn.invoice_number = salesreturns.salereturn.invoice_number, _this7.salereturn.return_date = salesreturns.salereturn.return_date;
+                _this7.salereturn.supplier_id = salesreturns.supplierId;
+                _this7.salereturn.total = salesreturns.salereturn.total_amount;
+                _this7.salereturn.note = salesreturns.salereturn.remark;
+                salesreturns.salereturn.sale_return_details.forEach(function (item) {
+                  var cart = {
+                    id: item.id,
+                    productId: item.product_id,
+                    name: item.product.name,
+                    quantity: item.quantity,
+                    return_rate: item.return_rate,
+                    total: item.total_amount
+                  };
+                  _this7.cart.push(cart);
+                });
+              });
+            case 2:
+            case "end":
+              return _context6.stop();
+          }
+        }, _callee6);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['role'],
+  data: function data() {
+    return {
+      searchType: '',
+      recordType: 'without_details',
+      dateFrom: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+      dateTo: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD'),
+      customers: [],
+      selectedCustomer: null,
+      salereturns: [],
+      searchTypesForRecord: ['', 'user', 'customer']
+    };
+  },
+  created: function created() {
+    this.getBranchInfo();
+  },
+  methods: {
+    checkReturnAndEdit: function checkReturnAndEdit(saleretrun) {
+      location.replace('/sale_return_entry/' + saleretrun.id);
+    },
+    onChangeSearchType: function onChangeSearchType() {
+      this.sales = [];
+      if (this.searchType == 'customer') {
+        this.getCustomers();
+      }
+    },
+    getBranchInfo: function getBranchInfo() {
+      var _this = this;
+      axios.get('/get_branches').then(function (res) {
+        _this.branch = res.data;
+      });
+    },
+    getCustomers: function getCustomers() {
+      var _this2 = this;
+      axios.get('/get_customers').then(function (res) {
+        _this2.customers = res.data;
+        console.log(_this2.customers);
+      });
+    },
+    getSearchResult: function getSearchResult() {
+      if (this.searchType != 'customer') {
+        this.selectedCustomer = null;
+      }
+      this.getSaleRecord();
+    },
+    getSaleRecord: function getSaleRecord() {
+      var _this3 = this;
+      var filter = {
+        customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo
+      };
+      if (this.recordType == 'with_details') {
+        filter.with_details = true;
+      }
+      var url = '/get_sales_return';
+      axios.post(url, filter).then(function (res) {
+        _this3.salereturns = res.data;
+        console.log(_this3.salereturns);
+      })["catch"](function (error) {
+        if (error.response) {
+          alert("".concat(error.response.status, ", ").concat(error.response.statusText));
+        }
+      });
+    },
+    navigateToPage: function navigateToPage() {
+      var baseUrl = '/pdf_generate';
+      var params = {
+        customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
+        dateFrom: this.dateFrom,
+        dateTo: this.dateTo,
+        recordType: this.recordType
+      };
+      var queryString = Object.keys(params).map(function (key) {
+        return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+      }).join('&');
+      window.location.href = "".concat(baseUrl, "?").concat(queryString);
+    },
+    deleteSaleReturn: function deleteSaleReturn(salesReturnId) {
+      var _this4 = this;
+      Swal.fire({
+        title: '<strong>Are you sure!</strong>',
+        html: '<strong>Want to delete this?</strong>',
+        showDenyButton: true,
+        confirmButtonText: "Ok",
+        denyButtonText: "Cancel"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios.post('/delete-sale-return', {
+            id: salesReturnId
+          }).then(function (res) {
+            var r = res.data;
+            Swal.fire({
+              icon: 'success',
+              title: r.message,
+              showConfirmButton: false,
+              timer: 3000
+            });
+            _this4.getSaleRecord();
+          })["catch"](function (error) {
+            var e = error.response.data;
+            if (e.hasOwnProperty('message')) {
+              if (e.hasOwnProperty('errors')) {
+                Object.entries(e.errors).forEach(function (_ref) {
+                  var _ref2 = _slicedToArray(_ref, 2),
+                    key = _ref2[0],
+                    val = _ref2[1];
+                  _this4.$toaster.error(val[0]);
+                });
+              } else {
+                _this4.$toaster.error(e.message);
+              }
+            } else {
+              _this4.$toaster.error(e);
+            }
+          });
+        }
+      });
+    },
+    print: function print() {
+      var _this5 = this;
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var dateText, customerText, reportContent, reportWindow, rows;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) switch (_context.prev = _context.next) {
+            case 0:
+              dateText = '';
+              if (_this5.dateFrom != '' && _this5.dateTo != '') {
+                dateText = "Statement from <strong>".concat(_this5.dateFrom, "</strong> to <strong>").concat(_this5.dateTo, "</strong>");
+              }
+              customerText = '';
+              if (_this5.selectedCustomer != null && _this5.selectedCustomer.id != '') {
+                customerText = "<strong>Customer: </strong> ".concat(_this5.selectedCustomer.name, "<br>");
+              }
+              reportContent = "\n\t\t\t\t\t<div class=\"container\">\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-12 text-center\">\n\t\t\t\t\t\t\t\t<h3>Purchase Record</h3>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-6\">\n\t\t\t\t\t\t\t\t ".concat(customerText, " \n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\"col-xs-6 text-right\">\n\t\t\t\t\t\t\t\t").concat(dateText, "\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t<div class=\"col-xs-12\">\n\t\t\t\t\t\t\t\t").concat(document.querySelector('#reportContent').innerHTML, "\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t");
+              reportWindow = window.open('', 'PRINT', "height=".concat(screen.height, ", width=").concat(screen.width));
+              reportWindow.document.write("\n                <link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-xs-2\"><img src=\"".concat(_this5.branch.logo, "\" alt=\"Logo\" style=\"height:80px;\" /></div>\n                        <div class=\"col-xs-10\" style=\"padding-top:20px;\">\n                            <strong style=\"font-size:18px;\">").concat(_this5.branch.name, "</strong><br>\n                            <p style=\"white-space: pre-line;\">").concat(_this5.branch.address, "</p>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <div style=\"border-bottom: 4px double #454545;margin-top:7px;margin-bottom:7px;\"></div>\n                        </div>\n                    </div>\n                </div>\n            "));
+              reportWindow.document.head.innerHTML += "\n\t\t\t\t\t<style>\n\t\t\t\t\t\t.record-table{\n\t\t\t\t\t\t\twidth: 100%;\n\t\t\t\t\t\t\tborder-collapse: collapse;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table thead{\n\t\t\t\t\t\t\tbackground-color: #0097df;\n\t\t\t\t\t\t\tcolor:white;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table th, .record-table td{\n\t\t\t\t\t\t\tpadding: 3px;\n\t\t\t\t\t\t\tborder: 1px solid #454545;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.record-table th{\n\t\t\t\t\t\t\ttext-align: center;\n\t\t\t\t\t\t}\n\t\t\t\t\t</style>\n\t\t\t\t";
+              reportWindow.document.body.innerHTML += reportContent;
+              if (_this5.searchType == '' || _this5.searchType == 'user') {
+                rows = reportWindow.document.querySelectorAll('.record-table tr');
+                rows.forEach(function (row) {
+                  row.lastChild.remove();
+                });
+              }
+              reportWindow.focus();
+              _context.next = 13;
+              return new Promise(function (resolve) {
+                return setTimeout(resolve, 1000);
+              });
+            case 13:
+              reportWindow.print();
+              reportWindow.close();
+            case 15:
+            case "end":
+              return _context.stop();
+          }
+        }, _callee);
+      }))();
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=script&lang=js& ***!
@@ -7758,6 +8830,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.totalStockValue = res.data.totalValue;
       });
     },
+    exportTableToExcel: function exportTableToExcel(transactionsTable) {
+      var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var headerText = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
+      var dataType = 'application/vnd.ms-excel';
+      var tableSelect = document.getElementById(transactionsTable);
+
+      // Ensure tableSelect exists
+      if (!tableSelect) {
+        console.error('Table element not found');
+        return;
+      }
+
+      // Add inline styles to ensure borders and padding
+      var style = "\n\t\t\t\t\t<style>\n\t\t\t\t\t\ttable, th, td {\n\t\t\t\t\t\t\tborder: 1px solid gray;\n\t\t\t\t\t\t\tborder-collapse: collapse;\n\t\t\t\t\t\t}\n\t\t\t\t\t\tth, td {\n\t\t\t\t\t\t\tpadding: 5px;\n\t\t\t\t\t\t\ttext-align: left;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t</style>\n\t\t\t\t";
+      var headerHTML = headerText ? "<div class=\"header\" >".concat(headerText, "</div>") : '';
+
+      // Combine header and table HTML
+      var tableHTML = style + headerHTML + tableSelect.outerHTML;
+
+      // Specify file name
+      filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+      // Create download link element
+      var downloadLink = document.createElement('a');
+      document.body.appendChild(downloadLink);
+      if (navigator.msSaveOrOpenBlob) {
+        // For IE and Edge
+        var blob = new Blob(["\uFEFF", tableHTML], {
+          type: dataType
+        });
+        navigator.msSaveOrOpenBlob(blob, filename);
+      } else {
+        // For other browsers
+        downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
+        downloadLink.download = filename;
+
+        // Trigger the download
+        downloadLink.click();
+      }
+
+      // Clean up
+      document.body.removeChild(downloadLink);
+    },
     getBranchInfo: function getBranchInfo() {
       var _this2 = this;
       axios.get('/get_branch_info').then(function (res) {
@@ -7773,13 +8888,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     getCategories: function getCategories() {
       var _this3 = this;
-      axios.get('/get_categories_inventory').then(function (res) {
+      axios.get('/get_categories').then(function (res) {
         _this3.categories = res.data;
       });
     },
     getProducts: function getProducts() {
       var _this4 = this;
-      axios.post('/get_instruments', {
+      axios.post('/get_products', {
         isService: 'false'
       }).then(function (res) {
         _this4.products = res.data;
@@ -10322,6 +11437,11 @@ var render = function render() {
     staticStyle: {
       "margin-bottom": "10px"
     }
+  }, [_c("div", {
+    staticClass: "col-md-12",
+    staticStyle: {
+      "margin-bottom": "10px"
+    }
   }, [_c("a", {
     attrs: {
       href: ""
@@ -10332,9 +11452,16 @@ var render = function render() {
         return _vm.print.apply(null, arguments);
       }
     }
+  }, [_vm._m(1)]), _vm._v(" "), _c("button", {
+    staticClass: "excel-design",
+    on: {
+      click: function click($event) {
+        return _vm.exportTableToExcel("reportContent", "donwloadexcel", "Purchase Return Record");
+      }
+    }
   }, [_c("i", {
-    staticClass: "fa fa-print"
-  }), _vm._v(" Print")])]), _vm._v(" "), _c("div", {
+    staticClass: "fa fa-file-excel-o"
+  }), _vm._v(" Export To Excel\n   \t\t \t")]), _vm._v(" "), _vm._m(2)])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-12"
   }, [_c("div", {
     staticClass: "table-responsive",
@@ -10349,7 +11476,7 @@ var render = function render() {
     style: {
       display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? "" : "none"
     }
-  }, [_vm._m(1), _vm._v(" "), _vm._l(_vm.purchases, function (purchase, sl) {
+  }, [_vm._m(3), _vm._v(" "), _vm._l(_vm.purchases, function (purchase, sl) {
     return _c("tbody", {
       key: sl
     }, [_c("tr", [_c("td", [_vm._v(_vm._s(purchase.purchase.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchase.purchase.order_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchase.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchase.purchase.purchase_details[0].product.name))]), _vm._v(" "), _c("td", {
@@ -10452,7 +11579,7 @@ var render = function render() {
     style: {
       display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? "" : "none"
     }
-  }, [_vm._m(2), _vm._v(" "), _c("tbody", _vm._l(_vm.purchases, function (purchase, sl) {
+  }, [_vm._m(4), _vm._v(" "), _c("tbody", _vm._l(_vm.purchases, function (purchase, sl) {
     return _c("tr", {
       key: sl
     }, [_c("td", [_vm._v(_vm._s(purchase.purchase.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchase.purchase.order_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchase.display_name))]), _vm._v(" "), _c("td", {
@@ -10526,6 +11653,22 @@ var staticRenderFns = [function () {
       value: "Search"
     }
   })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "print-design"
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print\n\t\t\t\t")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "pdf-design"
+  }, [_c("i", {
+    staticClass: "fa fa-file-pdf-o"
+  }), _vm._v(" Export To PDF\n   \t\t \t")]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -11114,6 +12257,1052 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row",
+    attrs: {
+      id: "purchase"
+    }
+  }, [_c("div", {
+    staticClass: "col-xs-12 col-md-3 col-lg-3",
+    staticStyle: {
+      border: "1px solid #d1d1d1",
+      padding: "0px",
+      "margin-bottom": "5px"
+    }
+  }, [_c("div", {
+    staticClass: "widget-box"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "widget-body",
+    staticStyle: {
+      "background-color": "#FFE7CE"
+    }
+  }, [_c("div", {
+    staticClass: "widget-main"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-xs-12"
+  }, [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticStyle: {
+      color: "#000",
+      "margin-bottom": "0px"
+    }
+  }, [_c("tr", [_c("td", {
+    staticStyle: {
+      width: "800px"
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v("Invoice no")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.purchasereturn.invoice_number,
+      expression: "purchasereturn.invoice_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "invoice",
+      name: "invoice",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.purchasereturn.invoice_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.purchasereturn, "invoice_number", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v("Return Date ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.purchasereturn.return_date,
+      expression: "purchasereturn.return_date"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "purchaseDate",
+      name: "purchaseDate",
+      type: "date",
+      disabled: _vm.role == "User" ? true : false
+    },
+    domProps: {
+      value: _vm.purchasereturn.return_date
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.purchasereturn, "return_date", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v(" Supplier ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-7"
+  }, [_c("v-select", {
+    staticStyle: {
+      width: "100%"
+    },
+    attrs: {
+      options: _vm.suppliers,
+      placeholder: "Select Supplier",
+      label: "display_text"
+    },
+    model: {
+      value: _vm.selectedSupplier,
+      callback: function callback($$v) {
+        _vm.selectedSupplier = $$v;
+      },
+      expression: "selectedSupplier"
+    }
+  })], 1), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v(" Total Amount ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.purchasereturn.total,
+      expression: "purchasereturn.total"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      id: "total",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.purchasereturn.total
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.purchasereturn, "total", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "col-xs-6",
+    staticStyle: {
+      "padding-right": "0px"
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-6",
+    staticStyle: {
+      "padding-left": "0px",
+      display: "flex"
+    }
+  }, [_c("input", {
+    staticClass: "btn btn-success",
+    staticStyle: {
+      background: "#000",
+      color: "#fff",
+      padding: "0px",
+      "margin-right": "5px",
+      width: "70%"
+    },
+    attrs: {
+      type: "button",
+      value: "Pur.Return",
+      disabled: _vm.purchaseReturnOnProgress == true ? true : false
+    },
+    on: {
+      click: _vm.save
+    }
+  }), _vm._v(" "), _c("input", {
+    staticClass: "btn btn-info",
+    staticStyle: {
+      background: "#000",
+      color: "#fff",
+      padding: "0px",
+      width: "70%"
+    },
+    attrs: {
+      type: "button",
+      onclick: "window.location = '/purchase_inventory'",
+      value: "New Purch.."
+    }
+  })])])])])])])])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-12 col-md-8 col-lg-8"
+  }, [_c("div", {
+    staticClass: "widget-box"
+  }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "widget-body",
+    staticStyle: {
+      "background-color": "#AEE2FF"
+    }
+  }, [_c("div", {
+    staticClass: "widget-main"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-sm-12"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.addToCart.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Product ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-4"
+  }, [_c("v-select", {
+    attrs: {
+      options: _vm.products,
+      label: "display_text"
+    },
+    on: {
+      input: function input($event) {
+        return _vm.onChangeProduct();
+      }
+    },
+    model: {
+      value: _vm.selectedProduct,
+      callback: function callback($$v) {
+        _vm.selectedProduct = $$v;
+      },
+      expression: "selectedProduct"
+    }
+  })], 1), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Pur. Rate ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.purchase_price,
+      expression: "selectedProduct.purchase_price"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "purchaseRate",
+      name: "purchaseRate",
+      placeholder: "Pur. Rate",
+      required: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.purchase_price
+    },
+    on: {
+      input: [function ($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "purchase_price", $event.target.value);
+      }, _vm.productTotal]
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Quantity ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-5"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.quantity,
+      expression: "selectedProduct.quantity"
+    }],
+    ref: "quantity",
+    staticClass: "form-control",
+    staticStyle: {
+      width: "80%"
+    },
+    attrs: {
+      type: "text",
+      step: "0.01",
+      id: "quantity",
+      name: "quantity",
+      placeholder: "Quantity",
+      required: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.quantity
+    },
+    on: {
+      input: [function ($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "quantity", $event.target.value);
+      }, _vm.productTotal]
+    }
+  })]), _vm._v(" "), _c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Total Amount ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.total,
+      expression: "selectedProduct.total"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "productTotal",
+      name: "productTotal",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.total
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "total", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _vm._m(4)])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-12 col-md-12 col-lg-12",
+    staticStyle: {
+      "padding-left": "0px",
+      "padding-right": "0px"
+    }
+  }, [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-bordered",
+    staticStyle: {
+      color: "#000",
+      "margin-bottom": "5px"
+    }
+  }, [_vm._m(5), _vm._v(" "), _c("tbody", {
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.cart.length > 0 ? "" : "none"
+    }
+  }, [_vm._l(_vm.cart, function (product, sl) {
+    return _c("tr", {
+      key: sl
+    }, [_c("td", [_vm._v(_vm._s(sl + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchase_price))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.total))]), _vm._v(" "), _c("td", [_c("a", {
+      attrs: {
+        href: ""
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.removeFromCart(sl);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])])]);
+  }), _vm._v(" "), _vm._m(6), _vm._v(" "), _vm._m(7), _vm._v(" "), _c("tr", [_c("td", {
+    attrs: {
+      colspan: "4"
+    }
+  }, [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.purchasereturn.note,
+      expression: "purchasereturn.note"
+    }],
+    staticStyle: {
+      width: "100%",
+      "font-size": "13px"
+    },
+    attrs: {
+      placeholder: "Note"
+    },
+    domProps: {
+      value: _vm.purchasereturn.note
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.purchasereturn, "note", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "padding-top": "15px",
+      "font-size": "18px"
+    },
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v(_vm._s(_vm.purchasereturn.total))])])], 2)])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-12 col-sm-1 col-md-1",
+    staticStyle: {
+      "background-color": "#acbac5",
+      padding: "8px",
+      "border-radius": "5px",
+      "box-sizing": "border-box",
+      border: "3px solid #fff",
+      "border-top-style": "none",
+      height: "80px"
+    }
+  }, [_c("div", [_c("div", {
+    staticStyle: {
+      display: "none",
+      "text-align": "center",
+      "margin-top": "8px"
+    },
+    style: {
+      color: _vm.productStock > 0 ? "green" : "red",
+      display: _vm.selectedProduct.id == "" ? "none" : ""
+    }
+  }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(_vm.productStockText) + "\n\t\t\t\t")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.productStock,
+      expression: "productStock"
+    }],
+    staticStyle: {
+      border: "none",
+      "font-size": "20px",
+      width: "100%",
+      "text-align": "center",
+      color: "green",
+      padding: "3px",
+      background: "none !important"
+    },
+    attrs: {
+      type: "text",
+      id: "productStock",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.productStock
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.productStock = $event.target.value;
+      }
+    }
+  }), _c("br")])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "widget-header"
+  }, [_c("h4", {
+    staticClass: "widget-title"
+  }, [_vm._v("Invoice Details")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-xs-1",
+    staticStyle: {
+      padding: "0"
+    }
+  }, [_c("a", {
+    staticClass: "btn btn-xs btn-danger",
+    staticStyle: {
+      height: "25px",
+      border: "0",
+      width: "27px",
+      "margin-left": "-10px"
+    },
+    attrs: {
+      href: "/supplier_entry",
+      title: "Add New Supplier",
+      target: "_blank"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus",
+    staticStyle: {
+      "margin-top": "5px"
+    },
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "widget-header"
+  }, [_c("h5", {
+    staticClass: "widget-title"
+  }, [_vm._v("Supplier & Product Information")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-xs-1",
+    staticStyle: {
+      padding: "0"
+    }
+  }, [_c("a", {
+    staticClass: "btn btn-xs btn-danger",
+    staticStyle: {
+      height: "25px",
+      border: "0",
+      width: "27px",
+      "margin-left": "-10px"
+    },
+    attrs: {
+      href: "/product_entry",
+      title: "Add New Product",
+      target: "_blank"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus",
+    staticStyle: {
+      "margin-top": "5px"
+    },
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("button", {
+    staticClass: "btn btn-default pull-right",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Add Cart")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", {
+    staticStyle: {
+      background: "#526D82"
+    }
+  }, [_c("th", {
+    staticStyle: {
+      width: "4%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("SL")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "20%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Product Name")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "8%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Pur. Rate")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "5%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Quantity")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "13%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Total Amount")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "5%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Action")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    attrs: {
+      colspan: "7"
+    }
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", {
+    staticStyle: {
+      "font-weight": "bold"
+    }
+  }, [_c("td", {
+    attrs: {
+      colspan: "4"
+    }
+  }, [_vm._v("Note")]), _vm._v(" "), _c("td", {
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Total")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    attrs: {
+      id: "purchaseRecord"
+    }
+  }, [_c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "border-bottom": "1px solid #ccc",
+      padding: "3px 0",
+      background: "aquamarine"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("form", {
+    staticClass: "form-inline",
+    attrs: {
+      id: "searchForm"
+    },
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.getSearchResult.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("Search Type")]), _c("br"), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.searchType,
+      expression: "searchType"
+    }],
+    staticClass: "form-control",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.searchType = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.onChangeSearchType]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("All")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "supplier"
+    }
+  }, [_vm._v("By Supplier")])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchType == "supplier" && _vm.suppliers.length > 0 ? "" : "none"
+    }
+  }, [_c("label", [_vm._v("Supplier")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      options: _vm.suppliers,
+      label: "name"
+    },
+    model: {
+      value: _vm.selectedSupplier,
+      callback: function callback($$v) {
+        _vm.selectedSupplier = $$v;
+      },
+      expression: "selectedSupplier"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group",
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) ? "" : "none"
+    }
+  }, [_c("label", [_vm._v("Record Type")]), _c("br"), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.recordType,
+      expression: "recordType"
+    }],
+    staticClass: "form-control",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.recordType = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, function ($event) {
+        _vm.purchasesreturn = [];
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "without_details"
+    }
+  }, [_vm._v("Without Details")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "with_details"
+    }
+  }, [_vm._v("With Details")])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("From Date")]), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.dateFrom,
+      expression: "dateFrom"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "date"
+    },
+    domProps: {
+      value: _vm.dateFrom
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.dateFrom = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("To Date")]), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.dateTo,
+      expression: "dateTo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "date"
+    },
+    domProps: {
+      value: _vm.dateTo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.dateTo = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _vm._m(0)])])]), _vm._v(" "), _c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "margin-top": "15px",
+      display: "none"
+    },
+    style: {
+      display: _vm.purchasesreturn.length > 0 ? "" : "none"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-12",
+    staticStyle: {
+      "margin-bottom": "10px"
+    }
+  }, [_c("a", {
+    attrs: {
+      href: ""
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.print.apply(null, arguments);
+      }
+    }
+  }, [_vm._m(1)]), _vm._v(" "), _c("button", {
+    staticClass: "excel-design",
+    on: {
+      click: function click($event) {
+        return _vm.exportTableToExcel("reportContent", "Purchase Return Record", "Purchase Return Record");
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-file-excel-o"
+  }), _vm._v(" Export To Excel\n   \t\t \t")]), _vm._v(" "), _vm._m(2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "table-responsive",
+    attrs: {
+      id: "reportContent"
+    }
+  }, [_vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? _c("table", {
+    staticClass: "record-table",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? "" : "none"
+    }
+  }, [_vm._m(3), _vm._v(" "), _vm._l(_vm.purchasesreturn, function (purchasereturn, sl) {
+    return _c("tbody", {
+      key: sl
+    }, [_c("tr", [_c("td", [_vm._v(_vm._s(purchasereturn.purchasereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchasereturn.purchasereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchasereturn.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchasereturn.purchasereturn.purchase_return_details[0].product.name))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(purchasereturn.purchasereturn.purchase_return_details[0].return_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(purchasereturn.purchasereturn.purchase_return_details[0].quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(purchasereturn.purchasereturn.purchase_return_details[0].total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_c("a", {
+      attrs: {
+        href: "/purchase_invoice_print/" + purchasereturn.purchasereturn.id,
+        target: "_blank",
+        title: "Purchase Invoice"
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-file-text"
+    })]), _vm._v(" "), _vm.role !== "User" ? _c("span", [_c("a", {
+      attrs: {
+        href: "javascript:;",
+        title: "Edit Purchase"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.checkReturnAndEdit(purchasereturn.purchasereturn);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-edit"
+    })]), _vm._v(" "), _c("a", {
+      attrs: {
+        href: "javascript:;",
+        title: "Delete Purchase"
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.deletePurchase(purchasereturn.purchasereturn.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])]) : _vm._e()])]), _vm._v(" "), _vm._l(purchasereturn.purchasereturn.purchase_return_details.slice(1), function (product, index) {
+      return _c("tr", {
+        key: index
+      }, [index === 0 ? _c("td", {
+        attrs: {
+          colspan: "3",
+          rowspan: purchasereturn.purchasereturn.purchase_return_details.length - 1
+        }
+      }) : _vm._e(), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.product.name))]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "right"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.return_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "center"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "right"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td")]);
+    }), _vm._v(" "), _c("tr", {
+      staticStyle: {
+        "font-weight": "bold"
+      }
+    }, [_c("td", {
+      staticStyle: {
+        "font-weight": "normal"
+      },
+      attrs: {
+        colspan: "5"
+      }
+    }, [_c("strong", [_vm._v("Note:")]), _vm._v(" " + _vm._s(purchasereturn.remark) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal Quantity: "), _c("br"), _vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(purchasereturn.purchasereturn.purchase_return_details.reduce(function (prev, curr) {
+      return prev + parseFloat(curr.quantity);
+    }, 0)) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal: " + _vm._s(purchasereturn.purchasereturn.total) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td")])], 2);
+  })], 2) : _vm._e(), _vm._v(" "), _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? _c("table", {
+    staticClass: "record-table",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? "" : "none"
+    }
+  }, [_vm._m(4), _vm._v(" "), _c("tbody", _vm._l(_vm.purchasesreturn, function (purchasereturn, sl) {
+    return _c("tr", {
+      key: sl
+    }, [_c("td", [_vm._v(_vm._s(purchasereturn.purchasereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchasereturn.purchasereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(purchasereturn.display_name))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v(_vm._s(purchasereturn.purchasereturn.total_amount))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "left"
+      }
+    }, [_vm._v(_vm._s(purchasereturn.purchasereturn.remark))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm.role != "User" ? _c("span", [_c("a", {
+      attrs: {
+        href: "javascript:",
+        title: "Edit Purchase"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.checkReturnAndEdit(purchasereturn.purchasereturn);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-edit"
+    })]), _vm._v(" "), _c("a", {
+      attrs: {
+        href: "",
+        title: "Delete Purchase"
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.deletePurchase(purchasereturn.purchasereturn.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])]) : _vm._e()])]);
+  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", {
+    staticStyle: {
+      "font-weight": "bold"
+    }
+  }, [_c("td", {
+    staticStyle: {
+      "text-align": "right"
+    },
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Total")]), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "right"
+    }
+  }, [_vm._v(_vm._s(_vm.purchasesreturn.reduce(function (prev, curr) {
+    return prev + parseFloat(curr.purchasereturn.total_amount);
+  }, 0)))]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")])])]) : _vm._e()])])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "18px"
+    }
+  }, [_c("input", {
+    attrs: {
+      type: "submit",
+      value: "Search"
+    }
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "print-design"
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print\n\t\t\t\t")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "pdf-design"
+  }, [_c("i", {
+    staticClass: "fa fa-file-pdf-o"
+  }), _vm._v(" Export To PDF\n   \t\t \t")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Date")]), _vm._v(" "), _c("th", [_vm._v("Supplier Name")]), _vm._v(" "), _c("th", [_vm._v("Product Name")]), _vm._v(" "), _c("th", [_vm._v("Price")]), _vm._v(" "), _c("th", [_vm._v("Quantity")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Action")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Date")]), _vm._v(" "), _c("th", [_vm._v("Supplier Name")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Note")]), _vm._v(" "), _c("th", [_vm._v("Action")])])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=template&id=7c97f710&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=template&id=7c97f710&scoped=true& ***!
@@ -11531,239 +13720,6 @@ var staticRenderFns = [function () {
     }
   })]);
 }];
-render._withStripped = true;
-
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true&":
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* binding */ render),
-/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
-/* harmony export */ });
-var render = function render() {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    attrs: {
-      id: "saleRecord"
-    }
-  }, [_c("div", {
-    staticClass: "row",
-    staticStyle: {
-      "margin-top": "15px",
-      display: "none"
-    },
-    style: {
-      display: _vm.sales.length > 0 ? "" : "none"
-    }
-  }, [_c("div", {
-    staticClass: "col-md-12"
-  }, [_c("div", {
-    staticClass: "table-responsive",
-    attrs: {
-      id: "reportContent"
-    }
-  }, [_c("h3", {
-    staticClass: "text-center"
-  }, [_vm._v(" Sales Record")]), _vm._v(" "), _vm.detail == "with_details" ? _c("table", {
-    staticClass: "record-table",
-    staticStyle: {
-      display: "none"
-    },
-    style: {
-      display: _vm.detail == "with_details" ? "" : "none"
-    }
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Date")]), _vm._v(" "), _c("th", [_vm._v("Customer Name")]), _vm._v(" "), _c("th", [_vm._v("Product Name")]), _vm._v(" "), _c("th", [_vm._v("Purchase Price")]), _vm._v(" "), _c("th", [_vm._v("Sale Price")]), _vm._v(" "), _c("th", [_vm._v("Quantity")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", {
-    "class": {
-      hidden: _vm.isHidden
-    }
-  }, [_vm._v("Action")])])]), _vm._v(" "), _vm._l(_vm.sales, function (sale, sl) {
-    return _c("tbody", {
-      key: sl
-    }, [_c("tr", [_c("td", [_vm._v(_vm._s(sale.sale.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(sale.sale.order_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(sale.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(sale.sale.sale_details[0].product.name))]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "right"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(sale.sale.sale_details[0].purchase_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "right"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(sale.sale.sale_details[0].sale_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "center"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(sale.sale.sale_details[0].quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "right"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(sale.sale.sale_details[0].total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      "class": {
-        hidden: _vm.isHidden
-      }
-    }, [_vm.role !== "User" ? _c("span", [_c("a", {
-      attrs: {
-        href: "javascript:;",
-        title: "Edit Sale"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.checkReturnAndEdit(sale.sale);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-edit"
-    })]), _vm._v(" "), _c("a", {
-      attrs: {
-        href: "javascript:;",
-        title: "Delete Sale"
-      },
-      on: {
-        click: function click($event) {
-          $event.preventDefault();
-          return _vm.deleteSale(sale.sale.id);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-trash"
-    })])]) : _vm._e()])]), _vm._v(" "), _vm._l(sale.sale.sale_details.slice(1), function (product, index) {
-      return _c("tr", {
-        key: index
-      }, [index === 0 ? _c("td", {
-        attrs: {
-          colspan: "3",
-          rowspan: sale.sale.sale_details.length - 1
-        }
-      }) : _vm._e(), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.product.name))]), _vm._v(" "), _c("td", {
-        staticStyle: {
-          "text-align": "right"
-        }
-      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.purchase_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-        staticStyle: {
-          "text-align": "right"
-        }
-      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.sale_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-        staticStyle: {
-          "text-align": "center"
-        }
-      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-        staticStyle: {
-          "text-align": "right"
-        }
-      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-        "class": {
-          hidden: _vm.isHidden
-        }
-      })]);
-    }), _vm._v(" "), _c("tr", {
-      staticStyle: {
-        "font-weight": "bold"
-      }
-    }, [_c("td", {
-      staticStyle: {
-        "font-weight": "normal"
-      },
-      attrs: {
-        colspan: "6"
-      }
-    }, [_c("strong", [_vm._v("Note:")]), _vm._v(" " + _vm._s(sale.sale.remark) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "center"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal Quantity: "), _c("br"), _vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(sale.sale.sale_details.reduce(function (prev, curr) {
-      return prev + parseFloat(curr.quantity);
-    }, 0)) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "right"
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal: " + _vm._s(sale.sale.total) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
-      "class": {
-        hidden: _vm.isHidden
-      }
-    })])], 2);
-  })], 2) : _vm._e(), _vm._v(" "), _vm.detail == "without_details" ? _c("table", {
-    staticClass: "record-table",
-    staticStyle: {
-      display: "none"
-    },
-    style: {
-      display: _vm.detail == "without_details" ? "" : "none"
-    }
-  }, [_c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Date")]), _vm._v(" "), _c("th", [_vm._v("Customer Name")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Note")]), _vm._v(" "), _c("th", {
-    "class": {
-      hidden: _vm.isHidden
-    }
-  }, [_vm._v("Action")])])]), _vm._v(" "), _c("tbody", _vm._l(_vm.sales, function (sale, sl) {
-    return _c("tr", {
-      key: sl
-    }, [_c("td", [_vm._v(_vm._s(sale.sale.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(sale.sale.order_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(sale.display_name))]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "right"
-      }
-    }, [_vm._v(_vm._s(sale.sale.total))]), _vm._v(" "), _c("td", {
-      staticStyle: {
-        "text-align": "left"
-      }
-    }, [_vm._v(_vm._s(sale.sale.remark))]), _vm._v(" "), _c("td", {
-      "class": {
-        hidden: _vm.isHidden
-      },
-      staticStyle: {
-        "text-align": "center"
-      }
-    }, [_vm.role != "User" ? _c("span", [_c("a", {
-      attrs: {
-        href: "javascript:",
-        title: "Edit Sale"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.checkReturnAndEdit(sale.sale);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-edit"
-    })]), _vm._v(" "), _c("a", {
-      attrs: {
-        href: "",
-        title: "Delete Sale"
-      },
-      on: {
-        click: function click($event) {
-          $event.preventDefault();
-          return _vm.deleteSale(sale.sale.id);
-        }
-      }
-    }, [_c("i", {
-      staticClass: "fa fa-trash"
-    })])]) : _vm._e()])]);
-  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", {
-    staticStyle: {
-      "font-weight": "bold"
-    }
-  }, [_c("td", {
-    staticStyle: {
-      "text-align": "right"
-    },
-    attrs: {
-      colspan: "3"
-    }
-  }, [_vm._v("Total")]), _vm._v(" "), _c("td", {
-    staticStyle: {
-      "text-align": "right"
-    }
-  }, [_vm._v(_vm._s(_vm.sales.reduce(function (prev, curr) {
-    return prev + parseFloat(curr.sale.total);
-  }, 0)))]), _vm._v(" "), _c("td")])])]) : _vm._e()])])])]);
-};
-var staticRenderFns = [];
 render._withStripped = true;
 
 
@@ -12420,6 +14376,966 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true&":
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row",
+    attrs: {
+      id: "purchase"
+    }
+  }, [_c("div", {
+    staticClass: "col-xs-12 col-md-3 col-lg-3",
+    staticStyle: {
+      border: "1px solid #d1d1d1",
+      padding: "0px",
+      "margin-bottom": "5px"
+    }
+  }, [_c("div", {
+    staticClass: "widget-box"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "widget-body",
+    staticStyle: {
+      "background-color": "#FFE7CE"
+    }
+  }, [_c("div", {
+    staticClass: "widget-main"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-xs-12"
+  }, [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticStyle: {
+      color: "#000",
+      "margin-bottom": "0px"
+    }
+  }, [_c("tr", [_c("td", {
+    staticStyle: {
+      width: "800px"
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v("Invoice no")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.salereturn.invoice_number,
+      expression: "salereturn.invoice_number"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "invoice",
+      name: "invoice",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.salereturn.invoice_number
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.salereturn, "invoice_number", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v("Return Date ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.salereturn.return_date,
+      expression: "salereturn.return_date"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "saleDate",
+      type: "date",
+      disabled: _vm.role == "User" ? true : false
+    },
+    domProps: {
+      value: _vm.salereturn.return_date
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.salereturn, "return_date", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v(" Customer ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-7"
+  }, [_c("v-select", {
+    staticStyle: {
+      width: "100%"
+    },
+    attrs: {
+      options: _vm.customers,
+      placeholder: "Select Customer",
+      label: "display_text"
+    },
+    model: {
+      value: _vm.selectedCustomer,
+      callback: function callback($$v) {
+        _vm.selectedCustomer = $$v;
+      },
+      expression: "selectedCustomer"
+    }
+  })], 1), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }, [_vm._v(" Total Amount ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.salereturn.total,
+      expression: "salereturn.total"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "number",
+      id: "total",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.salereturn.total
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.salereturn, "total", $event.target.value);
+      }
+    }
+  })])])])]), _vm._v(" "), _c("tr", [_c("td", [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "col-xs-6",
+    staticStyle: {
+      "padding-right": "0px"
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-6",
+    staticStyle: {
+      "padding-left": "0px",
+      display: "flex"
+    }
+  }, [_c("input", {
+    staticClass: "btn btn-success",
+    staticStyle: {
+      background: "#000",
+      color: "#fff",
+      padding: "0px",
+      "margin-right": "5px",
+      width: "70%"
+    },
+    attrs: {
+      type: "button",
+      value: "Sale",
+      disabled: _vm.saleOnProgress == true ? true : false
+    },
+    on: {
+      click: _vm.save
+    }
+  }), _vm._v(" "), _c("input", {
+    staticClass: "btn btn-info",
+    staticStyle: {
+      background: "#000",
+      color: "#fff",
+      padding: "0px",
+      width: "70%"
+    },
+    attrs: {
+      type: "button",
+      onclick: "window.location = '/sale_inventory'",
+      value: "New Sale"
+    }
+  })])])])])])])])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-12 col-md-9 col-lg-9"
+  }, [_c("div", {
+    staticClass: "widget-box"
+  }, [_vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "widget-body",
+    staticStyle: {
+      "background-color": "#AEE2FF"
+    }
+  }, [_c("div", {
+    staticClass: "widget-main"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-sm-12"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.addToCart.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Product ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-4"
+  }, [_c("v-select", {
+    attrs: {
+      options: _vm.products,
+      label: "display_text"
+    },
+    on: {
+      input: _vm.onChangeProduct
+    },
+    model: {
+      value: _vm.selectedProduct,
+      callback: function callback($$v) {
+        _vm.selectedProduct = $$v;
+      },
+      expression: "selectedProduct"
+    }
+  })], 1), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Sale Rate ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.sale_price,
+      expression: "selectedProduct.sale_price"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "saleRate",
+      placeholder: "Sale Rate",
+      required: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.sale_price
+    },
+    on: {
+      input: [function ($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "sale_price", $event.target.value);
+      }, _vm.productTotal]
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Quantity ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-5"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.quantity,
+      expression: "selectedProduct.quantity"
+    }],
+    ref: "quantity",
+    staticClass: "form-control",
+    staticStyle: {
+      width: "80%"
+    },
+    attrs: {
+      type: "text",
+      step: "0.01",
+      id: "quantity",
+      name: "quantity",
+      placeholder: "Quantity",
+      required: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.quantity
+    },
+    on: {
+      input: [function ($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "quantity", $event.target.value);
+      }, _vm.productTotal]
+    }
+  })]), _vm._v(" "), _c("label", {
+    staticClass: "col-xs-2 control-label no-padding-right"
+  }, [_vm._v(" Total Amount ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-3"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.selectedProduct.total,
+      expression: "selectedProduct.total"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "productTotal",
+      name: "productTotal",
+      readonly: ""
+    },
+    domProps: {
+      value: _vm.selectedProduct.total
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.selectedProduct, "total", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _vm._m(4)])])])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-12 col-md-12 col-lg-12",
+    staticStyle: {
+      "padding-left": "0px",
+      "padding-right": "0px"
+    }
+  }, [_c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-bordered",
+    staticStyle: {
+      color: "#000",
+      "margin-bottom": "5px"
+    }
+  }, [_vm._m(5), _vm._v(" "), _c("tbody", {
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.cart.length > 0 ? "" : "none"
+    }
+  }, [_vm._l(_vm.cart, function (product, sl) {
+    return _c("tr", {
+      key: sl
+    }, [_c("td", [_vm._v(_vm._s(sl + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sale_price))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.total))]), _vm._v(" "), _c("td", [_c("a", {
+      attrs: {
+        href: ""
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.removeFromCart(sl);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])])]);
+  }), _vm._v(" "), _vm._m(6), _vm._v(" "), _vm._m(7), _vm._v(" "), _c("tr", [_c("td", {
+    attrs: {
+      colspan: "4"
+    }
+  }, [_c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.salereturn.note,
+      expression: "salereturn.note"
+    }],
+    staticStyle: {
+      width: "100%",
+      "font-size": "13px"
+    },
+    attrs: {
+      placeholder: "Note"
+    },
+    domProps: {
+      value: _vm.salereturn.note
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.salereturn, "note", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "padding-top": "15px",
+      "font-size": "18px"
+    },
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v(_vm._s(_vm.salereturn.total))])])], 2)])])])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "widget-header"
+  }, [_c("h4", {
+    staticClass: "widget-title"
+  }, [_vm._v("Invoice Details")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-xs-1",
+    staticStyle: {
+      padding: "0"
+    }
+  }, [_c("a", {
+    staticClass: "btn btn-xs btn-danger",
+    staticStyle: {
+      height: "25px",
+      border: "0",
+      width: "27px",
+      "margin-left": "-10px"
+    },
+    attrs: {
+      href: "/customer_entry",
+      title: "Add New Customer",
+      target: "_blank"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus",
+    staticStyle: {
+      "margin-top": "5px"
+    },
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "widget-header"
+  }, [_c("h5", {
+    staticClass: "widget-title"
+  }, [_vm._v("Product Information")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-xs-1",
+    staticStyle: {
+      padding: "0"
+    }
+  }, [_c("a", {
+    staticClass: "btn btn-xs btn-danger",
+    staticStyle: {
+      height: "25px",
+      border: "0",
+      width: "27px",
+      "margin-left": "-10px"
+    },
+    attrs: {
+      href: "/instrument_entry",
+      title: "Add New Product",
+      target: "_blank"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus",
+    staticStyle: {
+      "margin-top": "5px"
+    },
+    attrs: {
+      "aria-hidden": "true"
+    }
+  })])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    staticClass: "col-xs-4 control-label no-padding-right"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-xs-8"
+  }, [_c("button", {
+    staticClass: "btn btn-default pull-right",
+    attrs: {
+      type: "submit"
+    }
+  }, [_vm._v("Add Cart")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", {
+    staticStyle: {
+      background: "#526D82"
+    }
+  }, [_c("th", {
+    staticStyle: {
+      width: "4%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("SL")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "20%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Product Name")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "8%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Sale Rate")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "5%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Quantity")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "13%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Total Amount")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "5%",
+      color: "#fff",
+      "font-weight": "500"
+    }
+  }, [_vm._v("Action")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    attrs: {
+      colspan: "7"
+    }
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", {
+    staticStyle: {
+      "font-weight": "bold"
+    }
+  }, [_c("td", {
+    attrs: {
+      colspan: "4"
+    }
+  }, [_vm._v("Note")]), _vm._v(" "), _c("td", {
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Total")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    attrs: {
+      id: "purchaseRecord"
+    }
+  }, [_c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "border-bottom": "1px solid #ccc",
+      padding: "3px 0",
+      background: "aquamarine"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("form", {
+    staticClass: "form-inline",
+    attrs: {
+      id: "searchForm"
+    },
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.getSearchResult.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("Search Type")]), _c("br"), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.searchType,
+      expression: "searchType"
+    }],
+    staticClass: "form-control",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.searchType = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, _vm.onChangeSearchType]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: ""
+    }
+  }, [_vm._v("All")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "customer"
+    }
+  }, [_vm._v("By Customer")])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchType == "customer" && _vm.customers.length > 0 ? "" : "none"
+    }
+  }, [_c("label", [_vm._v("Customer")]), _vm._v(" "), _c("v-select", {
+    attrs: {
+      options: _vm.customers,
+      label: "name"
+    },
+    model: {
+      value: _vm.selectedCustomer,
+      callback: function callback($$v) {
+        _vm.selectedCustomer = $$v;
+      },
+      expression: "selectedCustomer"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "form-group",
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) ? "" : "none"
+    }
+  }, [_c("label", [_vm._v("Record Type")]), _c("br"), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.recordType,
+      expression: "recordType"
+    }],
+    staticClass: "form-control",
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.recordType = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+      }, function ($event) {
+        _vm.salereturns = [];
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "without_details"
+    }
+  }, [_vm._v("Without Details")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "with_details"
+    }
+  }, [_vm._v("With Details")])])]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("From Date")]), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.dateFrom,
+      expression: "dateFrom"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "date"
+    },
+    domProps: {
+      value: _vm.dateFrom
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.dateFrom = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "form-group"
+  }, [_c("label", [_vm._v("To Date")]), _c("br"), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.dateTo,
+      expression: "dateTo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "date"
+    },
+    domProps: {
+      value: _vm.dateTo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.dateTo = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _vm._m(0)])])]), _vm._v(" "), _c("div", {
+    staticClass: "row",
+    staticStyle: {
+      "margin-top": "15px",
+      display: "none"
+    },
+    style: {
+      display: _vm.salereturns.length > 0 ? "" : "none"
+    }
+  }, [_c("div", {
+    staticClass: "col-md-12",
+    staticStyle: {
+      "margin-bottom": "10px"
+    }
+  }, [_c("a", {
+    attrs: {
+      href: ""
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.print.apply(null, arguments);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print")]), _vm._v(" "), _c("button", {
+    on: {
+      click: _vm.navigateToPage
+    }
+  }, [_vm._v("Download PDF")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "table-responsive",
+    attrs: {
+      id: "reportContent"
+    }
+  }, [_vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? _c("table", {
+    staticClass: "record-table",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "with_details" ? "" : "none"
+    }
+  }, [_vm._m(1), _vm._v(" "), _vm._l(_vm.salereturns, function (salereturn, sl) {
+    return _c("tbody", {
+      key: sl
+    }, [_c("tr", [_c("td", [_vm._v(_vm._s(salereturn.salereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.display_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.sale_return_details[0].product.name))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(salereturn.salereturn.sale_return_details[0].return_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(salereturn.salereturn.sale_return_details[0].quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(salereturn.salereturn.sale_return_details[0].total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", [_vm.role !== "General" ? _c("span", [_c("a", {
+      attrs: {
+        href: "javascript:;",
+        title: "Edit Sale Return"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.checkReturnAndEdit(salereturn.salereturn);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-edit"
+    })]), _vm._v(" "), _c("a", {
+      attrs: {
+        href: "javascript:;",
+        title: "Delete Sale Return"
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.deleteSaleReturn(salereturn.salereturn.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])]) : _vm._e()])]), _vm._v(" "), _vm._l(salereturn.salereturn.sale_return_details.slice(1), function (product, index) {
+      return _c("tr", {
+        key: index
+      }, [index === 0 ? _c("td", {
+        attrs: {
+          colspan: "3",
+          rowspan: salereturn.salereturn.sale_return_details.length - 1
+        }
+      }) : _vm._e(), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.product.name))]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "right"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.return_rate) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "center"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.quantity) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+        staticStyle: {
+          "text-align": "right"
+        }
+      }, [_vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(product.total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td")]);
+    }), _vm._v(" "), _c("tr", {
+      staticStyle: {
+        "font-weight": "bold"
+      }
+    }, [_c("td", {
+      staticStyle: {
+        "font-weight": "normal"
+      },
+      attrs: {
+        colspan: "5"
+      }
+    }, [_c("strong", [_vm._v("Note:")]), _vm._v(" " + _vm._s(salereturn.salereturn.remark) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal Quantity: "), _c("br"), _vm._v("\n\t\t\t\t\t\t\t\t\t" + _vm._s(salereturn.salereturn.sale_return_details.reduce(function (prev, curr) {
+      return prev + parseFloat(curr.quantity);
+    }, 0)) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tTotal: " + _vm._s(salereturn.salereturn.total_amount) + "\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("td")])], 2);
+  })], 2) : _vm._e(), _vm._v(" "), _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? _c("table", {
+    staticClass: "record-table",
+    staticStyle: {
+      display: "none"
+    },
+    style: {
+      display: _vm.searchTypesForRecord.includes(_vm.searchType) && _vm.recordType == "without_details" ? "" : "none"
+    }
+  }, [_vm._m(2), _vm._v(" "), _c("tbody", _vm._l(_vm.salereturns, function (salereturn, sl) {
+    return _c("tr", {
+      key: sl
+    }, [_c("td", [_vm._v(_vm._s(salereturn.salereturn.invoice_number))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.salereturn.return_date))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(salereturn.display_name))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "right"
+      }
+    }, [_vm._v(_vm._s(salereturn.salereturn.total_amount))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "left"
+      }
+    }, [_vm._v(_vm._s(salereturn.salereturn.remark))]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        "text-align": "center"
+      }
+    }, [_vm.role != "User" ? _c("span", [_c("a", {
+      attrs: {
+        href: "javascript:",
+        title: "Edit Sale"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.checkReturnAndEdit(salereturn.salereturn);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-edit"
+    })]), _vm._v(" "), _c("a", {
+      attrs: {
+        href: "",
+        title: "Delete Sale"
+      },
+      on: {
+        click: function click($event) {
+          $event.preventDefault();
+          return _vm.deleteSaleReturn(salereturn.salereturn.id);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])]) : _vm._e()])]);
+  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", {
+    staticStyle: {
+      "font-weight": "bold"
+    }
+  }, [_c("td", {
+    staticStyle: {
+      "text-align": "right"
+    },
+    attrs: {
+      colspan: "3"
+    }
+  }, [_vm._v("Total")]), _vm._v(" "), _c("td", {
+    staticStyle: {
+      "text-align": "right"
+    }
+  }, [_vm._v(_vm._s(_vm.salereturns.reduce(function (prev, curr) {
+    return prev + parseFloat(curr.salereturn.total_amount);
+  }, 0)))]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")])])]) : _vm._e()])])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "form-group",
+    staticStyle: {
+      "margin-top": "18px"
+    }
+  }, [_c("input", {
+    attrs: {
+      type: "submit",
+      value: "Search"
+    }
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Return Date")]), _vm._v(" "), _c("th", [_vm._v("Customer Name")]), _vm._v(" "), _c("th", [_vm._v("Product Name")]), _vm._v(" "), _c("th", [_vm._v("Return Price")]), _vm._v(" "), _c("th", [_vm._v("Quantity")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Action")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", [_vm._v("Invoice No.")]), _vm._v(" "), _c("th", [_vm._v("Return Date")]), _vm._v(" "), _c("th", [_vm._v("Customer Name")]), _vm._v(" "), _c("th", [_vm._v("Total")]), _vm._v(" "), _c("th", [_vm._v("Note")]), _vm._v(" "), _c("th", [_vm._v("Action")])])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=template&id=723a1a38&scoped=true&":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=template&id=723a1a38&scoped=true& ***!
@@ -12586,9 +15502,16 @@ var render = function render() {
         return _vm.print.apply(null, arguments);
       }
     }
+  }, [_vm._m(0)]), _vm._v(" "), _c("button", {
+    staticClass: "excel-design",
+    on: {
+      click: function click($event) {
+        return _vm.exportTableToExcel("stockContent", "StockReport", "Stock Report");
+      }
+    }
   }, [_c("i", {
-    staticClass: "fa fa-print"
-  }), _vm._v(" Print")])])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "fa fa-file-excel-o"
+  }), _vm._v(" Export To Excel\n   \t\t \t")]), _vm._v(" "), _vm._m(1)])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-12"
@@ -12605,18 +15528,11 @@ var render = function render() {
     style: {
       display: _vm.searchType == "current" ? "" : "none"
     }
-  }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.stock, function (product, sl) {
+  }, [_vm._m(2), _vm._v(" "), _c("tbody", _vm._l(_vm.stock, function (product, sl) {
     return _c("tr", {
       key: sl
-    }, [_c("td", [_vm._v(_vm._s(product.product_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.product_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity) + " " + _vm._s(product.unit_name))])]);
-  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("th", {
-    staticStyle: {
-      "text-align": "right"
-    },
-    attrs: {
-      colspan: "5"
-    }
-  }, [_vm._v("Total Stock Value")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm._f("decimal")(_vm.totalStockValue)))])])])]) : _vm._e(), _vm._v(" "), _vm.searchType != "current" && _vm.searchType != null ? _c("table", {
+    }, [_c("td", [_vm._v(_vm._s(product.product_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.product_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity))])]);
+  }), 0)]) : _vm._e(), _vm._v(" "), _vm.searchType != "current" && _vm.searchType != null ? _c("table", {
     staticClass: "table table-bordered",
     staticStyle: {
       display: "none"
@@ -12624,20 +15540,29 @@ var render = function render() {
     style: {
       display: _vm.searchType != "current" && _vm.searchType != null ? "" : "none"
     }
-  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.stock, function (product, sl) {
+  }, [_vm._m(3), _vm._v(" "), _c("tbody", _vm._l(_vm.stock, function (product, sl) {
     return _c("tr", {
       key: sl
-    }, [_c("td", [_vm._v(_vm._s(product.instrument_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.damaged_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sold_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sale_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity) + " " + _vm._s(product.Uunit_name))])]);
-  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("th", {
-    staticStyle: {
-      "text-align": "right"
-    },
-    attrs: {
-      colspan: "9"
-    }
-  }, [_vm._v("Total Stock Value")]), _vm._v(" "), _c("th", [_vm._v(_vm._s(_vm._f("decimal")(_vm.totalStockValue)))])])])]) : _vm._e()])])])]);
+    }, [_c("td", [_vm._v(_vm._s(product.instrument_code))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.category_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.purchased_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sold_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.sale_return_quantity))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(product.current_quantity))])]);
+  }), 0)]) : _vm._e()])])])]);
 };
 var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "print-design"
+  }, [_c("i", {
+    staticClass: "fa fa-print"
+  }), _vm._v(" Print\n\t\t\t\t")]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("button", {
+    staticClass: "pdf-design"
+  }, [_c("i", {
+    staticClass: "fa fa-file-pdf-o"
+  }), _vm._v(" Export To PDF\n   \t\t \t")]);
+}, function () {
   var _vm = this,
     _c = _vm._self._c;
   return _c("thead", [_c("tr", [_c("th", [_vm._v("Product Id")]), _vm._v(" "), _c("th", [_vm._v("Product Name")]), _vm._v(" "), _c("th", [_vm._v("Category")]), _vm._v(" "), _c("th", [_vm._v("Current Quantity")])])]);
@@ -12773,12 +15698,14 @@ Vue.component('product-entry', (__webpack_require__(/*! ./components/ProductEntr
 Vue.component('customer-entry', (__webpack_require__(/*! ./components/CustomerEntry.vue */ "./resources/js/components/CustomerEntry.vue")["default"]));
 Vue.component('supplier-entry', (__webpack_require__(/*! ./components/SupplierEntry.vue */ "./resources/js/components/SupplierEntry.vue")["default"]));
 Vue.component('purchase-order-inventory-entry', (__webpack_require__(/*! ./components/inventory/PurchaseOrderInventoryEntry.vue */ "./resources/js/components/inventory/PurchaseOrderInventoryEntry.vue")["default"]));
+Vue.component('purchase-return-inventory-entry', (__webpack_require__(/*! ./components/inventory/PurchaseReturnInventoryEntry.vue */ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue")["default"]));
 Vue.component('purchase-record', (__webpack_require__(/*! ./components/inventory/PurchaseInventoryRecord.vue */ "./resources/js/components/inventory/PurchaseInventoryRecord.vue")["default"]));
+Vue.component('purchase-return-record', (__webpack_require__(/*! ./components/inventory/PurchaseReturnInventoryRecord.vue */ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue")["default"]));
 Vue.component('sale-order-inventory-entry', (__webpack_require__(/*! ./components/inventory/SaleOrderInventoryEntry.vue */ "./resources/js/components/inventory/SaleOrderInventoryEntry.vue")["default"]));
 Vue.component('sale-record', (__webpack_require__(/*! ./components/inventory/SaleInventoryRecord.vue */ "./resources/js/components/inventory/SaleInventoryRecord.vue")["default"]));
+Vue.component('sale-return-inventory-entry', (__webpack_require__(/*! ./components/inventory/SaleReturnInventoryEntry.vue */ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue")["default"]));
+Vue.component('sale-return-record', (__webpack_require__(/*! ./components/inventory/SaleReturnInventoryRecord.vue */ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue")["default"]));
 Vue.component('stock-inventory', (__webpack_require__(/*! ./components/inventory/StockInventory.vue */ "./resources/js/components/inventory/StockInventory.vue")["default"]));
-///PDF
-Vue.component('sale-record-pdf', (__webpack_require__(/*! ./components/inventory/SaleInventoryRecordPdf.vue */ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue")["default"]));
 
 /***/ }),
 
@@ -15241,6 +18168,54 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\nlabel[data-v-708a1b15]{\n    font-si
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\nlabel[data-v-b42fbd36]{\n    font-size: 13px !important;\n}\n.no-padding-right[data-v-b42fbd36]{\n\tpadding: 0px !important;\n}\n.widget-box[data-v-b42fbd36]{\n\tmargin:0px !important;\n\tborder: 0px solid #fff !important;\n}\n.widget-header[data-v-b42fbd36]{\n\tborder: 1px solid #ccc !important; \n\tmin-height: 26px !important; \n\tbackground: #146C94 !important; \n\tcolor:aliceblue !important; \n\tfont-weight: bolder !important;\n}\n.widget-body[data-v-b42fbd36]{\n    padding-left:10px !important;\n}\n.widget-title[data-v-b42fbd36]{\n\tline-height: 25px !important;\n}\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-8aa2eb24]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-8aa2eb24]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-8aa2eb24]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-8aa2eb24]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-8aa2eb24]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-8aa2eb24], .record-table td[data-v-8aa2eb24]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-8aa2eb24]{\n        text-align: center;\n}\nth[data-v-8aa2eb24]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-8aa2eb24]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-8aa2eb24]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.excel-design[data-v-8aa2eb24]{\n\tmargin-left: 5px;\n    background: #008a00;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.print-design[data-v-8aa2eb24]{\n\tmargin-left: 5px;\n    background: #f51010;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n.pdf-design[data-v-8aa2eb24]{\n\tmargin-left: 5px;\n    background: #106ff5;\n    padding: 5px;\n    border: none;\n    /* outline: aliceblue; */\n    color: white;\n    border-radius: 5px;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css&":
 /*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css& ***!
@@ -15259,30 +18234,6 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
 ___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-7c97f710]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-7c97f710]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-7c97f710]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-7c97f710]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-7c97f710]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-7c97f710], .record-table td[data-v-7c97f710]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-7c97f710]{\n        text-align: center;\n}\nth[data-v-7c97f710]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-7c97f710]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-7c97f710]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.hidden[data-v-7c97f710] {\n    display: none;\n}\n", ""]);
-// Exports
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
-// Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-5ac6148a]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-5ac6148a]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-5ac6148a]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-5ac6148a]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-5ac6148a]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-5ac6148a], .record-table td[data-v-5ac6148a]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-5ac6148a]{\n        text-align: center;\n}\nth[data-v-5ac6148a]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-5ac6148a]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-5ac6148a]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.hidden[data-v-5ac6148a] {\n    display: none;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -15313,6 +18264,54 @@ ___CSS_LOADER_EXPORT___.push([module.id, "\nlabel[data-v-6b08ce0f]{\n    font-si
 
 /***/ }),
 
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\nlabel[data-v-098064aa]{\n    font-size: 13px !important;\n}\n.no-padding-right[data-v-098064aa]{\n\tpadding: 0px !important;\n}\n.widget-box[data-v-098064aa]{\n\tmargin:0px !important;\n\tborder: 0px solid #fff !important;\n}\n.widget-header[data-v-098064aa]{\n\tborder: 1px solid #ccc !important; \n\tmin-height: 26px !important; \n\tbackground: #146C94 !important; \n\tcolor:aliceblue !important; \n\tfont-weight: bolder !important;\n}\n.widget-body[data-v-098064aa]{\n    padding-left:10px !important;\n}\n.widget-title[data-v-098064aa]{\n\tline-height: 25px !important;\n}\n\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/laravel-mix/node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, "\n#searchForm select[data-v-104c66e8]{\n\t\tpadding:0;\n\t\tborder-radius: 4px;\n}\n#searchForm .form-group[data-v-104c66e8]{\n\t\tmargin-right: 5px;\n}\n#searchForm *[data-v-104c66e8]{\n\t\tfont-size: 13px;\n}\n.record-table[data-v-104c66e8]{\n\t\twidth: 100%;\n\t\tborder-collapse: collapse;\n}\n.record-table thead[data-v-104c66e8]{\n\t\tbackground-color: #0097df;\n\t\tcolor:white;\n}\n.record-table th[data-v-104c66e8], .record-table td[data-v-104c66e8]{\n\t\tpadding: 3px;\n\t\tborder: 1px solid #454545;\n}\n.record-table th[data-v-104c66e8]{\n        text-align: center;\n}\nth[data-v-104c66e8]{\n\t\tbackground-color: #146C94;\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-104c66e8]{\n\t\tbackground-color: #E3F4F4 !important;\n\t-webkit-transition: .5s all;   \n\t\t-webkit-transition-delay: .05s; \n\t\t-moz-transition: .5s all;   \n\t\t-moz-transition-delay: .05s; \n\t\t-ms-transition: .5s all;   \n\t\t-ms-transition-delay: .05s; \n\t\t-o-transition: .5s all;   \n\t\t-o-transition-delay: .05s; \n\t\ttransition: .5s all;   \n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-104c66e8]:hover{\n\tbackground-color: #62CDFF !important;\n\ttransition: 0s all;\n\ttransition-delay: 0s;\n}\n.hidden[data-v-104c66e8] {\n    display: none;\n}\n", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=style&index=0&id=723a1a38&scoped=true&lang=css&":
 /*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/StockInventory.vue?vue&type=style&index=0&id=723a1a38&scoped=true&lang=css& ***!
@@ -15330,7 +18329,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_laravel_mix_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\nth[data-v-723a1a38]{\r\n\t\tbackground-color: #146C94;\r\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-723a1a38]{\r\n\t\tbackground-color: #E3F4F4 !important;\r\n\t-webkit-transition: .5s all;   \r\n\t\t-webkit-transition-delay: .05s; \r\n\t\t-moz-transition: .5s all;   \r\n\t\t-moz-transition-delay: .05s; \r\n\t\t-ms-transition: .5s all;   \r\n\t\t-ms-transition-delay: .05s; \r\n\t\t-o-transition: .5s all;   \r\n\t\t-o-transition-delay: .05s; \r\n\t\ttransition: .5s all;   \r\n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-723a1a38]:hover{\r\n\tbackground-color: #62CDFF !important;\r\n\ttransition: 0s all;\r\n\ttransition-delay: 0s;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\nth[data-v-723a1a38]{\r\n\t\tbackground-color: #146C94;\r\n\tcolor:#fff !important;\n}\n.table-responsive tr[data-v-723a1a38]{\r\n\t\tbackground-color: #E3F4F4 !important;\r\n\t-webkit-transition: .5s all;   \r\n\t\t-webkit-transition-delay: .05s; \r\n\t\t-moz-transition: .5s all;   \r\n\t\t-moz-transition-delay: .05s; \r\n\t\t-ms-transition: .5s all;   \r\n\t\t-ms-transition-delay: .05s; \r\n\t\t-o-transition: .5s all;   \r\n\t\t-o-transition-delay: .05s; \r\n\t\ttransition: .5s all;   \r\n\t\ttransition-delay: .05s;\n}\n.table-responsive tr[data-v-723a1a38]:hover{\r\n\tbackground-color: #62CDFF !important;\r\n\ttransition: 0s all;\r\n\ttransition-delay: 0s;\n}\n.print-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #f51010;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\n.pdf-design[data-v-723a1a38]{\r\n\tmargin-left: 5px;\r\n    background: #106ff5;\r\n    padding: 5px;\r\n    border: none;\r\n    /* outline: aliceblue; */\r\n    color: white;\r\n    border-radius: 5px;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -55052,6 +58051,66 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_style_index_0_id_b42fbd36_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_style_index_0_id_b42fbd36_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_style_index_0_id_b42fbd36_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_style_index_0_id_8aa2eb24_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_style_index_0_id_8aa2eb24_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_style_index_0_id_8aa2eb24_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css&":
 /*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css& ***!
@@ -55082,36 +58141,6 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
-/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_style_index_0_id_5ac6148a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&");
-
-            
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_style_index_0_id_5ac6148a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_style_index_0_id_5ac6148a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css&":
 /*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css& ***!
@@ -55139,6 +58168,66 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_style_index_0_id_6b08ce0f_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&":
+/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& ***!
+  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_style_index_0_id_098064aa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_style_index_0_id_098064aa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_style_index_0_id_098064aa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_style_index_0_id_104c66e8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& */ "./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_style_index_0_id_104c66e8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_style_index_0_id_104c66e8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -56244,6 +59333,88 @@ component.options.__file = "resources/js/components/inventory/PurchaseOrderInven
 
 /***/ }),
 
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue ***!
+  \****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true& */ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true&");
+/* harmony import */ var _PurchaseReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js& */ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js&");
+/* harmony import */ var _PurchaseReturnInventoryEntry_vue_vue_type_style_index_0_id_b42fbd36_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& */ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _PurchaseReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "b42fbd36",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inventory/PurchaseReturnInventoryEntry.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true& */ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true&");
+/* harmony import */ var _PurchaseReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js& */ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js&");
+/* harmony import */ var _PurchaseReturnInventoryRecord_vue_vue_type_style_index_0_id_8aa2eb24_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& */ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _PurchaseReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "8aa2eb24",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inventory/PurchaseReturnInventoryRecord.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/inventory/SaleInventoryRecord.vue":
 /*!*******************************************************************!*\
   !*** ./resources/js/components/inventory/SaleInventoryRecord.vue ***!
@@ -56285,47 +59456,6 @@ component.options.__file = "resources/js/components/inventory/SaleInventoryRecor
 
 /***/ }),
 
-/***/ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue":
-/*!**********************************************************************!*\
-  !*** ./resources/js/components/inventory/SaleInventoryRecordPdf.vue ***!
-  \**********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true& */ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true&");
-/* harmony import */ var _SaleInventoryRecordPdf_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SaleInventoryRecordPdf.vue?vue&type=script&lang=js& */ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js&");
-/* harmony import */ var _SaleInventoryRecordPdf_vue_vue_type_style_index_0_id_5ac6148a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& */ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-;
-
-
-/* normalize component */
-
-var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _SaleInventoryRecordPdf_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
-  _SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
-  false,
-  null,
-  "5ac6148a",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/inventory/SaleInventoryRecordPdf.vue"
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
-
-/***/ }),
-
 /***/ "./resources/js/components/inventory/SaleOrderInventoryEntry.vue":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/inventory/SaleOrderInventoryEntry.vue ***!
@@ -56363,6 +59493,88 @@ var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__
 /* hot reload */
 if (false) { var api; }
 component.options.__file = "resources/js/components/inventory/SaleOrderInventoryEntry.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryEntry.vue ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true& */ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true&");
+/* harmony import */ var _SaleReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SaleReturnInventoryEntry.vue?vue&type=script&lang=js& */ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SaleReturnInventoryEntry_vue_vue_type_style_index_0_id_098064aa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& */ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SaleReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "098064aa",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inventory/SaleReturnInventoryEntry.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryRecord.vue ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true& */ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true&");
+/* harmony import */ var _SaleReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SaleReturnInventoryRecord.vue?vue&type=script&lang=js& */ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SaleReturnInventoryRecord_vue_vue_type_style_index_0_id_104c66e8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& */ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+;
+
+
+/* normalize component */
+
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _SaleReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render,
+  _SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  "104c66e8",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inventory/SaleReturnInventoryRecord.vue"
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
 
 /***/ }),
@@ -56584,6 +59796,38 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=script&lang=js& ***!
@@ -56600,22 +59844,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleInventoryRecordPdf.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=script&lang=js&");
- /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
 /***/ "./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=script&lang=js& ***!
@@ -56629,6 +59857,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleOrderInventoryEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryEntry.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryRecord.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -56835,6 +60095,40 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true&":
+/*!***********************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true& ***!
+  \***********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_template_id_b42fbd36_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=template&id=b42fbd36&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true& ***!
+  \************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_template_id_8aa2eb24_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=template&id=8aa2eb24&scoped=true&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=template&id=7c97f710&scoped=true&":
 /*!**************************************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=template&id=7c97f710&scoped=true& ***!
@@ -56852,23 +60146,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true& ***!
-  \*****************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
-/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
-/* harmony export */ });
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_template_id_5ac6148a_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=template&id=5ac6148a&scoped=true&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=template&id=6b08ce0f&scoped=true&":
 /*!******************************************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=template&id=6b08ce0f&scoped=true& ***!
@@ -56882,6 +60159,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_template_id_6b08ce0f_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_template_id_6b08ce0f_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleOrderInventoryEntry.vue?vue&type=template&id=6b08ce0f&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=template&id=6b08ce0f&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true& ***!
+  \*******************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_template_id_098064aa_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=template&id=098064aa&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true& ***!
+  \********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_template_id_104c66e8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=template&id=104c66e8&scoped=true&");
 
 
 /***/ }),
@@ -57007,6 +60318,32 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryEntry_vue_vue_type_style_index_0_id_b42fbd36_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryEntry.vue?vue&type=style&index=0&id=b42fbd36&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&":
+/*!**************************************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& ***!
+  \**************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_PurchaseReturnInventoryRecord_vue_vue_type_style_index_0_id_8aa2eb24_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/PurchaseReturnInventoryRecord.vue?vue&type=style&index=0&id=8aa2eb24&scoped=true&lang=css&");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css&":
 /*!****************************************************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleInventoryRecord.vue?vue&type=style&index=0&id=7c97f710&scoped=true&lang=css& ***!
@@ -57020,19 +60357,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&":
-/*!*******************************************************************************************************************************!*\
-  !*** ./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& ***!
-  \*******************************************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleInventoryRecordPdf_vue_vue_type_style_index_0_id_5ac6148a_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleInventoryRecordPdf.vue?vue&type=style&index=0&id=5ac6148a&scoped=true&lang=css&");
-
-
-/***/ }),
-
 /***/ "./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css&":
 /*!********************************************************************************************************************************!*\
   !*** ./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css& ***!
@@ -57042,6 +60366,32 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleOrderInventoryEntry_vue_vue_type_style_index_0_id_6b08ce0f_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleOrderInventoryEntry.vue?vue&type=style&index=0&id=6b08ce0f&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryEntry_vue_vue_type_style_index_0_id_098064aa_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryEntry.vue?vue&type=style&index=0&id=098064aa&scoped=true&lang=css&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&":
+/*!**********************************************************************************************************************************!*\
+  !*** ./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_dist_cjs_js_node_modules_laravel_mix_node_modules_css_loader_dist_cjs_js_clonedRuleSet_9_use_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_dist_cjs_js_clonedRuleSet_9_use_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SaleReturnInventoryRecord_vue_vue_type_style_index_0_id_104c66e8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader/dist/cjs.js!../../../../node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css& */ "./node_modules/style-loader/dist/cjs.js!./node_modules/laravel-mix/node_modules/css-loader/dist/cjs.js??clonedRuleSet-9.use[1]!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-9.use[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/inventory/SaleReturnInventoryRecord.vue?vue&type=style&index=0&id=104c66e8&scoped=true&lang=css&");
 
 
 /***/ }),

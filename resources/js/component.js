@@ -15,11 +15,14 @@ Vue.component('product-entry', require('./components/ProductEntry.vue').default)
 Vue.component('customer-entry', require('./components/CustomerEntry.vue').default);
 Vue.component('supplier-entry', require('./components/SupplierEntry.vue').default);
 Vue.component('purchase-order-inventory-entry', require('./components/inventory/PurchaseOrderInventoryEntry.vue').default);
+Vue.component('purchase-return-inventory-entry', require('./components/inventory/PurchaseReturnInventoryEntry.vue').default);
 Vue.component('purchase-record', require('./components/inventory/PurchaseInventoryRecord.vue').default);
+Vue.component('purchase-return-record', require('./components/inventory/PurchaseReturnInventoryRecord.vue').default);
 Vue.component('sale-order-inventory-entry', require('./components/inventory/SaleOrderInventoryEntry.vue').default);
 Vue.component('sale-record', require('./components/inventory/SaleInventoryRecord.vue').default);
+Vue.component('sale-return-inventory-entry', require('./components/inventory/SaleReturnInventoryEntry.vue').default);
+Vue.component('sale-return-record', require('./components/inventory/SaleReturnInventoryRecord.vue').default);
 Vue.component('stock-inventory', require('./components/inventory/StockInventory.vue').default);
-///PDF
-Vue.component('sale-record-pdf', require('./components/inventory/SaleInventoryRecordPdf.vue').default);
+
 
 

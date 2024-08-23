@@ -9,6 +9,8 @@ use App\Models\Supplier;
 use App\Models\Purchase;
 use App\Models\Sale;
 use App\Models\Stock;
+use App\Models\PurchaseReturn;
+use App\Models\SaleReturn;
 use App\Models\CompanyProfile;
 use Illuminate\Support\Facades\DB;
 
@@ -101,6 +103,20 @@ function generatePurchaseOrderInventoryCode()
     }
     return $code;
 }
+function generatePurchaseReturnInventoryCode()
+{
+    $code = "PR00001";
+
+    $total_count = PurchaseReturn::withTrashed()->count();
+
+    if($total_count > 0){
+        $new_code = $total_count + 1;
+        $zeros = array('0', '00', '000', '0000');
+
+        $code = 'PR' . (strlen($new_code) > count($zeros) ? $new_code : $zeros[count($zeros) - strlen($new_code)] . $new_code);
+    }
+    return $code;
+}
 function generateSaleOrderInventoryCode()
 {
     $code = "SAL00001";
@@ -112,6 +128,20 @@ function generateSaleOrderInventoryCode()
         $zeros = array('0', '00', '000', '0000');
 
         $code = 'SAL' . (strlen($new_code) > count($zeros) ? $new_code : $zeros[count($zeros) - strlen($new_code)] . $new_code);
+    }
+    return $code;
+}
+function generateSaleReturnInventoryCode()
+{
+    $code = "SR00001";
+
+    $total_count = SaleReturn::withTrashed()->count();
+
+    if($total_count > 0){
+        $new_code = $total_count + 1;
+        $zeros = array('0', '00', '000', '0000');
+
+        $code = 'SR' . (strlen($new_code) > count($zeros) ? $new_code : $zeros[count($zeros) - strlen($new_code)] . $new_code);
     }
     return $code;
 }
@@ -152,6 +182,7 @@ function currentStock($clauses = '') {
             ) as tbl
             where 1 = 1
             $clauses
+            order by product_id asc
         ", [session('branch_id')]);
 
         return $stock;

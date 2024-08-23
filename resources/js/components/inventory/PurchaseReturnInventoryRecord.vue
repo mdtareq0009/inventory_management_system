@@ -1,4 +1,5 @@
 
+
 <style scoped>
 	#searchForm select{
 		padding:0;
@@ -51,6 +52,33 @@
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+.excel-design{
+	margin-left: 5px;
+    background: #008a00;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
+.print-design{
+	margin-left: 5px;
+    background: #f51010;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
+.pdf-design{
+	margin-left: 5px;
+    background: #106ff5;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
 </style>
 <template>
     <div id="purchaseRecord">
@@ -72,7 +100,7 @@
 
 				<div class="form-group" v-bind:style="{display: searchTypesForRecord.includes(searchType) ? '' : 'none'}">
 					<label>Record Type</label><br>
-					<select class="form-control" v-model="recordType" @change="purchases = []">
+					<select class="form-control" v-model="recordType" @change="purchasesreturn = []">
 						<option value="without_details">Without Details</option>
 						<option value="with_details">With Details</option>
 					</select>
@@ -95,20 +123,18 @@
 		</div>
 	</div>
 
-	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: purchases.length > 0 ? '' : 'none'}">
+	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: purchasesreturn.length > 0 ? '' : 'none'}">
 		<div class="col-md-12" style="margin-bottom: 10px;">
-			<div class="col-md-12" style="margin-bottom: 10px;">
 			<a href="" @click.prevent="print"><button class="print-design">
 					<i class="fa fa-print"></i> Print
 				</button>
 				</a>
-			<button class="excel-design" @click="exportTableToExcel('reportContent', 'donwloadexcel','Purchase Return Record')">
+			<button class="excel-design" @click="exportTableToExcel('reportContent', 'Purchase Return Record','Purchase Return Record')">
 				<i class="fa fa-file-excel-o"></i> Export To Excel
    		 	</button>
 			<button class="pdf-design">
 				<i class="fa fa-file-pdf-o"></i> Export To PDF
    		 	</button>
-		</div>
 		</div>
 		<div class="col-md-12">
 			<div class="table-responsive" id="reportContent">
@@ -130,31 +156,31 @@
 							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody v-for="(purchase, sl) in purchases" :key="sl">
+					<tbody v-for="(purchasereturn, sl) in purchasesreturn" :key="sl">
     <!-- Main Purchase Row -->
 							<tr>
-								<td>{{ purchase.purchase.invoice_number }}</td>
-								<td>{{ purchase.purchase.order_date }}</td>
-								<td>{{ purchase.display_name }}</td>
-								<td>{{ purchase.purchase.purchase_details[0].product.name }}</td>
+								<td>{{ purchasereturn.purchasereturn.invoice_number }}</td>
+								<td>{{ purchasereturn.purchasereturn.return_date }}</td>
+								<td>{{ purchasereturn.display_name }}</td>
+								<td>{{ purchasereturn.purchasereturn.purchase_return_details[0].product.name }}</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].purchase_rate }}
+									{{ purchasereturn.purchasereturn.purchase_return_details[0].return_rate }}
 								</td>
 								<td style="text-align:center;">
-									{{ purchase.purchase.purchase_details[0].quantity }}
+									{{ purchasereturn.purchasereturn.purchase_return_details[0].quantity }}
 								</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].total_amount }}
+									{{ purchasereturn.purchasereturn.purchase_return_details[0].total_amount }}
 								</td>
 								<td style="text-align:center;">
-									<a :href="'/purchase_invoice_print/' + purchase.purchase.id" target="_blank" title="Purchase Invoice">
+									<a :href="'/purchase_invoice_print/' + purchasereturn.purchasereturn.id" target="_blank" title="Purchase Invoice">
 										<i class="fa fa-file-text"></i>
 									</a>
 									<span v-if="role !== 'User'">
-										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)">
+										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchasereturn.purchasereturn)">
 											<i class="fa fa-edit"></i>
 										</a>
-										<a href="javascript:;" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)">
+										<a href="javascript:;" title="Delete Purchase" @click.prevent="deletePurchase(purchasereturn.purchasereturn.id)">
 											<i class="fa fa-trash"></i>
 										</a>
 									</span>
@@ -162,11 +188,11 @@
 							</tr>
 							
 							<!-- Additional Products Rows -->
-							<tr v-for="(product, index) in purchase.purchase.purchase_details.slice(1)" :key="index">
-								<td v-if="index === 0" colspan="3" :rowspan="purchase.purchase.purchase_details.length - 1"></td>
+							<tr v-for="(product, index) in purchasereturn.purchasereturn.purchase_return_details.slice(1)" :key="index">
+								<td v-if="index === 0" colspan="3" :rowspan="purchasereturn.purchasereturn.purchase_return_details.length - 1"></td>
 								<td>{{ product.product.name }}</td>
 								<td style="text-align:right;">
-									{{ product.purchase_rate }}
+									{{ product.return_rate }}
 								</td>
 								<td style="text-align:center;">
 									{{ product.quantity }}
@@ -180,14 +206,14 @@
 							<!-- Summary Row -->
 							<tr style="font-weight:bold;">
 								<td colspan="5" style="font-weight:normal;">
-									<strong>Note:</strong> {{ purchase.remark }}
+									<strong>Note:</strong> {{ purchasereturn.remark }}
 								</td>
 								<td style="text-align:center;">
 									Total Quantity: <br>
-									{{ purchase.purchase.purchase_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
+									{{ purchasereturn.purchasereturn.purchase_return_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
 								</td>
 								<td style="text-align:right;">
-									Total: {{ purchase.purchase.total }}
+									Total: {{ purchasereturn.purchasereturn.total }}
 								</td>
 								<td></td>
 							</tr>
@@ -211,17 +237,17 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(purchase,sl) in purchases" :key='sl'>
-							<td>{{ purchase.purchase.invoice_number }}</td>
-							<td>{{ purchase.purchase.order_date }}</td>
-							<td>{{ purchase.display_name }}</td>
-							<td style="text-align:right;">{{ purchase.purchase.total }}</td>
-							<td style="text-align:left;">{{ purchase.purchase.remark }}</td>
+						<tr v-for="(purchasereturn,sl) in purchasesreturn" :key='sl'>
+							<td>{{ purchasereturn.purchasereturn.invoice_number }}</td>
+							<td>{{ purchasereturn.purchasereturn.return_date }}</td>
+							<td>{{ purchasereturn.display_name }}</td>
+							<td style="text-align:right;">{{ purchasereturn.purchasereturn.total_amount }}</td>
+							<td style="text-align:left;">{{ purchasereturn.purchasereturn.remark }}</td>
 							<td style="text-align:center;">
 								<!-- <a  title="Purchase Invoice" v-bind:href="'/purchase_invoice_print/'+ purchase.purchase.id" target="_blank"><i class="fa fa-file-text"></i></a> -->
 								<span v-if="role != 'User'">
-								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)"><i class="fa fa-edit"></i></a>
-								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)"><i class="fa fa-trash"></i></a>
+								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchasereturn.purchasereturn)"><i class="fa fa-edit"></i></a>
+								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchasereturn.purchasereturn.id)"><i class="fa fa-trash"></i></a>
 								</span>
 							</td>
 						</tr>
@@ -229,7 +255,7 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="3" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ purchases.reduce((prev, curr)=>{return prev + parseFloat(curr.purchase.total)}, 0) }}</td>
+							<td style="text-align:right;">{{ purchasesreturn.reduce((prev, curr)=>{return prev + parseFloat(curr.purchasereturn.total_amount)}, 0) }}</td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -243,6 +269,7 @@
 </div>
 </template>
 
+
 <script>
 import moment from 'moment';
 export default {
@@ -255,7 +282,7 @@ export default {
 				dateTo: moment().format('YYYY-MM-DD'),
 				suppliers: [],
 				selectedSupplier: null,
-				purchases: [],
+				purchasesreturn: [],
 				searchTypesForRecord: ['', 'user', 'supplier']
 			}
 		},
@@ -264,70 +291,17 @@ export default {
         },
 		methods: {
 			checkReturnAndEdit(purchase){
-						location.replace('/purchase_entry/'+purchase.id);
+						location.replace('/purchase_return_entry/'+purchase.id);
 			},
 			onChangeSearchType(){
-				this.purchases = [];
+				this.purchasesreturn = [];
 
 				 if(this.searchType == 'supplier'){
 					this.getSuppliers();
 				}
 			},
-            getBranchInfo(){
-                axios.get('/get_branches').then(res=>{
-                    this.branch = res.data;
-                })
-            },
-		
-			getSuppliers(){
-				axios.get('/get_suppliers').then(res => {
-					this.suppliers = res.data;
-				})
-			},
-			
-		
-			getSearchResult(){
-				if(this.searchType != 'user'){
-					this.selectedUser = null;
-				}
 
-
-				if(this.searchType != 'supplier'){
-					this.selectedSupplier = null;
-				}
-
-				
-					this.getPurchaseRecord();
-				
-			},
-			getPurchaseRecord(){
-				let filter = {
-					userId: this.selectedUser == null || this.selectedUser.name == '' ? '' : this.selectedUser.id,
-					supplier_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
-					dateFrom: this.dateFrom,
-					dateTo: this.dateTo
-				}
-
-                if(this.recordType == 'with_details'){
-                    filter.with_details = true;
-                }
-
-				let url = '/get_purchase';
-				
-
-				axios.post(url, filter)
-				.then(res => {
-						this.purchases = res.data;
-						console.log(this.purchases);
-				})
-				.catch(error => {
-					if(error.response){
-						alert(`${error.response.status}, ${error.response.statusText}`);
-					}
-				})
-			},
-
-			exportTableToExcel(transactionsTable, filename = '',headerText = ''){
+		exportTableToExcel(transactionsTable, filename = '',headerText = ''){
 						const dataType = 'application/vnd.ms-excel';
 				const tableSelect = document.getElementById(transactionsTable);
 
@@ -380,9 +354,61 @@ export default {
 				// Clean up
 				document.body.removeChild(downloadLink);
 			},
+            getBranchInfo(){
+                axios.get('/get_branches').then(res=>{
+                    this.branch = res.data;
+                })
+            },
+		
+			getSuppliers(){
+				axios.get('/get_suppliers').then(res => {
+					this.suppliers = res.data;
+				})
+			},
+			
+		
+			getSearchResult(){
+				if(this.searchType != 'user'){
+					this.selectedUser = null;
+				}
+
+
+				if(this.searchType != 'supplier'){
+					this.selectedSupplier = null;
+				}
+
+				
+					this.getPurchaseReturnRecord();
+				
+			},
+			getPurchaseReturnRecord(){
+				let filter = {
+					supplier_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+					dateFrom: this.dateFrom,
+					dateTo: this.dateTo
+				}
+
+                if(this.recordType == 'with_details'){
+                    filter.with_details = true;
+                }
+
+				let url = '/get_purchase_return';
+				
+
+				axios.post(url, filter)
+				.then(res => {
+						this.purchasesreturn = res.data;
+						console.log(this.purchasesreturn);
+				})
+				.catch(error => {
+					if(error.response){
+						alert(`${error.response.status}, ${error.response.statusText}`);
+					}
+				})
+			},
 			
 
-        deletePurchase(purchaseId){
+        deletePurchase(purchasereturnId){
             Swal.fire({
                 title: '<strong>Are you sure!</strong>',
                 html: '<strong>Want to delete this?</strong>',
@@ -391,7 +417,7 @@ export default {
                 denyButtonText: `Cancel`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/delete-purchase',{id: purchaseId}).then(res=>{
+                    axios.post('/delete-purchase-return',{id: purchasereturnId}).then(res=>{
                         let r = res.data;
                         Swal.fire({
                             icon: 'success',
@@ -399,7 +425,7 @@ export default {
                             showConfirmButton: false,
                             timer: 3000
                         })
-                        this.getPurchaseRecord();
+                        this.getPurchaseReturnRecord();
                     }).catch(error => {
                         let e = error.response.data;
 

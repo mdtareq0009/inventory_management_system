@@ -50,7 +50,7 @@
 											<div class="form-group">
 												<label class="col-xs-4 control-label no-padding-right">Invoice no</label>
 												<div class="col-xs-8">
-													<input type="text" id="invoice" class="form-control" name="invoice" v-model="sale.invoice_number" readonly/>
+													<input type="text" id="invoice" class="form-control" name="invoice" v-model="salereturn.invoice_number" readonly/>
 												</div>
 											</div>
 										</td>
@@ -59,9 +59,9 @@
 									<tr>
 										<td>
 											<div class="form-group">
-												<label class="col-xs-4 control-label no-padding-right"> Date </label>
+												<label class="col-xs-4 control-label no-padding-right">Return Date </label>
 												<div class="col-xs-8">
-													<input class="form-control" id="saleDate"  type="date" v-model="sale.order_date" v-bind:disabled="role == 'User' ? true : false" />
+													<input class="form-control" id="saleDate"  type="date" v-model="salereturn.return_date" v-bind:disabled="role == 'User' ? true : false" />
 												</div>
 											</div>
 										</td>
@@ -82,7 +82,7 @@
 											<div class="form-group">
                                             <label class="col-xs-4 control-label no-padding-right"> Total Amount </label>
                                             <div class="col-xs-8">
-                                                <input type="number"  id="total" class="form-control" v-model="sale.total" readonly />
+                                                <input type="number"  id="total" class="form-control" v-model="salereturn.total" readonly />
                                             </div>
                                         </div>
 										</td>
@@ -108,7 +108,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-md-8 col-lg-8">
+	<div class="col-xs-12 col-md-9 col-lg-9">
 		<div class="widget-box">
 			<div class="widget-header">
 				<h5 class="widget-title">Product Information</h5>
@@ -124,7 +124,7 @@
 									<label class="col-xs-2 control-label no-padding-right"> Product </label>
 									<div class="col-xs-4">
                                         
-										<v-select v-bind:options="products"  v-model="selectedProduct" label="display_text" @input="onChangeProduct()"></v-select>
+										<v-select v-bind:options="products"  v-model="selectedProduct" label="display_text" v-on:input="onChangeProduct"></v-select>
 									</div>
 									<div class="col-xs-1" style="padding: 0;">
 										<a href="/instrument_entry" title="Add New Product" class="btn btn-xs btn-danger" style="height: 25px; border: 0; width: 27px; margin-left: -10px;" target="_blank"><i class="fa fa-plus" aria-hidden="true" style="margin-top: 5px;"></i></a>
@@ -195,8 +195,8 @@
 						</tr>
 
 						<tr>
-							<td colspan="4"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="sale.note"></textarea></td>
-							<td colspan="3" style="padding-top: 15px;font-size:18px;">{{ sale.total }}</td>
+							<td colspan="4"><textarea style="width: 100%;font-size:13px;" placeholder="Note" v-model="salereturn.note"></textarea></td>
+							<td colspan="3" style="padding-top: 15px;font-size:18px;">{{ salereturn.total }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -204,16 +204,7 @@
 		</div>
 	</div>
 
-	<div class="col-xs-12 col-sm-1 col-md-1" style="background-color: #acbac5;padding: 8px;border-radius: 5px;box-sizing:border-box;border:3px solid #fff;border-top-style: none;height:110px">
-							
-							<div>
-								<div  style="display:none;text-align:center;" v-bind:style="{color: productStock > 0 ? 'green' : 'red', display: selectedProduct.id == '' ? 'none' : ''}">
-													{{ productStockText }}
-								</div>
-								<input type="text" id="productStock"  v-model="productStock" readonly style="border:none;font-size:15px;width:100%;text-align:center;color:green;padding:3px;background: none !important;"><br>
-							</div>
-							<input type="password" ref="productPurchaseRate" v-model="selectedProduct.purchase_price" v-on:mousedown="toggleProductPurchaseRate" v-on:mouseup="toggleProductPurchaseRate"  readonly title="Purchase rate (click & hold)" style="font-size:12px;width:100%;text-align: center;">
-	</div>
+
 
 
 
@@ -231,10 +222,10 @@ export default {
     data(){
 		
 			return{
-				sale: {
+				salereturn: {
 					id              : '',
 					invoice_number  : '',
-					order_date      : moment().format('YYYY-MM-DD'),
+					return_date      : moment().format('YYYY-MM-DD'),
 					customer_id     : '',
 					total           : 0.00,
 					note            : ''
@@ -255,19 +246,16 @@ export default {
 					total         : ''
 				},
 				cart: [],
-				productPurchaseRate: '',
-				productStockText: '',
-				productStock: '',
 				saleOnProgress: false
 			}
 		},
 		async created(){
-			this.sale.id= this.id;
-			this.sale.invoice_number = this.invoice;
+			this.salereturn.id= this.id;
+			this.salereturn.invoice_number = this.invoice;
 			await this.getCustomers();
 			this.getProducts();
 			if(this.id != 0){
-            	this.getSale();
+            	this.getSaleReturn();
         	}
 		},
 		methods:{
@@ -277,47 +265,13 @@ export default {
 					this.customers = res.data;
 				})
 			},
+
 			getProducts(){
 				axios.post('/get_products').then(res=>{
 					this.products = res.data;
 				})
 			},
 
-			toggleProductPurchaseRate(){
-				this.$refs.productPurchaseRate.type = this.$refs.productPurchaseRate.type == 'text' ? 'password' : 'text';
-			},
-				
-			
-
-			async onChangeProduct(){
-				if (this.selectedProduct == null) {
-					this.selectedProduct = {
-						id            : '',
-						display_text  : 'Select Product',
-						name          : '',
-						quantity      : '',
-						purchase_price: '',
-						sale_price	  : '',
-						total         : ''
-					};
-					this.productPurchaseRate= '';
-					this.productStockText= '';
-					this.productStock= '';
-					return true
-				}
-
-				if(this.selectedProduct !=null){
-					this.productStock = await axios.post('/get_stock', {productId: this.selectedProduct.id}).then(res => {
-						return res.data;
-						console.log(res.data);
-					})
-					this.productStockText = this.productStock > 0 ? "Available Stock" : "Stock Unavailable";
-				}
-				setTimeout(() =>{
-				this.$refs.quantity.focus();
-				}, 500);  
-					
-			},
 
 			productTotal(){
 				this.selectedProduct.total = this.selectedProduct.quantity * this.selectedProduct.sale_price;
@@ -327,8 +281,7 @@ export default {
 				let product = {
 					productId     : this.selectedProduct.id,
 					name          : this.selectedProduct.name,
-					purchase_price: this.selectedProduct.purchase_price,
-					sale_rate     : this.selectedProduct.sale_price,
+					return_rate   : this.selectedProduct.sale_price,
 					quantity      : this.selectedProduct.quantity,
 					total         : this.selectedProduct.total
 				}
@@ -348,10 +301,7 @@ export default {
 					return;
 				}
 				
-				if(product.quantity > this.productStock){
-					alert('Stock unavailable');
-					return;
-				}
+				
 				let cartInd = this.cart.findIndex(p => p.productId == product.productId);
 				if(cartInd > -1){
 					this.cart.splice(cartInd, 1);
@@ -377,12 +327,17 @@ export default {
 					sale_price    : '',
 					total         : ''
 				};
-					this.productPurchaseRate= '';
-					this.productStockText= '';
-					this.productStock= '';
 			},
 			calculateTotal(){
-				this.sale.total = this.cart.reduce((prev, curr) => { return prev + parseFloat(curr.total); }, 0).toFixed(2);
+				this.salereturn.total = this.cart.reduce((prev, curr) => { return prev + parseFloat(curr.total); }, 0).toFixed(2);
+			},
+
+			async onChangeProduct(){
+				
+				setTimeout(() =>{
+				this.$refs.quantity.focus();
+				}, 500);  
+					
 			},
 		
 			save(){
@@ -391,8 +346,8 @@ export default {
 					return;
 				}
 
-				if(this.sale.order_date == ''){
-					alert('Enter Sale date');
+				if(this.salereturn.return_date == ''){
+					alert('Enter Sale Return date');
 					return;
 				}
 
@@ -403,21 +358,21 @@ export default {
 
 				
 
-				this.sale.customer_id      = this.selectedCustomer.id;
+				this.salereturn.customer_id      = this.selectedCustomer.id;
 
 				this.saleOnProgress = true;
 
 				let data = {
-					sale: this.sale,
+					salereturn: this.salereturn,
 					cartProducts: this.cart
 				}
 
 				
 
-				let url = '/store-sale';
-				if(this.sale.id != 0){
-					console.log(this.sale.id);
-					url = '/update-sale';
+				let url = '/store-sale-return';
+				if(this.salereturn.id != 0){
+					console.log(this.salereturn.id);
+					url = '/update-sale-return';
 				}
 
                 Swal.fire({
@@ -438,7 +393,7 @@ export default {
                         })
                         await new Promise(r => setTimeout(r, 1000));
                         
-                        window.location = '/sale_entry';
+                        window.location = '/sale_return_entry';
                         
                     }).catch(error => {
                         let e = error.response.data;
@@ -461,33 +416,32 @@ export default {
 
 			},
 
-		 async	getSale(){
-			await axios.post('/get_sales', {saleId: this.id}).then(res => {
-					let sales = res.data[0];
-					console.log(sales);
+		 async	getSaleReturn(){
+			await axios.post('/get_sales_return', {saleReturnId: this.id}).then(res => {
+					let salesreturns = res.data[0];
+					console.log(salesreturns.salereturn);
 					this.selectedCustomer = {
-						id           : sales.customerId,
-						display_text : sales.display_name,
-						mobile       : sales.supplier_mobile,
-						address      : sales.supplier_address,
+						id           : salesreturns.customerId,
+						display_text : salesreturns.display_name,
+						mobile       : salesreturns.supplier_mobile,
+						address      : salesreturns.supplier_address,
 					}
-					this.sale.invoice_number       = sales.sale.invoice_number,
-					this.sale.order_date           = sales.sale.order_date;
-					this.sale.supplier_id          = sales.supplierId;
-					this.sale.total                = sales.sale.total;
-					this.sale.note                 = sales.sale.remark;
+					this.salereturn.invoice_number       = salesreturns.salereturn.invoice_number,
+					this.salereturn.return_date          = salesreturns.salereturn.return_date;
+					this.salereturn.supplier_id          = salesreturns.supplierId;
+					this.salereturn.total                = salesreturns.salereturn.total_amount;
+					this.salereturn.note                 = salesreturns.salereturn.remark;
 
 
 			
 					
-					sales.sale.sale_details.forEach(item => {
+					salesreturns.salereturn.sale_return_details.forEach(item => {
                     let cart = {
 					id            : item.id,
 					productId     : item.product_id,
 					name          : item.product.name,
 					quantity      : item.quantity,
-					purchase_price: item.purchase_rate,
-					sale_rate	  : item.sale_rate,
+					return_rate	  : item.return_rate,
 					total         : item.total_amount
                     }
                     this.cart.push(cart);

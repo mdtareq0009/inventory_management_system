@@ -15,7 +15,7 @@ class CreatePurchaseReturnsTable extends Migration
     {
         Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_id')->constrained('purchases');
+            $table->string('invoice_number', 20)->unique();
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->date('return_date')->index();
             $table->float('total_amount');

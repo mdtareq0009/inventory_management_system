@@ -26,6 +26,24 @@ th{
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+.print-design{
+	margin-left: 5px;
+    background: #f51010;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
+.pdf-design{
+	margin-left: 5px;
+    background: #106ff5;
+    padding: 5px;
+    border: none;
+    /* outline: aliceblue; */
+    color: white;
+    border-radius: 5px;
+}
 </style>
 <template>
     <div id="stock">
@@ -65,7 +83,17 @@ th{
 	</div>
 	<div class="row" v-if="searchType != null" style="display:none" v-bind:style="{display: searchType == null ? 'none' : ''}">
 		<div class="col-md-12">
-			<a href="" v-on:click.prevent="print"><i class="fa fa-print"></i> Print</a>
+			<a href="" @click.prevent="print">
+				<button class="print-design">
+					<i class="fa fa-print"></i> Print
+				</button>
+			</a>
+			<button class="excel-design" @click="exportTableToExcel('stockContent', 'StockReport','Stock Report')">
+				<i class="fa fa-file-excel-o"></i> Export To Excel
+   		 	</button>
+			<button class="pdf-design">
+				<i class="fa fa-file-pdf-o"></i> Export To PDF
+   		 	</button>
 		</div>
 	</div>
 	<div class="row">
@@ -85,15 +113,9 @@ th{
 							<td>{{ product.product_code }}</td>
 							<td>{{ product.product_name }}</td>
 							<td>{{ product.category_name }}</td>
-							<td>{{ product.current_quantity }} {{ product.unit_name }}</td>
+							<td>{{ product.current_quantity }}</td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr>
-							<th colspan="5" style="text-align:right;">Total Stock Value</th>
-							<th>{{ totalStockValue | decimal }}</th>
-						</tr>
-					</tfoot>
 				</table>
 
 				<table class="table table-bordered" 
@@ -119,18 +141,11 @@ th{
 							<td>{{ product.category_name }}</td>
 							<td>{{ product.purchased_quantity }}</td>
 							<td>{{ product.purchased_return_quantity }}</td>
-							<td>{{ product.damaged_quantity }}</td>
 							<td>{{ product.sold_quantity }}</td>
 							<td>{{ product.sale_return_quantity }}</td>
-							<td>{{ product.current_quantity }} {{ product.Uunit_name }}</td>
+							<td>{{ product.current_quantity }}</td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr>
-							<th colspan="9" style="text-align:right;">Total Stock Value</th>
-							<th>{{ totalStockValue | decimal }}</th>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 		</div>
@@ -218,6 +233,59 @@ export default {
 					this.totalStockValue = res.data.totalValue;
 				})
 			},
+			exportTableToExcel(transactionsTable, filename = '',headerText = ''){
+						const dataType = 'application/vnd.ms-excel';
+				const tableSelect = document.getElementById(transactionsTable);
+
+				// Ensure tableSelect exists
+				if (!tableSelect) {
+					console.error('Table element not found');
+					return;
+				}
+				
+				// Add inline styles to ensure borders and padding
+				const style = `
+					<style>
+						table, th, td {
+							border: 1px solid gray;
+							border-collapse: collapse;
+						}
+						th, td {
+							padding: 5px;
+							text-align: left;
+						}
+						
+					</style>
+				`;
+				
+				const headerHTML = headerText ? `<div class="header" >${headerText}</div>` : '';
+    
+				// Combine header and table HTML
+				const tableHTML = style + headerHTML + tableSelect.outerHTML;
+
+				// Specify file name
+				filename = filename ? filename + '.xls' : 'excel_data.xls';
+				
+				// Create download link element
+				const downloadLink = document.createElement('a');
+				document.body.appendChild(downloadLink);
+
+				if (navigator.msSaveOrOpenBlob) {
+					// For IE and Edge
+					const blob = new Blob(['\ufeff', tableHTML], { type: dataType });
+					navigator.msSaveOrOpenBlob(blob, filename);
+				} else {
+					// For other browsers
+					downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
+					downloadLink.download = filename;
+					
+					// Trigger the download
+					downloadLink.click();
+				}
+				
+				// Clean up
+				document.body.removeChild(downloadLink);
+			},
 			getBranchInfo(){
                 axios.get('/get_branch_info').then(res=>{
                     this.branch = res.data;
@@ -231,12 +299,12 @@ export default {
 				}
 			},
 			getCategories(){
-				axios.get('/get_categories_inventory').then(res => {
+				axios.get('/get_categories').then(res => {
 					this.categories = res.data;
 				})
 			},
 			getProducts(){
-				axios.post('/get_instruments', {isService: 'false'}).then(res => {
+				axios.post('/get_products', {isService: 'false'}).then(res => {
 					this.products =  res.data;
 				})
 			},

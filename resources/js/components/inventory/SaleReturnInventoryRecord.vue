@@ -51,6 +51,9 @@
 		-o-transition-delay: 0s;
 		transition-delay: 0s;
 }
+.hidden {
+    display: none;
+}
 </style>
 <template>
     <div id="purchaseRecord">
@@ -61,18 +64,18 @@
 					<label>Search Type</label><br>
 					<select class="form-control" v-model="searchType" @change="onChangeSearchType">
 						<option value="">All</option>
-						<option value="supplier">By Supplier</option>
+						<option value="customer">By Customer</option>
 					</select>
 				</div>
 
-				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'supplier' && suppliers.length > 0 ? '' : 'none'}">
-					<label>Supplier</label>
-					<v-select v-bind:options="suppliers" v-model="selectedSupplier" label="name"></v-select>
+				<div class="form-group" style="display:none;" v-bind:style="{display: searchType == 'customer' && customers.length > 0 ? '' : 'none'}">
+					<label>Customer</label>
+					<v-select v-bind:options="customers" v-model="selectedCustomer" label="name"></v-select>
 				</div>
 
 				<div class="form-group" v-bind:style="{display: searchTypesForRecord.includes(searchType) ? '' : 'none'}">
 					<label>Record Type</label><br>
-					<select class="form-control" v-model="recordType" @change="purchases = []">
+					<select class="form-control" v-model="recordType" @change="salereturns = []">
 						<option value="without_details">Without Details</option>
 						<option value="with_details">With Details</option>
 					</select>
@@ -95,24 +98,14 @@
 		</div>
 	</div>
 
-	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: purchases.length > 0 ? '' : 'none'}">
+	<div class="row" style="margin-top:15px;display:none;" v-bind:style="{display: salereturns.length > 0 ? '' : 'none'}">
 		<div class="col-md-12" style="margin-bottom: 10px;">
-			<div class="col-md-12" style="margin-bottom: 10px;">
-			<a href="" @click.prevent="print"><button class="print-design">
-					<i class="fa fa-print"></i> Print
-				</button>
-				</a>
-			<button class="excel-design" @click="exportTableToExcel('reportContent', 'donwloadexcel','Purchase Return Record')">
-				<i class="fa fa-file-excel-o"></i> Export To Excel
-   		 	</button>
-			<button class="pdf-design">
-				<i class="fa fa-file-pdf-o"></i> Export To PDF
-   		 	</button>
-		</div>
+			<a href="" @click.prevent="print"><i class="fa fa-print"></i> Print</a>
+			<button @click="navigateToPage">Download PDF</button>
 		</div>
 		<div class="col-md-12">
 			<div class="table-responsive" id="reportContent">
-				<table 
+				<table  
 					class="record-table" 
 					v-if="(searchTypesForRecord.includes(searchType)) && recordType == 'with_details'" 
 					style="display:none" 
@@ -121,40 +114,38 @@
 					<thead>
 						<tr>
 							<th>Invoice No.</th>
-							<th>Date</th>
-							<th>Supplier Name</th>
+							<th>Return Date</th>
+							<th>Customer Name</th>
 							<th>Product Name</th>
-							<th>Price</th>
+							<th>Return Price</th>
 							<th>Quantity</th>
 							<th>Total</th>
 							<th>Action</th>
 						</tr>
 					</thead>
-					<tbody v-for="(purchase, sl) in purchases" :key="sl">
+					<tbody v-for="(salereturn, sl) in salereturns" :key="sl">
     <!-- Main Purchase Row -->
 							<tr>
-								<td>{{ purchase.purchase.invoice_number }}</td>
-								<td>{{ purchase.purchase.order_date }}</td>
-								<td>{{ purchase.display_name }}</td>
-								<td>{{ purchase.purchase.purchase_details[0].product.name }}</td>
+								<td>{{ salereturn.salereturn.invoice_number }}</td>
+								<td>{{ salereturn.salereturn.return_date }}</td>
+								<td>{{ salereturn.display_name }}</td>
+								<td>{{ salereturn.salereturn.sale_return_details[0].product.name }}</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].purchase_rate }}
+									{{ salereturn.salereturn.sale_return_details[0].return_rate }}
 								</td>
 								<td style="text-align:center;">
-									{{ purchase.purchase.purchase_details[0].quantity }}
+									{{ salereturn.salereturn.sale_return_details[0].quantity }}
 								</td>
 								<td style="text-align:right;">
-									{{ purchase.purchase.purchase_details[0].total_amount }}
+									{{ salereturn.salereturn.sale_return_details[0].total_amount }}
 								</td>
-								<td style="text-align:center;">
-									<a :href="'/purchase_invoice_print/' + purchase.purchase.id" target="_blank" title="Purchase Invoice">
-										<i class="fa fa-file-text"></i>
-									</a>
-									<span v-if="role !== 'User'">
-										<a href="javascript:;" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)">
+								<td>
+								
+									<span v-if="role !== 'General'">
+										<a href="javascript:;" title="Edit Sale Return" @click="checkReturnAndEdit(salereturn.salereturn)">
 											<i class="fa fa-edit"></i>
 										</a>
-										<a href="javascript:;" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)">
+										<a href="javascript:;" title="Delete Sale Return" @click.prevent="deleteSaleReturn(salereturn.salereturn.id)">
 											<i class="fa fa-trash"></i>
 										</a>
 									</span>
@@ -162,11 +153,12 @@
 							</tr>
 							
 							<!-- Additional Products Rows -->
-							<tr v-for="(product, index) in purchase.purchase.purchase_details.slice(1)" :key="index">
-								<td v-if="index === 0" colspan="3" :rowspan="purchase.purchase.purchase_details.length - 1"></td>
+							<tr v-for="(product, index) in salereturn.salereturn.sale_return_details.slice(1)" :key="index">
+								<td v-if="index === 0" colspan="3" :rowspan="salereturn.salereturn.sale_return_details.length - 1"></td>
 								<td>{{ product.product.name }}</td>
+								
 								<td style="text-align:right;">
-									{{ product.purchase_rate }}
+									{{ product.return_rate }}
 								</td>
 								<td style="text-align:center;">
 									{{ product.quantity }}
@@ -180,14 +172,14 @@
 							<!-- Summary Row -->
 							<tr style="font-weight:bold;">
 								<td colspan="5" style="font-weight:normal;">
-									<strong>Note:</strong> {{ purchase.remark }}
+									<strong>Note:</strong> {{ salereturn.salereturn.remark }}
 								</td>
 								<td style="text-align:center;">
 									Total Quantity: <br>
-									{{ purchase.purchase.purchase_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
+									{{ salereturn.salereturn.sale_return_details.reduce((prev, curr) => prev + parseFloat(curr.quantity), 0) }}
 								</td>
 								<td style="text-align:right;">
-									Total: {{ purchase.purchase.total }}
+									Total: {{ salereturn.salereturn.total_amount }}
 								</td>
 								<td></td>
 							</tr>
@@ -203,25 +195,25 @@
 					<thead>
 						<tr>
 							<th>Invoice No.</th>
-							<th>Date</th>
-							<th>Supplier Name</th>
+							<th>Return Date</th>
+							<th>Customer Name</th>
 							<th>Total</th>
 							<th>Note</th>
 							<th>Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(purchase,sl) in purchases" :key='sl'>
-							<td>{{ purchase.purchase.invoice_number }}</td>
-							<td>{{ purchase.purchase.order_date }}</td>
-							<td>{{ purchase.display_name }}</td>
-							<td style="text-align:right;">{{ purchase.purchase.total }}</td>
-							<td style="text-align:left;">{{ purchase.purchase.remark }}</td>
+						<tr v-for="(salereturn, sl) in salereturns" :key="sl">
+							<td>{{ salereturn.salereturn.invoice_number }}</td>
+							<td>{{ salereturn.salereturn.return_date }}</td>
+							<td>{{ salereturn.display_name }}</td>
+							<td style="text-align:right;">{{ salereturn.salereturn.total_amount }}</td>
+							<td style="text-align:left;">{{ salereturn.salereturn.remark }}</td>
 							<td style="text-align:center;">
-								<!-- <a  title="Purchase Invoice" v-bind:href="'/purchase_invoice_print/'+ purchase.purchase.id" target="_blank"><i class="fa fa-file-text"></i></a> -->
+								
 								<span v-if="role != 'User'">
-								<a href="javascript:" title="Edit Purchase" @click="checkReturnAndEdit(purchase.purchase)"><i class="fa fa-edit"></i></a>
-								<a href="" title="Delete Purchase" @click.prevent="deletePurchase(purchase.purchase.id)"><i class="fa fa-trash"></i></a>
+								<a href="javascript:" title="Edit Sale" @click="checkReturnAndEdit(salereturn.salereturn)"><i class="fa fa-edit"></i></a>
+								<a href="" title="Delete Sale" @click.prevent="deleteSaleReturn(salereturn.salereturn.id)"><i class="fa fa-trash"></i></a>
 								</span>
 							</td>
 						</tr>
@@ -229,7 +221,7 @@
 					<tfoot>
 						<tr style="font-weight:bold;">
 							<td colspan="3" style="text-align:right;">Total</td>
-							<td style="text-align:right;">{{ purchases.reduce((prev, curr)=>{return prev + parseFloat(curr.purchase.total)}, 0) }}</td>
+							<td style="text-align:right;">{{ salereturns.reduce((prev, curr)=>{return prev + parseFloat(curr.salereturn.total_amount)}, 0) }}</td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -253,24 +245,26 @@ export default {
 				recordType: 'without_details',
 				dateFrom: moment().format('YYYY-MM-DD'),
 				dateTo: moment().format('YYYY-MM-DD'),
-				suppliers: [],
-				selectedSupplier: null,
-				purchases: [],
-				searchTypesForRecord: ['', 'user', 'supplier']
+				customers: [],
+				selectedCustomer: null,
+				salereturns: [],
+				searchTypesForRecord: ['', 'user', 'customer']
 			}
 		},
         created(){
             this.getBranchInfo();
         },
 		methods: {
-			checkReturnAndEdit(purchase){
-						location.replace('/purchase_entry/'+purchase.id);
+			
+			
+			checkReturnAndEdit(saleretrun){
+						location.replace('/sale_return_entry/'+saleretrun.id);
 			},
 			onChangeSearchType(){
-				this.purchases = [];
+				this.sales = [];
 
-				 if(this.searchType == 'supplier'){
-					this.getSuppliers();
+				 if(this.searchType == 'customer'){
+					this.getCustomers();
 				}
 			},
             getBranchInfo(){
@@ -279,31 +273,29 @@ export default {
                 })
             },
 		
-			getSuppliers(){
-				axios.get('/get_suppliers').then(res => {
-					this.suppliers = res.data;
+			getCustomers(){
+				axios.get('/get_customers').then(res => {
+					this.customers = res.data;
+					console.log(this.customers);
 				})
 			},
 			
 		
 			getSearchResult(){
-				if(this.searchType != 'user'){
-					this.selectedUser = null;
-				}
+				
 
 
-				if(this.searchType != 'supplier'){
-					this.selectedSupplier = null;
+				if(this.searchType != 'customer'){
+					this.selectedCustomer = null;
 				}
 
 				
-					this.getPurchaseRecord();
+					this.getSaleRecord();
 				
 			},
-			getPurchaseRecord(){
+			getSaleRecord(){
 				let filter = {
-					userId: this.selectedUser == null || this.selectedUser.name == '' ? '' : this.selectedUser.id,
-					supplier_id: this.selectedSupplier == null ? '' : this.selectedSupplier.id,
+					customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
 					dateFrom: this.dateFrom,
 					dateTo: this.dateTo
 				}
@@ -312,13 +304,13 @@ export default {
                     filter.with_details = true;
                 }
 
-				let url = '/get_purchase';
+				let url = '/get_sales_return';
 				
 
 				axios.post(url, filter)
 				.then(res => {
-						this.purchases = res.data;
-						console.log(this.purchases);
+						this.salereturns = res.data;
+						console.log(this.salereturns);
 				})
 				.catch(error => {
 					if(error.response){
@@ -327,62 +319,25 @@ export default {
 				})
 			},
 
-			exportTableToExcel(transactionsTable, filename = '',headerText = ''){
-						const dataType = 'application/vnd.ms-excel';
-				const tableSelect = document.getElementById(transactionsTable);
-
-				// Ensure tableSelect exists
-				if (!tableSelect) {
-					console.error('Table element not found');
-					return;
+			navigateToPage() {
+				const baseUrl = '/pdf_generate';
+				let params = {
+					customer_id: this.selectedCustomer == null ? '' : this.selectedCustomer.id,
+					dateFrom: this.dateFrom,
+					dateTo: this.dateTo,
+					recordType : this.recordType
 				}
 				
-				// Add inline styles to ensure borders and padding
-				const style = `
-					<style>
-						table, th, td {
-							border: 1px solid gray;
-							border-collapse: collapse;
-						}
-						th, td {
-							padding: 5px;
-							text-align: left;
-						}
-						
-					</style>
-				`;
-				
-				const headerHTML = headerText ? `<div class="header" >${headerText}</div>` : '';
-    
-				// Combine header and table HTML
-				const tableHTML = style + headerHTML + tableSelect.outerHTML;
 
-				// Specify file name
-				filename = filename ? filename + '.xls' : 'excel_data.xls';
-				
-				// Create download link element
-				const downloadLink = document.createElement('a');
-				document.body.appendChild(downloadLink);
+			const queryString = Object.keys(params)
+				.map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+				.join('&');
 
-				if (navigator.msSaveOrOpenBlob) {
-					// For IE and Edge
-					const blob = new Blob(['\ufeff', tableHTML], { type: dataType });
-					navigator.msSaveOrOpenBlob(blob, filename);
-				} else {
-					// For other browsers
-					downloadLink.href = 'data:' + dataType + ', ' + encodeURIComponent(tableHTML);
-					downloadLink.download = filename;
-					
-					// Trigger the download
-					downloadLink.click();
-				}
-				
-				// Clean up
-				document.body.removeChild(downloadLink);
+			window.location.href = `${baseUrl}?${queryString}`;
 			},
 			
 
-        deletePurchase(purchaseId){
+			deleteSaleReturn(salesReturnId){
             Swal.fire({
                 title: '<strong>Are you sure!</strong>',
                 html: '<strong>Want to delete this?</strong>',
@@ -391,7 +346,7 @@ export default {
                 denyButtonText: `Cancel`,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    axios.post('/delete-purchase',{id: purchaseId}).then(res=>{
+                    axios.post('/delete-sale-return',{id: salesReturnId}).then(res=>{
                         let r = res.data;
                         Swal.fire({
                             icon: 'success',
@@ -399,7 +354,7 @@ export default {
                             showConfirmButton: false,
                             timer: 3000
                         })
-                        this.getPurchaseRecord();
+                        this.getSaleRecord();
                     }).catch(error => {
                         let e = error.response.data;
 
@@ -426,9 +381,9 @@ export default {
 
 				
 
-				let supplierText = '';
-				if(this.selectedSupplier != null && this.selectedSupplier.id != ''){
-					supplierText = `<strong>Supplier: </strong> ${this.selectedSupplier.name}<br>`;
+				let customerText = '';
+				if(this.selectedCustomer != null && this.selectedCustomer.id != ''){
+					customerText = `<strong>Customer: </strong> ${this.selectedCustomer.name}<br>`;
 				}
 
 
@@ -442,7 +397,7 @@ export default {
 						</div>
 						<div class="row">
 							<div class="col-xs-6">
-								 ${supplierText} 
+								 ${customerText} 
 							</div>
 							<div class="col-xs-6 text-right">
 								${dateText}

@@ -34,4 +34,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Purchase::class, 'created_by');
     }
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'created_by');
+    }
+    public function salesreturn()
+    {
+        return $this->hasMany(SaleReturn::class, 'created_by');
+    }
 }

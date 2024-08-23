@@ -159,7 +159,6 @@
 							
 							<!-- Additional Products Rows -->
 							<tr v-for="(product, index) in sale.sale.sale_details.slice(1)" :key="index">
-								
 								<td v-if="index === 0" colspan="3" :rowspan="sale.sale.sale_details.length - 1"></td>
 								<td>{{ product.product.name }}</td>
 								<td style="text-align:right;">

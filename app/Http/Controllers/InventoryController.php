@@ -8,6 +8,10 @@ use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use App\Models\Sale;
 use App\Models\SaleDetail;
+use App\Models\SaleReturn;
+use App\Models\SaleReturnDetail;
+use App\Models\PurchaseReturn;
+use App\Models\PurchaseReturnDetail;
 use App\Models\Stock;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -290,6 +294,263 @@ class InventoryController extends Controller
             return response()->json(['message' => $e->getMessage()], 406);
         }
     }
+    public function purchaseReturnInventoryEntry()
+    {
+        $id = 0;
+        $invoice = generatePurchaseReturnInventoryCode();
+        return view('admin.inventory.purchase_return_inventory_entry',compact('id','invoice'));
+    }
+
+    public function purchaseReturnInventoryRecord()
+    {
+        return view('admin.inventory.purchase_return_inventory_record');
+    }
+
+
+    public function purchaseReturnStore(Request $request)
+    {
+
+        $purchasereturn = $request->purchasereturn;
+        $productCart = $request->cartProducts;
+        $validator   = Validator::make((array) $purchasereturn, [
+            'id'              => 'required|integer',
+            'invoice_number'  => 'required|string|unique:purchase_returns',
+            'supplier_id'     => 'required|integer',
+            'return_date'     => 'required|date',
+            'total'           => 'required|numeric',
+        ]);
+        
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+       
+        DB::beginTransaction();
+        
+        try {
+            $data                   = New PurchaseReturn();
+            $data->invoice_number   = $purchasereturn['invoice_number'];
+            $data->supplier_id      = $purchasereturn['supplier_id'];
+            $data->return_date      = $purchasereturn['return_date'];
+            $data->total_amount     = $purchasereturn['total'];
+            $data->remark           = $purchasereturn['note'];
+            $data->created_by       = auth()->user()->id;
+            $data->ip_address       = $request->ip();
+            $data->branch_id        = session('branch_id');
+            $data->save(); 
+
+     
+            foreach ($productCart as $value) {
+                PurchaseReturnDetail::create(array(
+                    'purchase_return_id'=> $data->id,
+                    'product_id'       => $value['productId'],
+                    'quantity'         => $value['quantity'],
+                    'return_rate'      => $value['return_rate'],
+                    'total_amount'     => $value['total'],
+                    'created_by'       => auth()->user()->id,
+                    'ip_address'       => $request->ip(),
+                    'branch_id'        => session('branch_id')
+                ));
+
+                $stockCount = Stock::where('product_id', $value['productId'])
+                                 ->where('branch_id', session('branch_id'))
+                                 ->count();
+               // dd($stockCount);
+                if( $stockCount != 0){
+                    Stock::where('product_id', $value['productId'])
+                    ->where('branch_id', session('branch_id'))
+                    ->update([
+                        'purchase_return_quantity' => DB::raw('purchase_return_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
+                    ]);
+
+                }
+            }
+
+
+            DB::commit();
+            return response()->json(['message' => 'Purhcase Return Added','id'=> $data->id]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+
+    public function purchaseReturnUpdate(Request $request)
+    {
+        $purchasereturn = $request->purchasereturn;
+        $productCart = $request->cartProducts;
+        $validator   = Validator::make((array) $purchasereturn, [
+            'id'              => 'required|integer',
+            'invoice_number'  => ['required','string',Rule::unique('purchase_returns')->ignore($purchasereturn['id'],'id')],
+            'supplier_id'     => 'required|integer',
+            'return_date'     => 'required|date',
+            'total'           => 'required|numeric',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+       
+        DB::beginTransaction();
+        
+        try {
+            $data                   = PurchaseReturn::find($purchasereturn['id']);
+            $data->invoice_number   = $purchasereturn['invoice_number'];
+            $data->supplier_id      = $purchasereturn['supplier_id'];
+            $data->return_date      = $purchasereturn['return_date'];
+            $data->total_amount     = $purchasereturn['total'];
+            $data->remark           = $purchasereturn['note'];
+            $data->updated_by       = auth()->user()->id;
+            $data->ip_address       = $request->ip();
+            $data->branch_id        = session('branch_id');
+            $data->save(); 
+
+            $oldPurchaseReDetails = PurchaseReturnDetail::where('purchase_return_id',$purchasereturn['id'])->get();
+
+            $deletePurchaseDetails=PurchaseReturnDetail::where('purchase_return_id',$purchasereturn['id']);
+            $deletePurchaseDetails->forceDelete();
+
+            
+            foreach ($oldPurchaseReDetails as $value) {
+                Stock::where('product_id', $value['productId'])
+                ->where('branch_id', session('branch_id'))
+                ->update([
+                    'purchase_return_quantity' => DB::raw('purchase_return_quantity - ' . $value['quantity']),
+                    'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
+                ]);
+            }
+            
+            foreach ($productCart as $value) {
+                PurchaseReturnDetail::create(array(
+                    'purchase_return_id'=> $data->id,
+                    'product_id'       => $value['productId'],
+                    'quantity'         => $value['quantity'],
+                    'return_rate'      => $value['return_rate'],
+                    'total_amount'     => $value['total'],
+                    'updated_by'       => auth()->user()->id,
+                    'ip_address'       => $request->ip(),
+                    'branch_id'        => session('branch_id')
+                ));
+
+                $stockCount = Stock::where('product_id', $value['productId'])
+                                 ->where('branch_id', session('branch_id'))
+                                 ->count();
+               // dd($stockCount);
+                if( $stockCount != 0){
+                 
+                    Stock::where('product_id', $value['productId'])
+                    ->where('branch_id', session('branch_id'))
+                    ->update([
+                        'purchase_return_quantity' => DB::raw('purchase_return_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
+                    ]);
+
+                }
+            }
+
+
+            DB::commit();
+            return response()->json(['message' => 'Purchase Return Updated','id'=> $data->id]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+    public function purchaseReturnOrderEdit($id)
+    {
+        $id = $id;
+        $purs = PurchaseReturn::findOrFail($id);
+        $invoice = $purs->invoice_number;
+        return view('admin.inventory.purchase_return_inventory_entry',compact('id','invoice'));
+    }
+
+    public function getPurchaseReturn(Request $request)
+    {
+        $query = PurchaseReturn::with(['supplier', 'user','purchaseReturnDetails.product'])
+                ->whereNull('deleted_at')
+                ->where('branch_id', session('branch_id'))
+                ->when($request->purchaseReturnId, function ($q) use ($request) {
+                    return $q->where('id', $request->purchaseReturnId);
+                })
+                ->when($request->dateFrom && $request->dateTo, function ($q) use ($request) {
+                    return $q->whereBetween('return_date', [$request->dateFrom, $request->dateTo]);
+                })
+                ->when($request->supplier_id, function ($q) use ($request) {
+                    return $q->where('supplier_id', $request->supplier_id);
+                });
+           
+
+            // Execute the query and transform the results
+            $result = $query->get()->map(function ($purchasereturn) {
+                return [
+                    'purchasereturn' => $purchasereturn,
+                    'invoice_text' => $purchasereturn->invoice_number . ' - ' . $purchasereturn->supplier->name,
+                    'display_name' => $purchasereturn->supplier->supplier_code . ' - ' . $purchasereturn->supplier->name,
+                    'supplier_code' => $purchasereturn->supplier->supplier_code,
+                    'supplier_name' => $purchasereturn->supplier->name,
+                    'supplier_mobile' => $purchasereturn->supplier->mobile,
+                    'supplier_address' => $purchasereturn->supplier->address,
+                    'user_name' => $purchasereturn->user->name,
+                    'supplierId' => $purchasereturn->supplier->id,
+                ];
+            });
+
+            // Add purchase details if requested
+           
+
+            // Return the final result
+            return  response()->json($result);
+    }
+
+    public function purchaseReturnDelete(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+
+            $purchasereturn = PurchaseReturn::where('id', $request->id)->first();
+            if($purchasereturn->deleted_at != null){
+                return response()->json(['message' => 'Purchase Return not found']);
+                exit;
+            }
+
+          
+            $purchaseReturnDetails = PurchaseReturnDetail::where('purchase_return_id', $request->id)->get();
+            foreach($purchaseReturnDetails as $detail) {
+                $stock = inventoryStock($detail->product_id);
+                if($detail->quantity > $stock) {
+                    return response()->json(['success'=>false,'message' => 'Product out of stock, Purchase return can not be deleted']);
+                    exit;
+                }
+            }
+
+            foreach($purchaseReturnDetails as $product){
+                Stock::where('product_id', $product->product_id)
+                ->where('branch_id', session('branch_id'))
+                ->decrement('purchase_return_quantity', $product->quantity);
+                
+                Stock::where('product_id', $product->product_id)
+                ->where('branch_id', session('branch_id'))
+                ->increment('stock_quantity', $product->quantity);
+            }
+
+            PurchaseReturn::where('id', $request->id)->delete();
+            PurchaseReturnDetail::where('purchase_return_id', $request->id)->delete();
+
+            DB::commit();
+            return response()->json(['message' => 'Purchase Return Deleted']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
     ////Sale
     public function saleOrderInventoryEntry()
     {
@@ -358,7 +619,7 @@ class InventoryController extends Controller
                     ->where('branch_id', session('branch_id'))
                     ->update([
                         'sale_quantity' => DB::raw('sale_quantity + ' . $value['quantity']),
-                        'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
                     ]);
             }
         }
@@ -414,7 +675,7 @@ class InventoryController extends Controller
                 ->where('branch_id', session('branch_id'))
                 ->update([
                     'sale_quantity' => DB::raw('sale_quantity - ' . $value['quantity']),
-                    'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
+                    'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
                 ]);
             }
             
@@ -441,7 +702,7 @@ class InventoryController extends Controller
                     ->where('branch_id', session('branch_id'))
                     ->update([
                         'sale_quantity' => DB::raw('sale_quantity + ' . $value['quantity']),
-                        'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
                     ]);
 
                 }
@@ -459,8 +720,8 @@ class InventoryController extends Controller
     public function saleOrderEdit($id)
     {
         $id = $id;
-        $purs = Purchase::findOrFail($id);
-        $invoice = $purs->invoice_number;
+        $sales = Sale::findOrFail($id);
+        $invoice = $sales->invoice_number;
         return view('admin.inventory.sale_order_entry',compact('id','invoice'));
     }
 
@@ -501,6 +762,11 @@ class InventoryController extends Controller
             return  response()->json($result);
     }
 
+
+
+
+
+
     public function saleDelete(Request $request)
     {
         $request->validate([
@@ -512,7 +778,7 @@ class InventoryController extends Controller
         try {
 
             $sale = Sale::where('id', $request->id)->first();
-            if($purchase->deleted_at != null){
+            if($sale->deleted_at != null){
                 return response()->json(['message' => 'Sale not found']);
                 exit;
             }
@@ -548,10 +814,266 @@ class InventoryController extends Controller
         }
     }
 
+ ////Sale
+    public function saleReturnInventoryEntry()
+    {
+        $id = 0;
+        $invoice = generateSaleReturnInventoryCode();
+        return view('admin.inventory.sale_return_entry',compact('id','invoice'));
+    }
 
+    public function saleReturnInventoryRecord()
+    {
+        return view('admin.inventory.sale_return_inventory_record');
+    }
+
+
+    public function saleReturnStore(Request $request)
+    {
+
+        $salereturn = $request->salereturn;
+        $productCart = $request->cartProducts;
+        $validator = Validator::make((array) $salereturn, [
+            'invoice_number'  => 'required|string|unique:sale_returns',
+            'customer_id'     => 'required|integer',
+            'return_date'      => 'required|date',
+            'total'           => 'required|numeric',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+       
+        DB::beginTransaction();
+        
+        try {
+            $data                   = New SaleReturn();
+            $data->invoice_number   = $salereturn['invoice_number'];
+            $data->customer_id      = $salereturn['customer_id'];
+            $data->return_date      = $salereturn['return_date'];
+            $data->total_amount     = $salereturn['total'];
+            $data->remark           = $salereturn['note'];
+            $data->created_by       = auth()->user()->id;
+            $data->ip_address       = $request->ip();
+            $data->branch_id        = session('branch_id');
+            $data->save(); 
+
+     
+            foreach ($productCart as $value) {
+                SaleReturnDetail::create(array(
+                    'sale_return_id'   => $data->id,
+                    'product_id'       => $value['productId'],
+                    'quantity'         => $value['quantity'],
+                    'return_rate'      => $value['return_rate'],
+                    'total_amount'     => $value['total'],
+                    'created_by'       => auth()->user()->id,
+                    'ip_address'       => $request->ip(),
+                    'branch_id'        => session('branch_id')
+                ));
+
+                $stockCount = Stock::where('product_id', $value['productId'])
+                                 ->where('branch_id', session('branch_id'))
+                                 ->count();
+               // dd($stockCount);
+                if( $stockCount != 0){
+                    Stock::where('product_id', $value['productId'])
+                    ->where('branch_id', session('branch_id'))
+                    ->update([
+                        'sale_return_quantity' => DB::raw('sale_return_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
+                ]);
+            }
+        }
+
+
+            DB::commit();
+            return response()->json(['message' => 'Sale Return Added']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+
+    public function saleReturnUpdate(Request $request)
+    {
+        $salereturn = $request->salereturn;
+        $productCart = $request->cartProducts;
+        $validator   = Validator::make((array) $salereturn, [
+            'id'              => 'required|integer',
+            'invoice_number'  => ['required','string',Rule::unique('sale_returns')->ignore($salereturn['id'],'id')],
+            'customer_id'     => 'required|integer',
+            'return_date'     => 'required|date',
+            'total'           => 'required|numeric',
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), 422);
+        }
+       
+        DB::beginTransaction();
+        
+        try {
+            $data                   = SaleReturn::find($salereturn['id']);
+            $data->invoice_number   = $salereturn['invoice_number'];
+            $data->customer_id      = $salereturn['customer_id'];
+            $data->return_date      = $salereturn['return_date'];
+            $data->total_amount     = $salereturn['total'];
+            $data->remark           = $salereturn['note'];
+            $data->updated_by       = auth()->user()->id;
+            $data->ip_address       = $request->ip();
+            $data->branch_id        = session('branch_id');
+            $data->save(); 
+
+            $oldSaleDetails = SaleReturnDetail::where('sale_return_id',$salereturn['id'])->get();
+
+            $deleteSaleDetails=SaleReturnDetail::where('sale_return_id',$salereturn['id']);
+            $deleteSaleDetails->forceDelete();
+
+            
+            foreach ($oldSaleDetails as $value) {
+                Stock::where('product_id', $value['productId'])
+                ->where('branch_id', session('branch_id'))
+                ->update([
+                    'sale_return_quantity' => DB::raw('sale_return_quantity - ' . $value['quantity']),
+                    'stock_quantity' => DB::raw('stock_quantity - ' . $value['quantity']),
+                ]);
+            }
+            
+            foreach ($productCart as $value) {
+                SaleReturnDetail::create(array(
+                    'sale_return_id'   => $data->id,
+                    'product_id'       => $value['productId'],
+                    'quantity'         => $value['quantity'],
+                    'return_rate'      => $value['return_rate'],
+                    'total_amount'     => $value['total'],
+                    'updated_by'       => auth()->user()->id,
+                    'ip_address'       => $request->ip(),
+                    'branch_id'        => session('branch_id')
+                ));
+
+                $stockCount = Stock::where('product_id', $value['productId'])
+                ->where('branch_id', session('branch_id'))
+                ->count();
+                    // dd($stockCount);
+                    if( $stockCount != 0){
+                    Stock::where('product_id', $value['productId'])
+                    ->where('branch_id', session('branch_id'))
+                    ->update([
+                        'sale_return_quantity' => DB::raw('sale_return_quantity + ' . $value['quantity']),
+                        'stock_quantity' => DB::raw('stock_quantity + ' . $value['quantity']),
+                    ]);
+                    }
+            }
+
+
+            DB::commit();
+            return response()->json(['message' => 'Sale Return Updated','id'=> $data->id]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
+
+    public function saleReturnOrderEdit($id)
+    {
+        $id = $id;
+        $salesreturn = SaleReturn::findOrFail($id);
+        $invoice = $salesreturn->invoice_number;
+        return view('admin.inventory.sale_return_entry',compact('id','invoice'));
+    }
+
+    public function getReturnSales(Request $request)
+    {
+        $query = SaleReturn::with(['customer', 'user','saleReturnDetails.product'])
+                ->whereNull('deleted_at')
+                ->where('branch_id', session('branch_id'))
+                ->when($request->saleReturnId, function ($q) use ($request) {
+                    return $q->where('id', $request->saleReturnId);
+                })
+                ->when($request->dateFrom && $request->dateTo, function ($q) use ($request) {
+                    return $q->whereBetween('return_date', [$request->dateFrom, $request->dateTo]);
+                })
+                ->when($request->customer_id, function ($q) use ($request) {
+                    return $q->where('customer_id', $request->customer_id);
+                });
+
+            // Execute the query and transform the results
+            $result = $query->get()->map(function ($salereturn) {
+                return [
+                    'salereturn' => $salereturn,
+                    'invoice_text' => $salereturn->invoice_number . ' - ' . $salereturn->customer->name,
+                    'display_name' => $salereturn->customer->customer_code . ' - ' . $salereturn->customer->name,
+                    'customer_code' => $salereturn->customer->customer_code,
+                    'customer_name' => $salereturn->customer->name,
+                    'customer_mobile' => $salereturn->customer->mobile,
+                    'customer_address' => $salereturn->customer->address,
+                    'user_name' => $salereturn->user->name,
+                    'customerId' => $salereturn->customer->id,
+                ];
+            });
+
+            // Add purchase details if requested
+           
+
+            // Return the final result
+            return  response()->json($result);
+    }
+
+
+
+
+    
+
+    public function saleReturnDelete(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+
+            $saleReturn = SaleReturn::where('id', $request->id)->first();
+            if($saleReturn->deleted_at != null){
+                return response()->json(['message' => 'Sale Return not found']);
+                exit;
+            }
+
+          
+            $saleReturnDetails = SaleReturnDetail::where('sale_return_id', $request->id)->get();
+            foreach($saleReturnDetails as $detail) {
+                $stock = inventoryStock($detail->product_id);
+                if($detail->quantity > $stock) {
+                    return response()->json(['success'=>false,'message' => 'Product out of stock, Sale Return can not be deleted']);
+                    exit;
+                }
+            }
+
+            foreach($saleReturnDetails as $product){
+                Stock::where('product_id', $product->product_id)
+                ->where('branch_id', session('branch_id'))
+                ->decrement('sale_quantity', $product->quantity);
+                
+                Stock::where('product_id', $product->product_id)
+                ->where('branch_id', session('branch_id'))
+                ->decrement('stock_quantity', $product->quantity);
+            }
+
+            SaleReturn::where('id', $request->id)->delete();
+            SaleReturnDetail::where('sale_return_id', $request->id)->delete();
+
+            DB::commit();
+            return response()->json(['message' => 'Sale Return Deleted']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['message' => $e->getMessage()], 406);
+        }
+    }
     ////Check Stock
 
-    public function getInstrumentStock(Request $request)
+    public function getProductStock(Request $request)
     {
         $stock = inventoryStock($request->productId);
        // dd($stock);
@@ -625,10 +1147,6 @@ class InventoryController extends Controller
        //dd($clauses);
         $stock = currentStock($clauses);
         $result['stock'] = $stock;
-        $result['totalValue'] = array_sum(
-            array_map(function($product){
-                return $product->stock_value;
-            }, $stock));
         return response()->json($result);
     }
     public function  getTotalStockInventory(Request $request){
@@ -668,32 +1186,27 @@ class InventoryController extends Controller
                     " . (isset($request->date) && $request->date != null ? " and pr.return_date <= '$request->date'" : "") . "
                 ) as purchased_return_quantity,
                         
-                
                 (SELECT ifnull(sum(sd.quantity), 0) 
                     from sale_details sd
-                    left join sales s on isu.id = sd.sale_id
+                    left join sales s on s.id = sd.sale_id
                     where sd.product_id = p.id
                     and sd.branch_id  = '$branchId'
                     and sd.deleted_at is null
-                    " . (isset($request->date) && $request->date != null ? " and s.issue_date <= '$request->date'" : "") . "
+                    " . (isset($request->date) && $request->date != null ? " and s.order_date <= '$request->date'" : "") . "
                 ) as sold_quantity,
 
-                (SELECT ifnull(sum(isud.quantity), 0) 
+                (SELECT ifnull(sum(isrud.quantity), 0) 
                     from sale_return_details isrud
-                    left join sale_returns isru on isru.id = isrud.issue_id
+                    left join sale_returns sr on sr.id = isrud.sale_return_id
                     where isrud.product_id = p.id
                     and isrud.branch_id  = '$branchId'
                     and isrud.deleted_at is null
-                    " . (isset($request->date) && $request->date != null ? " and isu.return_date <= '$request->date'" : "") . "
-                ) as sold_quantity,
-                        
-
-          
-            
-                        
-                (SELECT (purchased_quantity + ) - (sold_quantity  + purchased_return_quantity)) as current_quantity,
+                    " . (isset($request->date) && $request->date != null ? " and sr.return_date <= '$request->date'" : "") . "
+                ) as sale_return_quantity,
+  
+                (SELECT (purchased_quantity + sale_return_quantity) - (sold_quantity  + purchased_return_quantity)) as current_quantity,
                 (SELECT p.purchase_price * current_quantity) as stock_value
-            from instruments p
+            from products p
             left join categories pc on pc.id = p.category_id
             left join units u on u.id = p.unit_id
             where p.deleted_at is null
