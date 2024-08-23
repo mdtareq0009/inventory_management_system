@@ -1,5 +1,5 @@
 # Instruction 
-# Step - 1. Install Xampp 7.3.0 
+# Step - 1. Install xampp server 7.3.0 
   link: https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.3.0/
 
 # Step - 2. Clone This project from GitHub into htdocs from below Link;
